@@ -1,0 +1,17 @@
+[
+{
+  "modid": "ForgeEconomy",
+  "name": "ForgeEconomy",
+  "description": "Adds Economy to your Forge server.",
+  "version": "1.8.9-0.1",
+  "credits": "",
+  "logoFile": "/icon.png",
+  "mcversion": "1.8.9",
+  "url": "",
+  "updateUrl": "",
+  "authors": [ "kamildanak" ],
+  "parent":"",
+  "screenshots": [],
+  "dependencies": []
+}
+]
