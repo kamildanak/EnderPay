@@ -1,9 +1,12 @@
 package com.kamildanak.minecraft.forgeeconomy;
 
+import com.kamildanak.minecraft.forgeeconomy.events.EventHandler;
 import com.kamildanak.minecraft.forgeeconomy.gui.GuiHandler;
 import com.kamildanak.minecraft.forgeeconomy.proxy.Proxy;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -51,6 +54,8 @@ public class ForgeEconomy {
         currencies = (String[]) currenciesList.toArray();
 
         proxy.init();
+        proxy.registerPackets();
+        MinecraftForge.EVENT_BUS.register(new EventHandler());
     }
 
     @Mod.EventHandler

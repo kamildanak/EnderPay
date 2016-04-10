@@ -9,13 +9,12 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class BalanceHUD extends GuiExtended {
     private Minecraft mc;
-    private Integer balance = null;
-    private String currency;
+    private static Integer balance = null;
+    private static String currency;
 
-    public BalanceHUD(Minecraft mc, String currency) {
+    public BalanceHUD(Minecraft mc) {
         super(mc);
         this.mc = mc;
-        this.currency = currency;
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
@@ -45,5 +44,11 @@ public class BalanceHUD extends GuiExtended {
         drawString(fontRenderer, text, cx + 82 - textLength + 9 - 2, height - 50 + 1 + (mc.thePlayer.capabilities.isCreativeMode ? 17 : 0), 0xa0a0a0);
 
         mc.mcProfiler.endSection();
+    }
+
+    public static void setBalanceAndCurrency(int balance, String currency)
+    {
+        BalanceHUD.balance = balance;
+        BalanceHUD.currency = currency;
     }
 }

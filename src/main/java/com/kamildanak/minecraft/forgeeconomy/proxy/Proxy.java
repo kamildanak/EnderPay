@@ -2,6 +2,7 @@ package com.kamildanak.minecraft.forgeeconomy.proxy;
 
 
 import com.kamildanak.minecraft.forgeeconomy.network.PacketDispatcher;
+import com.kamildanak.minecraft.forgeeconomy.network.client.MessageBalance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.IThreadListener;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
@@ -14,7 +15,7 @@ public class Proxy {
     }
 
     public void registerPackets() {
-        //PacketDispatcher.registerMessage();
+        PacketDispatcher.registerMessage(MessageBalance.class);
     }
 
     /**

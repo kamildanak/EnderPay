@@ -18,7 +18,7 @@ public class ProxyClient extends Proxy {
     @Override
     public void init() {
         mc = Minecraft.getMinecraft();
-        MinecraftForge.EVENT_BUS.register(new BalanceHUD(Minecraft.getMinecraft(), ForgeEconomy.defaultCurrency));
+        MinecraftForge.EVENT_BUS.register(new BalanceHUD(Minecraft.getMinecraft()));
     }
 
     @Override
