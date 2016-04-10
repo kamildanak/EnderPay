@@ -1,8 +1,10 @@
 package com.kamildanak.minecraft.forgeeconomy.proxy;
 
+import com.kamildanak.minecraft.forgeeconomy.gui.BalanceHUD;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.IThreadListener;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 public class ProxyClient extends Proxy {
@@ -15,6 +17,7 @@ public class ProxyClient extends Proxy {
     @Override
     public void init() {
         mc = Minecraft.getMinecraft();
+        MinecraftForge.EVENT_BUS.register(new BalanceHUD(Minecraft.getMinecraft(), ""));
     }
 
     @Override
