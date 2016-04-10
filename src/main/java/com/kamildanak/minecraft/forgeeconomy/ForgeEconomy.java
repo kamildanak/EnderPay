@@ -24,7 +24,7 @@ public class ForgeEconomy {
 
     static Configuration config;
 
-    @SidedProxy(clientSide = "com.kamildanak.minecraft.forgeeconomy.ProxyClient", serverSide = "com.kamildanak.minecraft.forgeeconomy.Proxy")
+    @SidedProxy(clientSide = "com.kamildanak.minecraft.forgeeconomy.proxy.ProxyClient", serverSide = "com.kamildanak.minecraft.forgeeconomy.proxy.Proxy")
     public static Proxy proxy;
 
     @Mod.EventHandler
