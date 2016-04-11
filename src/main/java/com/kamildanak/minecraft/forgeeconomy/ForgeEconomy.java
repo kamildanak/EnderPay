@@ -1,18 +1,25 @@
 package com.kamildanak.minecraft.forgeeconomy;
 
+import com.kamildanak.minecraft.forgeeconomy.economy.Account;
+import com.kamildanak.minecraft.forgeeconomy.economy.AccountPlayerInfo;
 import com.kamildanak.minecraft.forgeeconomy.events.EventHandler;
 import com.kamildanak.minecraft.forgeeconomy.gui.GuiHandler;
+import com.kamildanak.minecraft.forgeeconomy.items.TestItem;
 import com.kamildanak.minecraft.forgeeconomy.proxy.Proxy;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.world.World;
+import net.minecraft.world.storage.ISaveHandler;
+import net.minecraft.world.storage.SaveHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -30,8 +37,8 @@ public class ForgeEconomy {
 
     public static String defaultCurrency;
     public static String[] currencies;
-
-    static Configuration config;
+    private Item itemWrench;
+    private static Configuration config;
 
     @SidedProxy(clientSide = "com.kamildanak.minecraft.forgeeconomy.proxy.ProxyClient", serverSide = "com.kamildanak.minecraft.forgeeconomy.proxy.Proxy")
     public static Proxy proxy;
@@ -61,5 +68,30 @@ public class ForgeEconomy {
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         config.save();
+    }
+
+    @Mod.EventHandler
+    public void onServerStop(FMLServerStoppingEvent evt) {
+        try {
+            AccountPlayerInfo.writeAll();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Mod.EventHandler
+    public void onLoadingWorld(FMLServerStartingEvent evt) {
+        AccountPlayerInfo.clear();
+
+        File file = getWorldDir(evt.getServer().getEntityWorld());
+        if (file == null) return;
+
+        AccountPlayerInfo.setLocation(new File(file, "economy-accounts"));
+    }
+
+    private File getWorldDir(World world) {
+        ISaveHandler handler = world.getSaveHandler();
+        if (!(handler instanceof SaveHandler)) return null;
+        return ((SaveHandler) handler).getWorldDirectory();
     }
 }

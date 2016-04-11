@@ -12,14 +12,14 @@ import java.io.IOException;
 
 public class MessageBalance  extends AbstractMessage.AbstractClientMessage<MessageBalance>{
     private String[] currencies;
-    private int[] balances;
+    private long[] balances;
     private int d;
 
     public MessageBalance()
     {
 
     }
-    public MessageBalance(String[] currencies, int[] balances, int d)
+    public MessageBalance(String[] currencies, long[] balances, int d)
     {
         this.currencies = currencies;
         this.balances = balances;
@@ -32,9 +32,9 @@ public class MessageBalance  extends AbstractMessage.AbstractClientMessage<Messa
         currencies = new String[n];
         for(int i = 0; i < n; i++)
             currencies[i] = buffer.readStringFromBuffer(10);
-        balances = new int[n];
+        balances = new long[n];
         for(int i = 0; i < n; i++)
-            balances[i] = buffer.readInt();
+            balances[i] = buffer.readLong();
         d = buffer.readInt();
     }
 
@@ -42,7 +42,7 @@ public class MessageBalance  extends AbstractMessage.AbstractClientMessage<Messa
     protected void write(PacketBuffer buffer) throws IOException {
         buffer.writeInt(currencies.length);
         for (String currency : currencies) buffer.writeString(currency);
-        for (int balance : balances) buffer.writeInt(balance);
+        for (long balance : balances) buffer.writeLong(balance);
         buffer.writeInt(d);
     }
 

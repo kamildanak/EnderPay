@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class BalanceHUD extends GuiExtended {
     private Minecraft mc;
-    private static Integer balance = null;
+    private static Long balance = null;
     private static String currency;
 
     public BalanceHUD(Minecraft mc) {
@@ -46,7 +46,7 @@ public class BalanceHUD extends GuiExtended {
         mc.mcProfiler.endSection();
     }
 
-    public static void setBalanceAndCurrency(int balance, String currency)
+    public static void setBalanceAndCurrency(long balance, String currency)
     {
         BalanceHUD.balance = balance;
         BalanceHUD.currency = currency;
