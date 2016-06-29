@@ -14,16 +14,16 @@ import java.util.Arrays;
 public class EventHandler {
     @SubscribeEvent
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
-        if (event.entity instanceof EntityPlayer && !event.entity.worldObj.isRemote) {
+        if (event.getEntity() instanceof EntityPlayer && !event.getEntity().worldObj.isRemote) {
             String[] currencies = ForgeEconomy.currencies;
             int dCurrencyID = Arrays.asList(currencies).indexOf(ForgeEconomy.defaultCurrency);
             long[] balances = new long[currencies.length];
-            AccountPlayerInfo aPI = AccountPlayerInfo.get((EntityPlayer) event.entity);
+            AccountPlayerInfo aPI = AccountPlayerInfo.get((EntityPlayer) event.getEntity());
             int i = 0;
             for(String currency : currencies){
                 balances[i] = aPI.getAccount(currency).getBalance();
             }
-            PacketDispatcher.sendTo(new MessageBalance(currencies, balances, dCurrencyID), (EntityPlayerMP) event.entity);
+            PacketDispatcher.sendTo(new MessageBalance(currencies, balances, dCurrencyID), (EntityPlayerMP) event.getEntity());
         }
     }
 }

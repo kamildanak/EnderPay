@@ -30,6 +30,6 @@ public class Proxy {
      * used for ensuring that the message is being handled by the main thread
      */
     public IThreadListener getThreadFromContext(MessageContext ctx) {
-        return ctx.getServerHandler().playerEntity.getServerForPlayer();
+        return ctx.getServerHandler().playerEntity.getServerWorld();
     }
 }

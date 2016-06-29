@@ -8,7 +8,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
@@ -18,9 +18,9 @@ group= "com.kamildanak.minecraft.forgeeconomy" // http://maven.apache.org/guides
 archivesBaseName = "forgeeconomy"
 
 minecraft {
-    version = "1.8.9-11.15.1.1808"
+    version = "1.9.4-12.17.0.1976"
     runDir = "run"
-    mappings = "stable_20"
+    mappings = "snapshot_20160518"
 }
 
 dependencies {

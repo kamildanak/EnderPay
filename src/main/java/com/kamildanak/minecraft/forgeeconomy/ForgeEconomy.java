@@ -4,7 +4,6 @@ import com.kamildanak.minecraft.forgeeconomy.economy.Account;
 import com.kamildanak.minecraft.forgeeconomy.economy.AccountPlayerInfo;
 import com.kamildanak.minecraft.forgeeconomy.events.EventHandler;
 import com.kamildanak.minecraft.forgeeconomy.gui.GuiHandler;
-import com.kamildanak.minecraft.forgeeconomy.items.TestItem;
 import com.kamildanak.minecraft.forgeeconomy.proxy.Proxy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;

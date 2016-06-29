@@ -19,7 +19,7 @@ public class BalanceHUD extends GuiExtended {
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public void onRenderInfo(RenderGameOverlayEvent.Post event) {
-        if (event.isCancelable() || event.type != RenderGameOverlayEvent.ElementType.EXPERIENCE) return;
+        if (event.isCancelable() || event.getType() != RenderGameOverlayEvent.ElementType.EXPERIENCE) return;
         if (mc == null || mc.thePlayer == null || mc.theWorld == null) return;
 
         drawBalance();
