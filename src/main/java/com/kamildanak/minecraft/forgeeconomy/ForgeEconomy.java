@@ -1,12 +1,10 @@
 package com.kamildanak.minecraft.forgeeconomy;
 
 import com.kamildanak.minecraft.forgeeconomy.economy.Account;
-import com.kamildanak.minecraft.forgeeconomy.economy.AccountPlayerInfo;
 import com.kamildanak.minecraft.forgeeconomy.events.EventHandler;
 import com.kamildanak.minecraft.forgeeconomy.gui.GuiHandler;
 import com.kamildanak.minecraft.forgeeconomy.proxy.Proxy;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.SaveHandler;
@@ -15,12 +13,9 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 @Mod(modid=ForgeEconomy.MODID, name=ForgeEconomy.MODNAME, version=ForgeEconomy.VERSION)
 public class ForgeEconomy {
@@ -34,9 +29,9 @@ public class ForgeEconomy {
     public static GuiHandler guiHandler;
     public static CreativeTabs tabEconomy;
 
-    public static String defaultCurrency;
-    public static String[] currencies;
-    private Item itemWrench;
+    public static String currencyNameSingular;
+    public static String currencyNameMultiple;
+
     private static Configuration config;
 
     @SidedProxy(clientSide = "com.kamildanak.minecraft.forgeeconomy.proxy.ProxyClient", serverSide = "com.kamildanak.minecraft.forgeeconomy.proxy.Proxy")
@@ -50,14 +45,12 @@ public class ForgeEconomy {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        defaultCurrency = config.getString("general", "default currency", "credits",
-                "Default currency (one displayed in HUD)");
-        currencies = config.getStringList("general", "currency list", new String[] {"credits"},
-                "List of currencies in which accounts may be opened");
+        currencyNameSingular = config.getString("general", "currency name (singular)", "credit",
+                "Currency name (displayed in HUD, max 20 char)");
 
-        List<String> currenciesList = Arrays.asList(currencies);
-        if(!currenciesList.contains(defaultCurrency)) currenciesList.add(defaultCurrency);
-        currencies = (String[]) currenciesList.toArray();
+        currencyNameMultiple = config.getString("general", "currency name (multiple)", "credits",
+                "Currency name (displayed in HUD, max 20 char)");
+
 
         proxy.init();
         proxy.registerPackets();
@@ -72,7 +65,7 @@ public class ForgeEconomy {
     @Mod.EventHandler
     public void onServerStop(FMLServerStoppingEvent evt) {
         try {
-            AccountPlayerInfo.writeAll();
+            Account.writeAll();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,12 +73,12 @@ public class ForgeEconomy {
 
     @Mod.EventHandler
     public void onLoadingWorld(FMLServerStartingEvent evt) {
-        AccountPlayerInfo.clear();
+        Account.clear();
 
         File file = getWorldDir(evt.getServer().getEntityWorld());
         if (file == null) return;
 
-        AccountPlayerInfo.setLocation(new File(file, "economy-accounts"));
+        Account.setLocation(new File(file, "ForgeEconomy-accounts"));
     }
 
     private File getWorldDir(World world) {
