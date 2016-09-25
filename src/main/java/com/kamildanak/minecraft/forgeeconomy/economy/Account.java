@@ -2,7 +2,11 @@ package com.kamildanak.minecraft.forgeeconomy.economy;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.kamildanak.minecraft.forgeeconomy.ForgeEconomy;
+import com.kamildanak.minecraft.forgeeconomy.network.PacketDispatcher;
+import com.kamildanak.minecraft.forgeeconomy.network.client.MessageBalance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import org.apache.commons.codec.binary.Hex;
 
 import java.io.*;
@@ -10,13 +14,14 @@ import java.nio.charset.Charset;
 import java.security.*;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class Account {
     private static HashMap<String, Account> objects = new HashMap<>();
     private static File location;
     private boolean changed;
 
-    private String UUID;
+    private UUID uuid;
     private long balance;
     private int dailyLimit;
     private int transactionLimit;
@@ -24,19 +29,19 @@ public class Account {
     private String pin;
 
     public static Account get(EntityPlayer player) {
-        return get(player.getUniqueID().toString());
+        return get(player.getUniqueID());
     }
 
-    private static Account get(String uuid)
+    private static Account get(UUID uuid)
     {
-        Account account = objects.get(uuid);
+        Account account = objects.get(uuid.toString());
         if(account!=null) return account;
 
         if (location == null) return null;
         location.mkdirs();
 
         account = new Account(uuid);
-        objects.put(uuid, account);
+        objects.put(uuid.toString(), account);
 
         File file = account.getFile();
         if (!file.exists()) return account;
@@ -50,12 +55,12 @@ public class Account {
     }
 
     private File getFile() {
-        return new File(location, UUID + ".json");
+        return new File(location, uuid + ".json");
     }
 
-    private Account(String UUID)
+    private Account(UUID uuid)
     {
-        this.UUID = UUID;
+        this.uuid = uuid;
         this.balance = 0;
         this.dailyLimit = 0;
         this.transactionLimit = 0;
@@ -65,7 +70,7 @@ public class Account {
     }
 
     private void read() throws IOException {
-        read(location);
+        read(getFile());
     }
 
     private void read(File file) throws IOException {
@@ -88,7 +93,7 @@ public class Account {
     }
 
     private void write() throws IOException {
-        write(location);
+        write(getFile());
     }
 
     private void write(File location) throws IOException {
@@ -132,8 +137,13 @@ public class Account {
     public long getBalance(){
         return balance;
     }
-    public void addBalance(long v){
-        balance += v;
+    public void addBalance(long v) {
+        setBalance(balance + v);
+    }
+    public void setBalance(long v){
+        balance = v;
+        changed = true;
+        PacketDispatcher.sendTo(new MessageBalance(balance), getPlayerMP());
     }
 
     public int getNoPinLimit() { return noPinLimit; }
@@ -149,6 +159,11 @@ public class Account {
 
     public void setPin(String newPin) throws NoSuchAlgorithmException {
         pin = getMD5(newPin);
+    }
+
+    private EntityPlayerMP getPlayerMP()
+    {
+        return ForgeEconomy.minecraftServer.getPlayerList().getPlayerByUUID(uuid);
     }
 
     private String getMD5(String string) throws NoSuchAlgorithmException {
