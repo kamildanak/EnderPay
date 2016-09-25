@@ -1,5 +1,6 @@
 package com.kamildanak.minecraft.forgeeconomy.gui;
 
+import com.kamildanak.minecraft.forgeeconomy.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -31,7 +32,8 @@ public class BalanceHUD extends GuiExtended {
         FontRenderer fontRenderer = this.mc.getRenderManager().getFontRenderer();
         if (fontRenderer == null) return;
 
-        String text = (balance == null) ? "---" : balance + currency;
+        String text = (balance == null) ? "---" :
+                fontRenderer.listFormattedStringToWidth(Utils.format(balance) + currency, 64).get(0);
 
         bind("forgeeconomy:textures/icons.png");
 
