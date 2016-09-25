@@ -18,7 +18,7 @@ group= "com.kamildanak.minecraft.forgeeconomy" // http://maven.apache.org/guides
 archivesBaseName = "forgeeconomy"
 
 minecraft {
-    version = "1.9.4-12.17.0.1976"
+    version = "1.10.2-12.18.1.2094"
     runDir = "run"
     mappings = "snapshot_20160518"
 }
