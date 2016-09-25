@@ -1,10 +1,16 @@
 package com.kamildanak.minecraft.forgeeconomy;
 
+import com.kamildanak.minecraft.forgeeconomy.commands.CommandBalance;
+import com.kamildanak.minecraft.forgeeconomy.commands.CommandPay;
+import com.kamildanak.minecraft.forgeeconomy.commands.CommandWallet;
 import com.kamildanak.minecraft.forgeeconomy.economy.Account;
 import com.kamildanak.minecraft.forgeeconomy.events.EventHandler;
 import com.kamildanak.minecraft.forgeeconomy.gui.GuiHandler;
 import com.kamildanak.minecraft.forgeeconomy.proxy.Proxy;
+import net.minecraft.command.ICommandManager;
+import net.minecraft.command.ServerCommandManager;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.SaveHandler;
@@ -31,6 +37,7 @@ public class ForgeEconomy {
 
     public static String currencyNameSingular;
     public static String currencyNameMultiple;
+    public static MinecraftServer minecraftServer;
 
     private static Configuration config;
 
@@ -63,22 +70,35 @@ public class ForgeEconomy {
     }
 
     @Mod.EventHandler
-    public void onServerStop(FMLServerStoppingEvent evt) {
+    public void onServerStart(FMLServerStartingEvent event) {
+        Account.clear();
+
+        minecraftServer = event.getServer();
+        File file = getWorldDir(minecraftServer.getEntityWorld());
+        if (file == null) return;
+
+        Account.setLocation(new File(file, "ForgeEconomy-accounts"));
+
+        registerCommands(event);
+    }
+
+    private void registerCommands(FMLServerStartingEvent event)
+    {
+        MinecraftServer server = event.getServer();
+        ICommandManager command = server.getCommandManager();
+        ServerCommandManager manager = (ServerCommandManager) command;
+        manager.registerCommand(new CommandWallet());
+        manager.registerCommand(new CommandBalance());
+        manager.registerCommand(new CommandPay());
+    }
+
+    @Mod.EventHandler
+    public void onServerStop(FMLServerStoppingEvent event) {
         try {
             Account.writeAll();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @Mod.EventHandler
-    public void onLoadingWorld(FMLServerStartingEvent evt) {
-        Account.clear();
-
-        File file = getWorldDir(evt.getServer().getEntityWorld());
-        if (file == null) return;
-
-        Account.setLocation(new File(file, "ForgeEconomy-accounts"));
     }
 
     private File getWorldDir(World world) {
