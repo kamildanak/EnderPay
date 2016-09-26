@@ -96,16 +96,6 @@ public class ForgeEconomy {
         manager.registerCommand(new CommandPay());
     }
 
-    @Mod.EventHandler
-    @SuppressWarnings("unused")
-    public void onServerStop(FMLServerStoppingEvent event) {
-        try {
-            Account.writeAll();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     private File getWorldDir(World world) {
         ISaveHandler handler = world.getSaveHandler();
         if (!(handler instanceof SaveHandler)) return null;
