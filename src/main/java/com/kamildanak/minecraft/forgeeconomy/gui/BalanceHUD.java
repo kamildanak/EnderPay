@@ -19,6 +19,7 @@ public class BalanceHUD extends GuiExtended {
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
+    @SuppressWarnings("unused")
     public void onRenderInfo(RenderGameOverlayEvent.Post event) {
         if (event.isCancelable() || event.getType() != RenderGameOverlayEvent.ElementType.EXPERIENCE) return;
         if (mc == null || mc.thePlayer == null || mc.theWorld == null) return;
@@ -30,6 +31,7 @@ public class BalanceHUD extends GuiExtended {
         mc.mcProfiler.startSection("balance");
         ScaledResolution resolution = new ScaledResolution(mc);
         FontRenderer fontRenderer = this.mc.getRenderManager().getFontRenderer();
+        //noinspection ConstantConditions //no, it is not constant
         if (fontRenderer == null) return;
 
         String text = (balance == null) ? "---" :

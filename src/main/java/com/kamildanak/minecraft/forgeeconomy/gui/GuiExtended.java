@@ -6,11 +6,11 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.HashMap;
 
-public class GuiExtended extends Gui {
-    private static HashMap<String, ResourceLocation> resources = new HashMap<String, ResourceLocation>();
+class GuiExtended extends Gui {
+    private static HashMap<String, ResourceLocation> resources = new HashMap<>();
     private Minecraft mc;
 
-    public GuiExtended(Minecraft mc)
+    GuiExtended(Minecraft mc)
     {
         this.mc = mc;
     }

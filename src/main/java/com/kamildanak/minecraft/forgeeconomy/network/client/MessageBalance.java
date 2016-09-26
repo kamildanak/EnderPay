@@ -5,8 +5,6 @@ import com.kamildanak.minecraft.forgeeconomy.gui.BalanceHUD;
 import com.kamildanak.minecraft.forgeeconomy.network.AbstractMessage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
-import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.IOException;
@@ -15,10 +13,10 @@ public class MessageBalance  extends AbstractMessage.AbstractClientMessage<Messa
     private long balance;
     private String currencyName;
 
-    public MessageBalance()
-    {
 
-    }
+    @SuppressWarnings("unused")
+    public MessageBalance() {}
+
     public MessageBalance(long balance)
     {
         this.balance = balance;

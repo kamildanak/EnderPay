@@ -10,12 +10,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
 public class CommandWallet extends CommandBase {
     @Override
+    @Nonnull
     public String getCommandName() {
         return "wallet";
     }
@@ -26,12 +28,13 @@ public class CommandWallet extends CommandBase {
     }
 
     @Override
-    public String getCommandUsage(ICommandSender sender) {
+    @Nonnull
+    public String getCommandUsage(@Nullable ICommandSender sender) {
         return "commands.wallet.usage";
     }
 
     @Override
-    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+    public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
         if (args.length > 1) {
             EntityPlayer entityplayer = getPlayer(server, sender, args[1]);
             Account account = Account.get(entityplayer);
@@ -60,12 +63,15 @@ public class CommandWallet extends CommandBase {
                 return;
             }
         }
+        //noinspection RedundantArrayCreation
         throw new WrongUsageException("commands.wallet.usage", new Object[0]);
     }
 
     @Override
+    @Nonnull
     public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
         if (args.length == 1) {
+            //noinspection RedundantArrayCreation
             return getListOfStringsMatchingLastWord(args, new String[]{"give", "take", "set", "balance"});
         }
         if (args.length == 2) {

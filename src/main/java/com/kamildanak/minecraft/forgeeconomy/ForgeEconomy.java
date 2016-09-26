@@ -5,11 +5,9 @@ import com.kamildanak.minecraft.forgeeconomy.commands.CommandPay;
 import com.kamildanak.minecraft.forgeeconomy.commands.CommandWallet;
 import com.kamildanak.minecraft.forgeeconomy.economy.Account;
 import com.kamildanak.minecraft.forgeeconomy.events.EventHandler;
-import com.kamildanak.minecraft.forgeeconomy.gui.GuiHandler;
 import com.kamildanak.minecraft.forgeeconomy.proxy.Proxy;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.ISaveHandler;
@@ -23,17 +21,18 @@ import net.minecraftforge.fml.common.event.*;
 import java.io.File;
 import java.io.IOException;
 
-@Mod(modid=ForgeEconomy.MODID, name=ForgeEconomy.MODNAME, version=ForgeEconomy.VERSION)
+@Mod(modid=ForgeEconomy.modID, name=ForgeEconomy.modName, version=ForgeEconomy.version)
 public class ForgeEconomy {
-    public static final String MODID = "forgeeconomy";
-    public static final String MODNAME = "forgeeconomy";
-    public static final String VERSION = "0.1";
+    public static final String modID = "forgeeconomy";
+    static final String modName = "forgeeconomy";
+    static final String version = "0.1";
 
-    @Mod.Instance(MODID)
+    @Mod.Instance(modID)
+    @SuppressWarnings("unused")
     public static ForgeEconomy instance;
 
-    public static GuiHandler guiHandler;
-    public static CreativeTabs tabEconomy;
+    //public static GuiHandler guiHandler;
+    //public static CreativeTabs tabEconomy;
 
     public static String currencyNameSingular;
     public static String currencyNameMultiple;
@@ -45,12 +44,15 @@ public class ForgeEconomy {
     public static Proxy proxy;
 
     @Mod.EventHandler
+    @SuppressWarnings("unused")
     public void preInit(FMLPreInitializationEvent event) {
         config = new Configuration(event.getSuggestedConfigurationFile());
         config.load();
+        proxy.preInit();
     }
 
     @Mod.EventHandler
+    @SuppressWarnings("unused")
     public void init(FMLInitializationEvent event) {
         currencyNameSingular = config.getString("general", "currency name (singular)", "credit",
                 "Currency name (displayed in HUD, max 20 char)");
@@ -65,11 +67,13 @@ public class ForgeEconomy {
     }
 
     @Mod.EventHandler
+    @SuppressWarnings("unused")
     public void postInit(FMLPostInitializationEvent event) {
         config.save();
     }
 
     @Mod.EventHandler
+    @SuppressWarnings("unused")
     public void onServerStart(FMLServerStartingEvent event) {
         Account.clear();
 
@@ -93,6 +97,7 @@ public class ForgeEconomy {
     }
 
     @Mod.EventHandler
+    @SuppressWarnings("unused")
     public void onServerStop(FMLServerStoppingEvent event) {
         try {
             Account.writeAll();
@@ -104,6 +109,6 @@ public class ForgeEconomy {
     private File getWorldDir(World world) {
         ISaveHandler handler = world.getSaveHandler();
         if (!(handler instanceof SaveHandler)) return null;
-        return ((SaveHandler) handler).getWorldDirectory();
+        return handler.getWorldDirectory();
     }
 }

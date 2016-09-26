@@ -38,6 +38,7 @@ import com.google.common.base.Throwables;
  * same class is used for both the IMessage and the IMessageHandler.
  *
  */
+@SuppressWarnings({"WeakerAccess", "FinalPrivateMethod", "FinalStaticMethod", "Convert2Lambda"})
 public abstract class AbstractMessage<T extends AbstractMessage<T>> implements IMessage, IMessageHandler <T, IMessage>
 {
     /**

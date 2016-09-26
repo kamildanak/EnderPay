@@ -29,6 +29,7 @@ import net.minecraftforge.fml.relauncher.Side;
  * takes an EntityPlayer and one which takes coordinates.
  *
  */
+@SuppressWarnings({"FinalStaticMethod", "unused", "WeakerAccess"})
 public class PacketDispatcher
 {
     // a simple counter will allow us to get rid of 'magic' numbers used during packet registration
@@ -39,7 +40,7 @@ public class PacketDispatcher
      * Since I will be adding wrapper methods, this field is private, but you should
      * make it public if you plan on using it directly.
      */
-    private static final SimpleNetworkWrapper dispatcher = NetworkRegistry.INSTANCE.newSimpleChannel(ForgeEconomy.MODID);
+    private static final SimpleNetworkWrapper dispatcher = NetworkRegistry.INSTANCE.newSimpleChannel(ForgeEconomy.modID);
 
     /**
      * Registers an {@link AbstractMessage} to the appropriate side(s)
