@@ -17,6 +17,9 @@ version "0.1"
 group= "com.kamildanak.minecraft.forgeeconomy" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "forgeeconomy"
 
+targetCompatibility = "1.8"
+sourceCompatibility = "1.7"
+
 minecraft {
     version = "1.10.2-12.18.1.2094"
     runDir = "run"
