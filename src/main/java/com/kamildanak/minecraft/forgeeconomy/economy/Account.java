@@ -8,6 +8,7 @@ import com.kamildanak.minecraft.forgeeconomy.network.client.MessageBalance;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -22,18 +23,64 @@ public class Account {
 
     private UUID uuid;
     private long balance;
+    private long lastLogin;
+    private long lastCountLogin;
+    private long lastCountActivity;
 
     private Account(UUID uuid) {
         this.uuid = uuid;
-        this.balance = 0;
+        this.balance = ForgeEconomy.startBalance;
+        long now = System.currentTimeMillis();
+        this.lastLogin = now;
+        this.lastCountLogin = now;
+        this.lastCountActivity = now;
         this.changed = true;
+    }
+
+    public void update() {
+        long now = System.currentTimeMillis();
+        long day = 1000*60*60*24;
+
+        long activityDelta = now-this.lastCountActivity;
+        long activityDeltaDays = activityDelta/day;
+        this.lastCountActivity = now - activityDelta + activityDeltaDays*day;
+
+        if(ForgeEconomy.stampedMoney) {
+            if (activityDeltaDays > 100)
+                this.balance = 0;
+            else {
+                for (int i = 0; i < activityDeltaDays; i++)
+                    this.balance -= (this.balance * ForgeEconomy.stampedMoneyPercent) / 100;
+            }
+        }
+
+        if(ForgeEconomy.basicIncome) {
+            if (getPlayerMP() != null) {
+                long loginDelta = countDelta(now, this.lastCountLogin, this.lastLogin);
+                long loginDeltaDays = loginDelta / day;
+                this.lastLogin = now;
+                this.lastCountLogin = now - loginDelta + loginDeltaDays * day;
+                this.balance += loginDeltaDays * ForgeEconomy.basicIncomeAmount;
+            }
+        }
+    }
+
+    private long countDelta(long now, long lastCount, long last)
+    {
+        long loginDelta = now-lastCount;
+        if(loginDelta>ForgeEconomy.maxLoginDelta)
+            loginDelta = now-last;
+        if(loginDelta>ForgeEconomy.maxLoginDelta)
+            loginDelta=ForgeEconomy.maxLoginDelta;
+        return loginDelta;
     }
 
     public static Account get(EntityPlayer player) {
         return get(player.getUniqueID());
     }
 
-    private static Account get(UUID uuid) {
+    @Nullable
+    public static Account get(UUID uuid) {
         Account account = objects.get(uuid.toString());
         if (account != null) return account;
 
@@ -55,9 +102,8 @@ public class Account {
         return account;
     }
 
-    public static void writeAll() throws IOException {
-        for (Account account : objects.values())
-            if (account.changed) account.write();
+    public void writeIfChanged() throws IOException {
+        if(changed) write();
     }
 
     public static void clear() {
@@ -86,6 +132,9 @@ public class Account {
             Object obj = jsonParser.parse(new FileReader(file));
             JsonObject jsonObject = (JsonObject) obj;
             balance = jsonObject.get("balance").getAsLong();
+            lastLogin = jsonObject.get("lastLogin").getAsLong();
+            lastCountLogin = jsonObject.get("lastCountLogin").getAsLong();
+            lastCountActivity = jsonObject.get("lastCountActivity").getAsLong();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -99,6 +148,9 @@ public class Account {
     private void write(File location) throws IOException {
         JsonObject obj = new JsonObject();
         obj.addProperty("balance", balance);
+        obj.addProperty("lastLogin", lastLogin);
+        obj.addProperty("lastCountLogin", lastCountLogin);
+        obj.addProperty("lastCountActivity", lastCountActivity);
         try (FileWriter file = new FileWriter(location)) {
             String str = obj.toString();
             file.write(str);
@@ -120,7 +172,10 @@ public class Account {
         setBalance(balance + v);
     }
 
+    @Nullable
     private EntityPlayerMP getPlayerMP() {
-        return ForgeEconomy.minecraftServer.getPlayerList().getPlayerByUUID(uuid);
+        EntityPlayerMP entityPlayerMP = ForgeEconomy.minecraftServer.getPlayerList().getPlayerByUUID(uuid);
+        //noinspection ConstantConditions
+        return (entityPlayerMP!=null) ? entityPlayerMP : null;
     }
 }

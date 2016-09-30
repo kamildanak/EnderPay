@@ -17,6 +17,7 @@ public class EventHandler {
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof EntityPlayer && !event.getEntity().worldObj.isRemote) {
             Account account = Account.get((EntityPlayer) event.getEntity());
+            account.update();
             long balance = account.getBalance();
             PacketDispatcher.sendTo(new MessageBalance(balance), (EntityPlayerMP) event.getEntity());
         }

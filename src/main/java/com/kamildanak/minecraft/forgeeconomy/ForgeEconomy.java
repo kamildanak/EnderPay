@@ -19,7 +19,6 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
 
 import java.io.File;
-import java.io.IOException;
 
 @Mod(modid=ForgeEconomy.modID, name=ForgeEconomy.modName, version=ForgeEconomy.version)
 public class ForgeEconomy {
@@ -36,6 +35,12 @@ public class ForgeEconomy {
 
     public static String currencyNameSingular;
     public static String currencyNameMultiple;
+    public static long maxLoginDelta;
+    public static boolean basicIncome;
+    public static int basicIncomeAmount;
+    public static boolean stampedMoney;
+    public static int stampedMoneyPercent;
+    public static int startBalance;
     public static MinecraftServer minecraftServer;
 
     private static Configuration config;
@@ -54,12 +59,29 @@ public class ForgeEconomy {
     @Mod.EventHandler
     @SuppressWarnings("unused")
     public void init(FMLInitializationEvent event) {
-        currencyNameSingular = config.getString("general", "currency name (singular)", "credit",
+        currencyNameSingular = config.getString("currency name (singular)", "general", "credit",
                 "Currency name (displayed in HUD, max 20 char)");
 
-        currencyNameMultiple = config.getString("general", "currency name (multiple)", "credits",
+        currencyNameMultiple = config.getString("currency name (multiple)", "general", "credits",
                 "Currency name (displayed in HUD, max 20 char)");
 
+        maxLoginDelta = (1000*60*60)*config.getInt("maxLoginDelta", "basicIncome", 24*6, 24, 480,
+                "Maximum number of day since last login the player will be payed for. (min 24h, max 480h (20days)");
+
+        basicIncome = config.getBoolean("enabled", "basicIncome", true,
+                "Each day give set amount of credits to each player to stimulate economy");
+
+        basicIncomeAmount = config.getInt("amount", "basicIncome", 50, 0, 10000,
+                "Amount of credits to give each player each day");
+
+        stampedMoney = config.getBoolean("enabled", "stampedMoney", true,
+                "Take % of players money each day to stimulate economy");
+
+        stampedMoneyPercent = config.getInt("percent", "stampedMoney", 1, 0, 100,
+                "What percentage of players money should be taken each day");
+
+        startBalance = config.getInt("startBalance", "general", 100, 0, 10000,
+                "Amount of credits given to new players joining the server");
 
         proxy.init();
         proxy.registerPackets();
