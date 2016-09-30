@@ -1,6 +1,7 @@
 package com.kamildanak.minecraft.forgeeconomy.gui;
 
 import com.kamildanak.minecraft.forgeeconomy.Utils;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -21,7 +22,10 @@ public class BalanceHUD extends GuiExtended {
     @SubscribeEvent(priority = EventPriority.NORMAL)
     @SuppressWarnings("unused")
     public void onRenderInfo(RenderGameOverlayEvent.Post event) {
-        if (event.isCancelable() || event.getType() != RenderGameOverlayEvent.ElementType.EXPERIENCE) return;
+        if (event.isCancelable()) return;
+        if (event.getType() != RenderGameOverlayEvent.ElementType.EXPERIENCE &&
+                event.getType() != RenderGameOverlayEvent.ElementType.HEALTHMOUNT)
+            return;
         if (mc == null || mc.thePlayer == null || mc.theWorld == null) return;
 
         drawBalance();
@@ -44,8 +48,11 @@ public class BalanceHUD extends GuiExtended {
         int cx = width / 2;
         int textLength = fontRenderer.getStringWidth(text);
 
-        drawTexturedModalRect(cx + 82 - textLength - 4 - 7, height - 51 + (mc.thePlayer.capabilities.isCreativeMode ? 17 : 0), 0, 0, 16, 11);
-        drawString(fontRenderer, text, cx + 82 - textLength + 9 - 2, height - 50 + 1 + (mc.thePlayer.capabilities.isCreativeMode ? 17 : 0), 0xa0a0a0);
+        int drawHeight = height - 50 + (mc.thePlayer.capabilities.isCreativeMode ? 17 : 0) -
+                (!mc.thePlayer.capabilities.isCreativeMode && mc.thePlayer.isInsideOfMaterial(Material.WATER)
+                        && !mc.thePlayer.canBreatheUnderwater() ? 10 : 0);
+        drawTexturedModalRect(cx + 82 - textLength - 4 - 7, drawHeight - 1, 0, 0, 16, 11);
+        drawString(fontRenderer, text, cx + 82 - textLength + 9 - 2, drawHeight + 1, 0xa0a0a0);
 
         mc.mcProfiler.endSection();
     }
