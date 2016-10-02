@@ -1,5 +1,6 @@
 package com.kamildanak.minecraft.forgeeconomy.item;
 
+import com.kamildanak.minecraft.forgeeconomy.ForgeEconomy;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -22,6 +23,7 @@ public class ItemBlankBanknote extends Item {
     @Nonnull
     @Override
     public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        ForgeEconomy.guiBanknote.open(playerIn, worldIn, pos);
         return EnumActionResult.SUCCESS;
     }
 

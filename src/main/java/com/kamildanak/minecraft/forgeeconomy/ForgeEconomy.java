@@ -5,13 +5,18 @@ import com.kamildanak.minecraft.forgeeconomy.commands.CommandPay;
 import com.kamildanak.minecraft.forgeeconomy.commands.CommandWallet;
 import com.kamildanak.minecraft.forgeeconomy.economy.Account;
 import com.kamildanak.minecraft.forgeeconomy.events.EventHandler;
+import com.kamildanak.minecraft.forgeeconomy.gui.GuiBanknote;
+import com.kamildanak.minecraft.forgeeconomy.gui.GuiHandler;
+import com.kamildanak.minecraft.forgeeconomy.inventory.DummyContainer;
 import com.kamildanak.minecraft.forgeeconomy.item.ItemBlankBanknote;
 import com.kamildanak.minecraft.forgeeconomy.proxy.Proxy;
 
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.SaveHandler;
@@ -34,7 +39,7 @@ public class ForgeEconomy {
     @SuppressWarnings("unused")
     public static ForgeEconomy instance;
 
-    //public static GuiHandler guiHandler;
+    public static GuiHandler guiBanknote;
     //public static CreativeTabs tabEconomy;
 
     public static String currencyNameSingular;
@@ -99,6 +104,19 @@ public class ForgeEconomy {
         proxy.init();
         proxy.registerPackets();
         MinecraftForge.EVENT_BUS.register(new EventHandler());
+
+        guiBanknote=new GuiHandler("wrench"){
+            @Override
+            public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+                return new DummyContainer();
+            }
+
+            @Override
+            public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+                return new GuiBanknote(world, new BlockPos(x,y,z), player);
+            }
+        };
+        GuiHandler.register(this);
     }
 
     @Mod.EventHandler
