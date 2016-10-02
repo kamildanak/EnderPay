@@ -12,3 +12,7 @@ commands.pay.number_must_be_positive=You cannot pay someone negative amount. Tha
 commands.pay.insufficient_credit=You don't have money you want to pay :(.
 
 item.forgeeconomy:blank_banknote.name=Blank banknote
+
+gui.forgeeconomy:gui_banknote.issue=Issue
+gui.forgeeconomy:gui_banknote.cancel=Cancel
+gui.forgeeconomy:gui_banknote.number_of_credits=Number of credits
