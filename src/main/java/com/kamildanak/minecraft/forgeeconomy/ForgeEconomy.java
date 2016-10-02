@@ -5,9 +5,12 @@ import com.kamildanak.minecraft.forgeeconomy.commands.CommandPay;
 import com.kamildanak.minecraft.forgeeconomy.commands.CommandWallet;
 import com.kamildanak.minecraft.forgeeconomy.economy.Account;
 import com.kamildanak.minecraft.forgeeconomy.events.EventHandler;
+import com.kamildanak.minecraft.forgeeconomy.item.ItemBlankBanknote;
 import com.kamildanak.minecraft.forgeeconomy.proxy.Proxy;
+
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
+import net.minecraft.item.Item;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.ISaveHandler;
@@ -17,6 +20,7 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.io.File;
 
@@ -41,9 +45,12 @@ public class ForgeEconomy {
     public static boolean stampedMoney;
     public static int stampedMoneyPercent;
     public static int startBalance;
+    public static boolean consumeBanknotesInCreativeMode;
     public static MinecraftServer minecraftServer;
 
     private static Configuration config;
+
+    public static Item itemBlankBanknote;
 
     @SidedProxy(clientSide = "com.kamildanak.minecraft.forgeeconomy.proxy.ProxyClient", serverSide = "com.kamildanak.minecraft.forgeeconomy.proxy.Proxy")
     public static Proxy proxy;
@@ -82,6 +89,12 @@ public class ForgeEconomy {
 
         startBalance = config.getInt("startBalance", "general", 100, 0, 10000,
                 "Amount of credits given to new players joining the server");
+
+        consumeBanknotesInCreativeMode = config.getBoolean("consumeBanknotesInCreativeMode", "general", true,
+                "Should banknotes be consumed when used by player in creative mode");
+
+        itemBlankBanknote = new ItemBlankBanknote("blank_banknote");
+        GameRegistry.register(itemBlankBanknote);
 
         proxy.init();
         proxy.registerPackets();
