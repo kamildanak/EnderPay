@@ -1,4 +1,4 @@
-package com.kamildanak.minecraft.forgeeconomy.gui;
+package com.kamildanak.minecraft.forgeeconomy.gui.lib.input;
 
 public class InputMouseEvent extends InputEvent {
 	public int x;

@@ -1,6 +1,7 @@
-package com.kamildanak.minecraft.forgeeconomy.gui;
+package com.kamildanak.minecraft.forgeeconomy.gui.hud;
 
 import com.kamildanak.minecraft.forgeeconomy.Utils;
+import com.kamildanak.minecraft.forgeeconomy.gui.lib.GuiExtended;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

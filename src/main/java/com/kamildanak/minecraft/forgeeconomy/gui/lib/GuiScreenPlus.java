@@ -1,6 +1,9 @@
-package com.kamildanak.minecraft.forgeeconomy.gui;
+package com.kamildanak.minecraft.forgeeconomy.gui.lib;
 
 import com.kamildanak.minecraft.forgeeconomy.Utils;
+import com.kamildanak.minecraft.forgeeconomy.gui.lib.elements.GuiElement;
+import com.kamildanak.minecraft.forgeeconomy.gui.lib.input.InputKeyboardEvent;
+import com.kamildanak.minecraft.forgeeconomy.gui.lib.input.InputMouseEvent;
 import com.kamildanak.minecraft.forgeeconomy.inventory.DummyContainer;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.inventory.GuiContainer;

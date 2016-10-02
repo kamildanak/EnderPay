@@ -1,7 +1,7 @@
 package com.kamildanak.minecraft.forgeeconomy.proxy;
 
 import com.kamildanak.minecraft.forgeeconomy.ForgeEconomy;
-import com.kamildanak.minecraft.forgeeconomy.gui.BalanceHUD;
+import com.kamildanak.minecraft.forgeeconomy.gui.hud.BalanceHUD;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

@@ -1,7 +1,7 @@
 package com.kamildanak.minecraft.forgeeconomy.network.client;
 
 import com.kamildanak.minecraft.forgeeconomy.ForgeEconomy;
-import com.kamildanak.minecraft.forgeeconomy.gui.BalanceHUD;
+import com.kamildanak.minecraft.forgeeconomy.gui.hud.BalanceHUD;
 import com.kamildanak.minecraft.forgeeconomy.network.AbstractMessage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;

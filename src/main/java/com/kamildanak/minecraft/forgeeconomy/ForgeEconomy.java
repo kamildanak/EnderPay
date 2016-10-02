@@ -6,7 +6,7 @@ import com.kamildanak.minecraft.forgeeconomy.commands.CommandWallet;
 import com.kamildanak.minecraft.forgeeconomy.economy.Account;
 import com.kamildanak.minecraft.forgeeconomy.events.EventHandler;
 import com.kamildanak.minecraft.forgeeconomy.gui.GuiBanknote;
-import com.kamildanak.minecraft.forgeeconomy.gui.GuiHandler;
+import com.kamildanak.minecraft.forgeeconomy.gui.lib.GuiHandler;
 import com.kamildanak.minecraft.forgeeconomy.inventory.DummyContainer;
 import com.kamildanak.minecraft.forgeeconomy.item.ItemBlankBanknote;
 import com.kamildanak.minecraft.forgeeconomy.proxy.Proxy;

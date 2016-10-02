@@ -1,5 +1,8 @@
-package com.kamildanak.minecraft.forgeeconomy.gui;
+package com.kamildanak.minecraft.forgeeconomy.gui.lib.elements;
 
+import com.kamildanak.minecraft.forgeeconomy.gui.lib.GuiScreenPlus;
+import com.kamildanak.minecraft.forgeeconomy.gui.lib.input.InputKeyboardEvent;
+import com.kamildanak.minecraft.forgeeconomy.gui.lib.input.InputMouseEvent;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;

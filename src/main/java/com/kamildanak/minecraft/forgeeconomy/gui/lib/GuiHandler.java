@@ -1,4 +1,4 @@
-package com.kamildanak.minecraft.forgeeconomy.gui;
+package com.kamildanak.minecraft.forgeeconomy.gui.lib;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
