@@ -1,7 +1,7 @@
 [
 {
-  "modid": "ForgeEconomy",
-  "name": "ForgeEconomy",
+  "modid": "EnderPay",
+  "name": "EnderPay",
   "description": "Adds Economy to your Forge server.",
   "version": "1.10.2-0.1",
   "credits": "",
