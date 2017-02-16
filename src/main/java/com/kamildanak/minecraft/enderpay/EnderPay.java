@@ -9,8 +9,8 @@ import com.kamildanak.minecraft.enderpay.gui.GuiBanknote;
 import com.kamildanak.minecraft.enderpay.gui.lib.GuiHandler;
 import com.kamildanak.minecraft.enderpay.inventory.DummyContainer;
 import com.kamildanak.minecraft.enderpay.item.ItemBlankBanknote;
+import com.kamildanak.minecraft.enderpay.item.ItemFilledBanknote;
 import com.kamildanak.minecraft.enderpay.proxy.Proxy;
-
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,7 +24,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.io.File;
@@ -56,6 +59,7 @@ public class EnderPay {
     private static Configuration config;
 
     public static Item itemBlankBanknote;
+    public static Item itemFilledBanknote;
 
     @SidedProxy(clientSide = "com.kamildanak.minecraft.enderpay.proxy.ProxyClient", serverSide = "com.kamildanak.minecraft.enderpay.proxy.Proxy")
     public static Proxy proxy;
@@ -100,6 +104,9 @@ public class EnderPay {
 
         itemBlankBanknote = new ItemBlankBanknote("blank_banknote");
         GameRegistry.register(itemBlankBanknote);
+
+        itemFilledBanknote = new ItemFilledBanknote("filled_banknote");
+        GameRegistry.register(itemFilledBanknote);
 
         proxy.init();
         proxy.registerPackets();

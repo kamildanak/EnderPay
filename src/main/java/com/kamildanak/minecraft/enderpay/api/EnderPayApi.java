@@ -5,7 +5,7 @@ import com.kamildanak.minecraft.enderpay.economy.Account;
 import java.util.UUID;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
-public class ForgeEconomyApi {
+public class EnderPayApi {
     public static long getBalance(UUID uuid) throws NoSuchAccountException {
         Account account = Account.get(uuid);
         if(account == null) throw new NoSuchAccountException();

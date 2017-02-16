@@ -63,4 +63,8 @@ public class BalanceHUD extends GuiExtended {
         BalanceHUD.balance = balance;
         BalanceHUD.currency = currency;
     }
+
+    public static String getCurrency() {
+        return currency;
+    }
 }

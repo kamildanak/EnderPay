@@ -12,6 +12,10 @@ commands.pay.number_must_be_positive=You cannot pay someone negative amount. Tha
 commands.pay.insufficient_credit=You don't have money you want to pay :(.
 
 item.enderpay:blank_banknote.name=Blank banknote
+item.enderpay:filled_banknote.name=Filled banknote
+
+exception.enderpay.number_must_be_positive=No one would like to use a banknote with negative value.
+exception.enderpay.insufficient_credit=You don't have money you want to issue a banknote for :(.
 
 gui.enderpay:gui_banknote.issue=Issue
 gui.enderpay:gui_banknote.cancel=Cancel

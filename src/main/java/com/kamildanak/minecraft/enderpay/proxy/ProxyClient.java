@@ -29,6 +29,7 @@ public class ProxyClient extends Proxy {
     {
         RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
         renderItem.getItemModelMesher().register(EnderPay.itemBlankBanknote, 0, new ModelResourceLocation(EnderPay.modID + ":" + "blank_banknote", "inventory"));
+        renderItem.getItemModelMesher().register(EnderPay.itemFilledBanknote, 0, new ModelResourceLocation(EnderPay.modID + ":" + "filled_banknote", "inventory"));
     }
 
     @Override
