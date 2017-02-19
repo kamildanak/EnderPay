@@ -1,8 +1,10 @@
 package com.kamildanak.minecraft.enderpay.commands;
 
 import com.kamildanak.minecraft.enderpay.economy.Account;
+import com.kamildanak.minecraft.enderpay.network.PacketDispatcher;
+import com.kamildanak.minecraft.enderpay.network.client.MessageBalance;
 import net.minecraft.command.*;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 
@@ -27,17 +29,20 @@ public class CommandPay extends CommandBase {
     @Override
     public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
         if (args.length > 1) {
-            EntityPlayer entityplayer = getPlayer(server, sender, args[0]);
+            EntityPlayerMP entityplayer = getPlayer(server, sender, args[0]);
             Account account = Account.get(entityplayer);
+            account.update();
             long amount = parseLong(args[1]);
             if (amount<0)
                 //noinspection RedundantArrayCreation
                 throw new NumberInvalidException("commands.pay.number_must_be_positive", new Object[0]);
-            Account senderAccount = Account.get((EntityPlayer) sender);
+            Account senderAccount = Account.get((EntityPlayerMP) sender);
             if (senderAccount.getBalance() < amount)
                 throw new InsufficientCreditException();
             senderAccount.addBalance(-amount);
             account.addBalance(amount);
+            PacketDispatcher.sendTo(new MessageBalance(senderAccount.getBalance()), (EntityPlayerMP) sender);
+            PacketDispatcher.sendTo(new MessageBalance(account.getBalance()), entityplayer);
             return;
         }
         //noinspection RedundantArrayCreation

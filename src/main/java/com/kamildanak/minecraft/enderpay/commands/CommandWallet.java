@@ -1,11 +1,13 @@
 package com.kamildanak.minecraft.enderpay.commands;
 
 import com.kamildanak.minecraft.enderpay.economy.Account;
+import com.kamildanak.minecraft.enderpay.network.PacketDispatcher;
+import com.kamildanak.minecraft.enderpay.network.client.MessageBalance;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -36,8 +38,9 @@ public class CommandWallet extends CommandBase {
     @Override
     public void execute(@Nonnull MinecraftServer server, @Nonnull ICommandSender sender, @Nonnull String[] args) throws CommandException {
         if (args.length > 1) {
-            EntityPlayer entityplayer = getPlayer(server, sender, args[1]);
+            EntityPlayerMP entityplayer = getPlayer(server, sender, args[1]);
             Account account = Account.get(entityplayer);
+            account.update();
             if ("balance".equals(args[0])) {
                 sender.addChatMessage(new TextComponentTranslation("commands.wallet.balance.success",
                         entityplayer.getName(), account.getBalance()));
@@ -62,6 +65,7 @@ public class CommandWallet extends CommandBase {
                         amount, entityplayer.getName()));
                 return;
             }
+            PacketDispatcher.sendTo(new MessageBalance(account.getBalance()), entityplayer);
         }
         //noinspection RedundantArrayCreation
         throw new WrongUsageException("commands.wallet.usage", new Object[0]);

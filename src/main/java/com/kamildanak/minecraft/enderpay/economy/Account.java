@@ -25,15 +25,13 @@ public class Account {
     private UUID uuid;
     private long balance;
     private long lastLogin;
-    private long lastCountLogin;
     private long lastCountActivity;
 
     private Account(UUID uuid) {
         this.uuid = uuid;
         this.balance = EnderPay.startBalance;
-        long now = System.currentTimeMillis();
+        long now = Utils.getCurrentDay();
         this.lastLogin = now;
-        this.lastCountLogin = now;
         this.lastCountActivity = now;
         this.changed = true;
     }
@@ -74,37 +72,30 @@ public class Account {
         Account.location = location;
     }
 
-    public void update() {
-        long now = Utils.getCurrentTime();
-        long activityDelta = now - this.lastCountActivity;
-        long activityDeltaDays = Utils.timeToDays(activityDelta);
-        this.lastCountActivity = now - activityDelta + Utils.daysToTime(activityDeltaDays);
+    public boolean update() {
+        long balanceBefore = this.balance;
+        long now = Utils.getCurrentDay();
+        long activityDeltaDays = now - this.lastCountActivity;
+        this.lastCountActivity = now;
+
+        if (activityDeltaDays == 0) return false;
 
         if (EnderPay.stampedMoney) {
             if (activityDeltaDays <= EnderPay.resetLoginDelta) {
                 for (int i = 0; i < activityDeltaDays; i++)
-                    this.balance -= (this.balance * EnderPay.stampedMoneyPercent) / 100;
+                    this.balance -= Math.ceil((double) (this.balance * EnderPay.stampedMoneyPercent) / 100);
             }
         }
         if (EnderPay.basicIncome & getPlayerMP() != null) {
-            long loginDelta = countDelta(now, this.lastCountLogin, this.lastLogin);
-            long loginDeltaDays = Utils.timeToDays(loginDelta);
+            long loginDeltaDays = (now - this.lastLogin);
+            if (loginDeltaDays > EnderPay.maxLoginDelta) loginDeltaDays = EnderPay.maxLoginDelta;
             this.lastLogin = now;
-            this.lastCountLogin = now - loginDelta + Utils.daysToTime(loginDeltaDays);
             this.balance += loginDeltaDays * EnderPay.basicIncomeAmount;
         }
         if (activityDeltaDays > EnderPay.resetLoginDelta) {
             this.balance = EnderPay.startBalance;
         }
-    }
-
-    private long countDelta(long now, long lastCount, long last) {
-        long loginDelta = now - lastCount;
-        if (loginDelta > EnderPay.maxLoginDelta)
-            loginDelta = now - last;
-        if (loginDelta > EnderPay.maxLoginDelta)
-            loginDelta = EnderPay.maxLoginDelta;
-        return loginDelta;
+        return balanceBefore != balance;
     }
 
     public void writeIfChanged() throws IOException {
@@ -129,7 +120,6 @@ public class Account {
             JsonObject jsonObject = (JsonObject) obj;
             balance = jsonObject.get("balance").getAsLong();
             lastLogin = jsonObject.get("lastLogin").getAsLong();
-            lastCountLogin = jsonObject.get("lastCountLogin").getAsLong();
             lastCountActivity = jsonObject.get("lastCountActivity").getAsLong();
 
         } catch (Exception e) {
@@ -145,7 +135,6 @@ public class Account {
         JsonObject obj = new JsonObject();
         obj.addProperty("balance", balance);
         obj.addProperty("lastLogin", lastLogin);
-        obj.addProperty("lastCountLogin", lastCountLogin);
         obj.addProperty("lastCountActivity", lastCountActivity);
         try (FileWriter file = new FileWriter(location)) {
             String str = obj.toString();

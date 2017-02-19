@@ -61,6 +61,7 @@ public class EnderPay {
     public static Item itemFilledBanknote;
     @SidedProxy(clientSide = "com.kamildanak.minecraft.enderpay.proxy.ProxyClient", serverSide = "com.kamildanak.minecraft.enderpay.proxy.Proxy")
     public static Proxy proxy;
+    static int dayLength;
     private static Configuration config;
 
     @Mod.EventHandler
@@ -80,8 +81,8 @@ public class EnderPay {
         currencyNameMultiple = config.getString("currency name (multiple)", "general", "credits",
                 "Currency name (displayed in HUD, max 20 char)");
 
-        maxLoginDelta = (1000*60*60)*config.getInt("maxLoginDelta", "basicIncome", 24*6, 24, 480,
-                "Maximum number of day since last login the player will be payed for. (min 24h, max 480h (20days)");
+        maxLoginDelta = (1000 * 60 * 60) * config.getInt("maxLoginDelta", "basicIncome", 6, 1, 20,
+                "Maximum number of day since last login the player will be payed for. ");
 
         basicIncome = config.getBoolean("enabled", "basicIncome", true,
                 "Each day give set amount of credits to each player to stimulate economy");
@@ -107,6 +108,8 @@ public class EnderPay {
         resetLoginDelta = config.getInt("resetLoginDelta", "basicIncome", 100, 1, 100,
                 "Number of days of inactivity after account balance will be set to startBalance");
 
+        dayLength = config.getInt("dayLength", "basicIncome", 24 * 60, 1, 24 * 60 * 365,
+                "Day length in minutes");
         itemBlankBanknote = new ItemBlankBanknote("blank_banknote");
         GameRegistry.register(itemBlankBanknote);
 

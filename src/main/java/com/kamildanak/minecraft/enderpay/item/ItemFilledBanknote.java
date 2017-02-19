@@ -75,12 +75,12 @@ public class ItemFilledBanknote extends Item {
     }
 
     private long getCurrentValue(long amount, long dateIssued) {
+        long dayAfter = daysAfterIssued(dateIssued);
+        if (dayAfter < 0) return amount;
         if (isExpired(dateIssued)) {
             amount = 0;
         } else {
-            for (int i = 0; i < daysAfterIssued(dateIssued); i++) {
-                amount -= (amount * EnderPay.stampedMoneyPercent) / 100;
-            }
+            amount -= Math.ceil((double) (dayAfter * (amount * EnderPay.stampedMoneyPercent)) / 100);
         }
         return amount;
     }
@@ -90,8 +90,7 @@ public class ItemFilledBanknote extends Item {
     }
 
     private long daysAfterIssued(long dateIssued) {
-        long now = Utils.getCurrentTime();
-        long timeDelta = now - dateIssued;
-        return Utils.timeToDays(timeDelta);
+        long now = Utils.getCurrentDay();
+        return now - dateIssued;
     }
 }

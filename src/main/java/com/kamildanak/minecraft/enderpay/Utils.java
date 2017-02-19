@@ -48,17 +48,21 @@ public class Utils {
         Minecraft.getMinecraft().getTextureManager().bindTexture(res);
     }
 
-    public static long getCurrentTime() {
+    public static long getCurrentDay() {
+        return timeToDays(getCurrentTime());
+    }
+
+    private static long getCurrentTime() {
         return System.currentTimeMillis();
     }
 
-    public static long timeToDays(long time) {
-        long day = 1000 * 60 * 60 * 24;
+    private static long timeToDays(long time) {
+        long day = 1000 * 60 * EnderPay.dayLength;
         return time / day;
     }
 
-    public static long daysToTime(long days) {
-        long day = 1000 * 60 * 60 * 24;
+    private static long daysToTime(long days) {
+        long day = 1000 * 60 * EnderPay.dayLength;
         return days * day;
     }
 }

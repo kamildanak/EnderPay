@@ -58,7 +58,7 @@ public class MessageIssueBanknote extends AbstractMessage.AbstractServerMessage<
             ItemStack newBanknote = new ItemStack(EnderPay.itemFilledBanknote);
             NBTTagCompound tag = new NBTTagCompound();
             tag.setLong("Amount", amount);
-            tag.setLong("DateIssued", Utils.getCurrentTime());
+            tag.setLong("DateIssued", Utils.getCurrentDay());
             newBanknote.setTagCompound(tag);
             if(!player.isCreative() || EnderPay.consumeBanknotesInCreativeMode)
                 player.inventory.decrStackSize(currentItemIndex,1);
