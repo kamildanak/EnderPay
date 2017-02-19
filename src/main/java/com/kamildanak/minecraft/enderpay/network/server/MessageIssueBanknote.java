@@ -1,6 +1,7 @@
 package com.kamildanak.minecraft.enderpay.network.server;
 
 import com.kamildanak.minecraft.enderpay.EnderPay;
+import com.kamildanak.minecraft.enderpay.Utils;
 import com.kamildanak.minecraft.enderpay.economy.Account;
 import com.kamildanak.minecraft.enderpay.network.AbstractMessage;
 import net.minecraft.entity.player.EntityPlayer;
@@ -57,6 +58,7 @@ public class MessageIssueBanknote extends AbstractMessage.AbstractServerMessage<
             ItemStack newBanknote = new ItemStack(EnderPay.itemFilledBanknote);
             NBTTagCompound tag = new NBTTagCompound();
             tag.setLong("Amount", amount);
+            tag.setLong("DateIssued", Utils.getCurrentTime());
             newBanknote.setTagCompound(tag);
             if(!player.isCreative() || EnderPay.consumeBanknotesInCreativeMode)
                 player.inventory.decrStackSize(currentItemIndex,1);

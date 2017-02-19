@@ -54,15 +54,14 @@ public class EnderPay {
     public static int stampedMoneyPercent;
     public static int startBalance;
     public static boolean consumeBanknotesInCreativeMode;
+    public static int daysAfterBanknotesExpires;
+    public static int resetLoginDelta;
     public static MinecraftServer minecraftServer;
-
-    private static Configuration config;
-
     public static Item itemBlankBanknote;
     public static Item itemFilledBanknote;
-
     @SidedProxy(clientSide = "com.kamildanak.minecraft.enderpay.proxy.ProxyClient", serverSide = "com.kamildanak.minecraft.enderpay.proxy.Proxy")
     public static Proxy proxy;
+    private static Configuration config;
 
     @Mod.EventHandler
     @SuppressWarnings("unused")
@@ -101,6 +100,12 @@ public class EnderPay {
 
         consumeBanknotesInCreativeMode = config.getBoolean("consumeBanknotesInCreativeMode", "general", true,
                 "Should banknotes be consumed when used by player in creative mode");
+
+        daysAfterBanknotesExpires = config.getInt("daysAfterBanknotesExpires", "basicIncome", 10, 1, 100,
+                "Number of days after banknote no longer has value");
+
+        resetLoginDelta = config.getInt("resetLoginDelta", "basicIncome", 100, 1, 100,
+                "Number of days of inactivity after account balance will be set to startBalance");
 
         itemBlankBanknote = new ItemBlankBanknote("blank_banknote");
         GameRegistry.register(itemBlankBanknote);

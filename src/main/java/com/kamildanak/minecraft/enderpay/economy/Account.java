@@ -3,6 +3,7 @@ package com.kamildanak.minecraft.enderpay.economy;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kamildanak.minecraft.enderpay.EnderPay;
+import com.kamildanak.minecraft.enderpay.Utils;
 import com.kamildanak.minecraft.enderpay.network.PacketDispatcher;
 import com.kamildanak.minecraft.enderpay.network.client.MessageBalance;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,44 +38,6 @@ public class Account {
         this.changed = true;
     }
 
-    public void update() {
-        long now = System.currentTimeMillis();
-        long day = 1000*60*60*24;
-
-        long activityDelta = now-this.lastCountActivity;
-        long activityDeltaDays = activityDelta/day;
-        this.lastCountActivity = now - activityDelta + activityDeltaDays*day;
-
-        if(EnderPay.stampedMoney) {
-            if (activityDeltaDays > 100)
-                this.balance = 0;
-            else {
-                for (int i = 0; i < activityDeltaDays; i++)
-                    this.balance -= (this.balance * EnderPay.stampedMoneyPercent) / 100;
-            }
-        }
-
-        if(EnderPay.basicIncome) {
-            if (getPlayerMP() != null) {
-                long loginDelta = countDelta(now, this.lastCountLogin, this.lastLogin);
-                long loginDeltaDays = loginDelta / day;
-                this.lastLogin = now;
-                this.lastCountLogin = now - loginDelta + loginDeltaDays * day;
-                this.balance += loginDeltaDays * EnderPay.basicIncomeAmount;
-            }
-        }
-    }
-
-    private long countDelta(long now, long lastCount, long last)
-    {
-        long loginDelta = now-lastCount;
-        if(loginDelta> EnderPay.maxLoginDelta)
-            loginDelta = now-last;
-        if(loginDelta> EnderPay.maxLoginDelta)
-            loginDelta= EnderPay.maxLoginDelta;
-        return loginDelta;
-    }
-
     public static Account get(EntityPlayer player) {
         return get(player.getUniqueID());
     }
@@ -102,10 +65,6 @@ public class Account {
         return account;
     }
 
-    public void writeIfChanged() throws IOException {
-        if(changed) write();
-    }
-
     public static void clear() {
         Account.location = null;
         Account.objects.clear();
@@ -113,6 +72,43 @@ public class Account {
 
     public static void setLocation(File location) {
         Account.location = location;
+    }
+
+    public void update() {
+        long now = Utils.getCurrentTime();
+        long activityDelta = now - this.lastCountActivity;
+        long activityDeltaDays = Utils.timeToDays(activityDelta);
+        this.lastCountActivity = now - activityDelta + Utils.daysToTime(activityDeltaDays);
+
+        if (EnderPay.stampedMoney) {
+            if (activityDeltaDays <= EnderPay.resetLoginDelta) {
+                for (int i = 0; i < activityDeltaDays; i++)
+                    this.balance -= (this.balance * EnderPay.stampedMoneyPercent) / 100;
+            }
+        }
+        if (EnderPay.basicIncome & getPlayerMP() != null) {
+            long loginDelta = countDelta(now, this.lastCountLogin, this.lastLogin);
+            long loginDeltaDays = Utils.timeToDays(loginDelta);
+            this.lastLogin = now;
+            this.lastCountLogin = now - loginDelta + Utils.daysToTime(loginDeltaDays);
+            this.balance += loginDeltaDays * EnderPay.basicIncomeAmount;
+        }
+        if (activityDeltaDays > EnderPay.resetLoginDelta) {
+            this.balance = EnderPay.startBalance;
+        }
+    }
+
+    private long countDelta(long now, long lastCount, long last) {
+        long loginDelta = now - lastCount;
+        if (loginDelta > EnderPay.maxLoginDelta)
+            loginDelta = now - last;
+        if (loginDelta > EnderPay.maxLoginDelta)
+            loginDelta = EnderPay.maxLoginDelta;
+        return loginDelta;
+    }
+
+    public void writeIfChanged() throws IOException {
+        if (changed) write();
     }
 
     private File getFile() {

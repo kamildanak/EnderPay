@@ -1,5 +1,6 @@
 package com.kamildanak.minecraft.enderpay.item;
 
+import com.kamildanak.minecraft.enderpay.EnderPay;
 import com.kamildanak.minecraft.enderpay.Utils;
 import com.kamildanak.minecraft.enderpay.economy.Account;
 import com.kamildanak.minecraft.enderpay.gui.hud.BalanceHUD;
@@ -49,11 +50,48 @@ public class ItemFilledBanknote extends Item {
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
-        //tooltip.add("V:");
         if (stack.getTagCompound() == null) return;
-        if (!stack.getTagCompound().hasKey("Amount")) return;
+        if (!stack.getTagCompound().hasKey("Amount")) {
+            tooltip.add(Utils.format(0) + " " + BalanceHUD.getCurrency());
+            return;
+        }
         long amount = stack.getTagCompound().getLong("Amount");
-        //tooltip.add("Vallue:");
-        tooltip.add(Utils.format(amount) + BalanceHUD.getCurrency());
+        if (EnderPay.stampedMoney) {
+            if (!stack.getTagCompound().hasKey("DateIssued")) return;
+            long dateIssued = stack.getTagCompound().getLong("DateIssued");
+            tooltip.add("Original value: " + Utils.format(amount) + " " + BalanceHUD.getCurrency());
+
+            amount = getCurrentValue(amount, dateIssued);
+            if (amount == 0) {
+                tooltip.add("Expired");
+            } else {
+                tooltip.add("Current value: " + Utils.format(amount) + " " + BalanceHUD.getCurrency());
+                tooltip.add("Expires in " +
+                        Long.toString(EnderPay.daysAfterBanknotesExpires - daysAfterIssued(dateIssued)) + " days");
+            }
+        } else {
+            tooltip.add(Utils.format(amount) + " " + BalanceHUD.getCurrency());
+        }
+    }
+
+    private long getCurrentValue(long amount, long dateIssued) {
+        if (isExpired(dateIssued)) {
+            amount = 0;
+        } else {
+            for (int i = 0; i < daysAfterIssued(dateIssued); i++) {
+                amount -= (amount * EnderPay.stampedMoneyPercent) / 100;
+            }
+        }
+        return amount;
+    }
+
+    private boolean isExpired(long dateIssued) {
+        return daysAfterIssued(dateIssued) >= EnderPay.daysAfterBanknotesExpires;
+    }
+
+    private long daysAfterIssued(long dateIssued) {
+        long now = Utils.getCurrentTime();
+        long timeDelta = now - dateIssued;
+        return Utils.timeToDays(timeDelta);
     }
 }
