@@ -50,7 +50,7 @@ public class ItemFilledBanknote extends Item {
     public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
             int currentItemIndex = playerIn.inventory.currentItem;
-            if(!stack.isItemEqual(playerIn.inventory.getStackInSlot(currentItemIndex))) return EnumActionResult.FAIL;
+            if (!stack.isItemEqual(playerIn.inventory.getStackInSlot(currentItemIndex))) return EnumActionResult.FAIL;
             playerIn.inventory.decrStackSize(currentItemIndex, 1);
             if (stack.getTagCompound() == null) return EnumActionResult.FAIL;
             if (!stack.getTagCompound().hasKey("Amount")) return EnumActionResult.FAIL;

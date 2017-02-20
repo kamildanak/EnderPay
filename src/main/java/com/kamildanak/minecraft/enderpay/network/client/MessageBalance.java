@@ -10,17 +10,17 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.IOException;
 
-public class MessageBalance  extends AbstractMessage.AbstractClientMessage<MessageBalance>{
+public class MessageBalance extends AbstractMessage.AbstractClientMessage<MessageBalance> {
     private long balance;
     private long date;
     private String currencyName;
 
 
     @SuppressWarnings("unused")
-    public MessageBalance() {}
+    public MessageBalance() {
+    }
 
-    public MessageBalance(long balance)
-    {
+    public MessageBalance(long balance) {
         this.balance = balance;
         this.date = Utils.getCurrentDay();
         this.currencyName = balance == 1 ? EnderPay.currencyNameSingular : EnderPay.currencyNameMultiple;

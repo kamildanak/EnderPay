@@ -41,11 +41,11 @@ public class Utils {
     }
 
     public static void bind(String textureName) {
-        ResourceLocation res=resources.get(textureName);
+        ResourceLocation res = resources.get(textureName);
 
-        if(res==null){
-            res=new ResourceLocation(textureName);
-            resources.put(textureName,res);
+        if (res == null) {
+            res = new ResourceLocation(textureName);
+            resources.put(textureName, res);
         }
 
         Minecraft.getMinecraft().getTextureManager().bindTexture(res);

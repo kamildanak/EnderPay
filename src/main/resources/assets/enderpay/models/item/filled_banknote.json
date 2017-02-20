@@ -1,6 +1,6 @@
 {
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "enderpay:items/filled_banknote"
-    }
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "enderpay:items/filled_banknote"
+  }
 }

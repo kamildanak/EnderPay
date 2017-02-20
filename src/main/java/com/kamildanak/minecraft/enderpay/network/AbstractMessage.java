@@ -1,10 +1,8 @@
 package com.kamildanak.minecraft.enderpay.network;
 
+import com.google.common.base.Throwables;
 import com.kamildanak.minecraft.enderpay.EnderPay;
 import io.netty.buffer.ByteBuf;
-
-import java.io.IOException;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.Packet;
 import net.minecraft.network.PacketBuffer;
@@ -14,33 +12,44 @@ import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 import net.minecraftforge.fml.relauncher.Side;
 
-import com.google.common.base.Throwables;
+import java.io.IOException;
 
 /**
  * https://github.com/coolAlias/Tutorial-Demo/blob/master/src/main/java/tutorial/network/AbstractMessage.java
- *
+ * <p>
  * Creating an abstract message class similar to {@link Packet} allows us to take
  * advantage of Minecraft's PacketBuffer class, which has many useful methods.
- *
+ * <p>
  * Should the IMessageHandler be implemented as a GenericMessageHandler class,
  * every child message class will still have to have an empty implementation of
  * the handler, just so it can be registered:
- *
+ * <p>
  * public static class Handler extends GenericMessageHandler<SomeMessage> {}
- *
+ * <p>
  * This is kind of ridiculous, so instead the message will also implement the handler,
  * despite the fact that a handler instance shouldn't have any of the class members or
  * methods that a message instance does (since a handler is not a message).
- *
+ * <p>
  * To combat that incongruity, the #onMessage method will be made final.
- *
+ * <p>
  * As a bonus, registration of this class can be made less verbose than normal, since the
  * same class is used for both the IMessage and the IMessageHandler.
- *
  */
 @SuppressWarnings({"WeakerAccess", "FinalPrivateMethod", "FinalStaticMethod", "Convert2Lambda"})
-public abstract class AbstractMessage<T extends AbstractMessage<T>> implements IMessage, IMessageHandler <T, IMessage>
-{
+public abstract class AbstractMessage<T extends AbstractMessage<T>> implements IMessage, IMessageHandler<T, IMessage> {
+    /**
+     * 1.8 ONLY: Ensures that the message is being handled on the main thread
+     */
+    private static final <T extends AbstractMessage<T>> void checkThreadAndEnqueue(final AbstractMessage<T> msg, final MessageContext ctx) {
+        IThreadListener thread = EnderPay.proxy.getThreadFromContext(ctx);
+        // pretty much copied straight from vanilla code, see {@link PacketThreadUtil#checkThreadAndEnqueue}
+        thread.addScheduledTask(new Runnable() {
+            public void run() {
+                msg.process(EnderPay.proxy.getPlayerEntity(ctx), ctx.side);
+            }
+        });
+    }
+
     /**
      * Some PacketBuffer methods throw IOException - default handling propagates the exception.
      * if an IOException is expected but should not be fatal, handle it within this method.
@@ -63,6 +72,7 @@ public abstract class AbstractMessage<T extends AbstractMessage<T>> implements I
 
     /**
      * If message is sent to the wrong side, an exception will be thrown during handling
+     *
      * @return True if the message is allowed to be handled on the given side
      */
     protected boolean isValidOnSide(Side side) {
@@ -96,8 +106,8 @@ public abstract class AbstractMessage<T extends AbstractMessage<T>> implements I
     }
 
     //=====================================================================//
-	/*
-	 * Make the implementation final so child classes don't need to bother
+    /*
+     * Make the implementation final so child classes don't need to bother
 	 * with it, since the message class shouldn't have anything to do with
 	 * the handler. This is simply to avoid having to have:
 	 *
@@ -115,19 +125,6 @@ public abstract class AbstractMessage<T extends AbstractMessage<T>> implements I
             msg.process(EnderPay.proxy.getPlayerEntity(ctx), ctx.side);
         }
         return null;
-    }
-
-    /**
-     * 1.8 ONLY: Ensures that the message is being handled on the main thread
-     */
-    private static final <T extends AbstractMessage<T>> void checkThreadAndEnqueue(final AbstractMessage<T> msg, final MessageContext ctx) {
-        IThreadListener thread = EnderPay.proxy.getThreadFromContext(ctx);
-        // pretty much copied straight from vanilla code, see {@link PacketThreadUtil#checkThreadAndEnqueue}
-        thread.addScheduledTask(new Runnable() {
-            public void run() {
-                msg.process(EnderPay.proxy.getPlayerEntity(ctx), ctx.side);
-            }
-        });
     }
 
     /**

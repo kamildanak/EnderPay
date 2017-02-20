@@ -33,7 +33,7 @@ public class CommandPay extends CommandBase {
             Account account = Account.get(entityplayer);
             account.update();
             long amount = parseLong(args[1]);
-            if (amount<0)
+            if (amount < 0)
                 //noinspection RedundantArrayCreation
                 throw new NumberInvalidException("commands.pay.number_must_be_positive", new Object[0]);
             Account senderAccount = Account.get((EntityPlayerMP) sender);

@@ -14,8 +14,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nonnull;
 
 public class ItemBlankBanknote extends Item {
-    public ItemBlankBanknote(String name)
-    {
+    public ItemBlankBanknote(String name) {
         this.setItemName(name);
         this.setCreativeTab(CreativeTabs.MISC);
     }

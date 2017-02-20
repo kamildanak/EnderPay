@@ -32,7 +32,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.io.File;
 
-@Mod(modid= EnderPay.modID, name= EnderPay.modName, version= EnderPay.version)
+@Mod(modid = EnderPay.modID, name = EnderPay.modName, version = EnderPay.version)
 public class EnderPay {
     public static final String modID = "enderpay";
     static final String modName = "enderpay";
@@ -120,7 +120,7 @@ public class EnderPay {
         proxy.registerPackets();
         MinecraftForge.EVENT_BUS.register(new EventHandler());
 
-        guiBanknote=new GuiHandler("wrench"){
+        guiBanknote = new GuiHandler("wrench") {
             @Override
             public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
                 return new DummyContainer();
@@ -128,7 +128,7 @@ public class EnderPay {
 
             @Override
             public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
-                return new GuiBanknote(world, new BlockPos(x,y,z), player);
+                return new GuiBanknote(world, new BlockPos(x, y, z), player);
             }
         };
         GuiHandler.register(this);
@@ -154,8 +154,7 @@ public class EnderPay {
         registerCommands(event);
     }
 
-    private void registerCommands(FMLServerStartingEvent event)
-    {
+    private void registerCommands(FMLServerStartingEvent event) {
         MinecraftServer server = event.getServer();
         ICommandManager command = server.getCommandManager();
         ServerCommandManager manager = (ServerCommandManager) command;

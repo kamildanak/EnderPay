@@ -161,6 +161,6 @@ public class Account {
     private EntityPlayerMP getPlayerMP() {
         EntityPlayerMP entityPlayerMP = EnderPay.minecraftServer.getPlayerList().getPlayerByUUID(uuid);
         //noinspection ConstantConditions
-        return (entityPlayerMP!=null) ? entityPlayerMP : null;
+        return (entityPlayerMP != null) ? entityPlayerMP : null;
     }
 }
