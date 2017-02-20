@@ -65,4 +65,9 @@ public class Utils {
         long day = 1000 * 60 * EnderPay.dayLength;
         return days * day;
     }
+
+    public static long daysAfterDate(long date) {
+        long now = Utils.getCurrentDay();
+        return now - date;
+    }
 }

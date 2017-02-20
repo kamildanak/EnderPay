@@ -1,12 +1,11 @@
 package com.kamildanak.minecraft.enderpay.network.server;
 
 import com.kamildanak.minecraft.enderpay.EnderPay;
-import com.kamildanak.minecraft.enderpay.Utils;
 import com.kamildanak.minecraft.enderpay.economy.Account;
+import com.kamildanak.minecraft.enderpay.item.ItemFilledBanknote;
 import com.kamildanak.minecraft.enderpay.network.AbstractMessage;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.Side;
@@ -55,11 +54,7 @@ public class MessageIssueBanknote extends AbstractMessage.AbstractServerMessage<
                 return;
             }
             account.addBalance(-amount);
-            ItemStack newBanknote = new ItemStack(EnderPay.itemFilledBanknote);
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setLong("Amount", amount);
-            tag.setLong("DateIssued", Utils.getCurrentDay());
-            newBanknote.setTagCompound(tag);
+            ItemStack newBanknote = ItemFilledBanknote.getItemStack(amount);
             if(!player.isCreative() || EnderPay.consumeBanknotesInCreativeMode)
                 player.inventory.decrStackSize(currentItemIndex,1);
             player.inventory.addItemStackToInventory(newBanknote);

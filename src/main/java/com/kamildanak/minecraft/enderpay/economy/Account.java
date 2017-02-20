@@ -86,7 +86,7 @@ public class Account {
                     this.balance -= Math.ceil((double) (this.balance * EnderPay.stampedMoneyPercent) / 100);
             }
         }
-        if (EnderPay.basicIncome & getPlayerMP() != null) {
+        if (EnderPay.basicIncome && getPlayerMP() != null) {
             long loginDeltaDays = (now - this.lastLogin);
             if (loginDeltaDays > EnderPay.maxLoginDelta) loginDeltaDays = EnderPay.maxLoginDelta;
             this.lastLogin = now;

@@ -8,6 +8,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -24,6 +25,24 @@ public class ItemFilledBanknote extends Item {
         this.setItemName(name);
         this.setCreativeTab(CreativeTabs.MISC);
         this.maxStackSize = 1;
+    }
+
+    public static boolean isExpired(long dateIssued) {
+        return Utils.daysAfterDate(dateIssued) >= EnderPay.daysAfterBanknotesExpires;
+    }
+
+    public static ItemStack getItemStack(long creditsAmount) {
+        ItemStack newBanknote = new ItemStack(EnderPay.itemFilledBanknote);
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setLong("Amount", creditsAmount);
+        tag.setLong("DateIssued", Utils.getCurrentDay());
+        newBanknote.setTagCompound(tag);
+        return newBanknote;
+    }
+
+    public static long getDateIssued(ItemStack stack) {
+        if (stack.getTagCompound() == null) return 0;
+        return stack.getTagCompound().getLong("DateIssued");
     }
 
     @Nonnull
@@ -67,7 +86,7 @@ public class ItemFilledBanknote extends Item {
             } else {
                 tooltip.add("Current value: " + Utils.format(amount) + " " + BalanceHUD.getCurrency());
                 tooltip.add("Expires in " +
-                        Long.toString(EnderPay.daysAfterBanknotesExpires - daysAfterIssued(dateIssued)) + " days");
+                        Long.toString(EnderPay.daysAfterBanknotesExpires - Utils.daysAfterDate(dateIssued)) + " days");
             }
         } else {
             tooltip.add(Utils.format(amount) + " " + BalanceHUD.getCurrency());
@@ -75,7 +94,7 @@ public class ItemFilledBanknote extends Item {
     }
 
     private long getCurrentValue(long amount, long dateIssued) {
-        long dayAfter = daysAfterIssued(dateIssued);
+        long dayAfter = Utils.daysAfterDate(dateIssued);
         if (dayAfter < 0) return amount;
         if (isExpired(dateIssued)) {
             amount = 0;
@@ -83,14 +102,5 @@ public class ItemFilledBanknote extends Item {
             amount -= Math.ceil((double) (dayAfter * (amount * EnderPay.stampedMoneyPercent)) / 100);
         }
         return amount;
-    }
-
-    private boolean isExpired(long dateIssued) {
-        return daysAfterIssued(dateIssued) >= EnderPay.daysAfterBanknotesExpires;
-    }
-
-    private long daysAfterIssued(long dateIssued) {
-        long now = Utils.getCurrentDay();
-        return now - dateIssued;
     }
 }
