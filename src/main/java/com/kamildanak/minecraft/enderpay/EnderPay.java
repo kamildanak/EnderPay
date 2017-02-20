@@ -32,7 +32,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.io.File;
 
-@Mod(modid = EnderPay.modID, name = EnderPay.modName, version = EnderPay.version)
+@Mod(modid = EnderPay.modID, name = EnderPay.modName, version = EnderPay.version,
+        acceptedMinecraftVersions = "[1.10,1.10.2]")
 public class EnderPay {
     public static final String modID = "enderpay";
     static final String modName = "enderpay";
@@ -54,6 +55,7 @@ public class EnderPay {
     public static int stampedMoneyPercent;
     public static int startBalance;
     public static boolean consumeBanknotesInCreativeMode;
+    public static boolean registerBanknoteRecipe;
     public static int daysAfterBanknotesExpires;
     public static int resetLoginDelta;
     public static MinecraftServer minecraftServer;
@@ -110,6 +112,10 @@ public class EnderPay {
 
         dayLength = config.getInt("dayLength", "basicIncome", 24 * 60, 1, 24 * 60 * 365,
                 "Day length in minutes");
+
+        registerBanknoteRecipe = config.getBoolean("registerBanknoteRecipe", "general", true,
+                "Set to true to allow crafting banknotes");
+
         itemBlankBanknote = new ItemBlankBanknote("blank_banknote");
         GameRegistry.register(itemBlankBanknote);
 
@@ -118,6 +124,7 @@ public class EnderPay {
 
         proxy.init();
         proxy.registerPackets();
+        proxy.registerCraftingRecipes();
         MinecraftForge.EVENT_BUS.register(new EventHandler());
 
         guiBanknote = new GuiHandler("wrench") {

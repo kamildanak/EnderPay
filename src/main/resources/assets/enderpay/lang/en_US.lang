@@ -1,13 +1,13 @@
 commands.balance.usage=/balance
 commands.balance.success=Balance: %s
 
-commands.wallet.usage=/wallet <give|take|set|balance> <player> <value>
+commands.wallet.usage=/wallet <give|take|set|balance> <player> <amount>
 commands.wallet.balance.success=%s balance: %s
 commands.wallet.set.success=%s balance set to %s
 commands.wallet.give.success=%s added to %s balance
 commands.wallet.take.success=%s taken from %s balance
 
-commands.pay.usage=/pay <player> <value>
+commands.pay.usage=/pay <player> <amount>
 commands.pay.number_must_be_positive=You cannot pay someone negative amount. That would be rude.
 commands.pay.insufficient_credit=You don't have money you want to pay :(.
 
