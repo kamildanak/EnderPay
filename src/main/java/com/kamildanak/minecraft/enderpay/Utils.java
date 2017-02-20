@@ -1,7 +1,10 @@
 package com.kamildanak.minecraft.enderpay;
 
+import com.kamildanak.minecraft.enderpay.gui.hud.BalanceHUD;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +52,7 @@ public class Utils {
     }
 
     public static long getCurrentDay() {
-        return timeToDays(getCurrentTime());
+        return (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) ? BalanceHUD.getDate() : timeToDays(getCurrentTime());
     }
 
     private static long getCurrentTime() {

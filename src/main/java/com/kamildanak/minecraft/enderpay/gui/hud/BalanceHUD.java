@@ -11,13 +11,31 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class BalanceHUD extends GuiExtended {
-    private Minecraft mc;
     private static Long balance = null;
+    private static long date = 0;
     private static String currency;
+    private Minecraft mc;
 
     public BalanceHUD(Minecraft mc) {
         super(mc);
         this.mc = mc;
+    }
+
+    public static long getDate() {
+        return BalanceHUD.date;
+    }
+
+    public static void setDate(long date) {
+        BalanceHUD.date = date;
+    }
+
+    public static void setBalanceAndCurrency(long balance, String currency) {
+        BalanceHUD.balance = balance;
+        BalanceHUD.currency = currency;
+    }
+
+    public static String getCurrency() {
+        return currency;
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
@@ -56,15 +74,5 @@ public class BalanceHUD extends GuiExtended {
         drawString(fontRenderer, text, cx + 82 - textLength + 9 - 2, drawHeight + 1, 0xa0a0a0);
 
         mc.mcProfiler.endSection();
-    }
-
-    public static void setBalanceAndCurrency(long balance, String currency)
-    {
-        BalanceHUD.balance = balance;
-        BalanceHUD.currency = currency;
-    }
-
-    public static String getCurrency() {
-        return currency;
     }
 }
