@@ -1,13 +1,14 @@
 package com.kamildanak.minecraft.enderpay.events;
 
+import com.kamildanak.minecraft.enderpay.EnderPay;
 import com.kamildanak.minecraft.enderpay.Utils;
 import com.kamildanak.minecraft.enderpay.economy.Account;
 import com.kamildanak.minecraft.enderpay.network.PacketDispatcher;
 import com.kamildanak.minecraft.enderpay.network.client.MessageBalance;
-import net.minecraft.client.Minecraft;
+import com.kamildanak.minecraft.enderpay.network.client.MessageSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.server.integrated.IntegratedServer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -26,6 +27,7 @@ public class EventHandler {
             account.update();
             long balance = account.getBalance();
             PacketDispatcher.sendTo(new MessageBalance(balance), (EntityPlayerMP) event.getEntity());
+            PacketDispatcher.sendTo(new MessageSettings(EnderPay.settings), (EntityPlayerMP) event.getEntity());
         }
     }
 
@@ -46,9 +48,9 @@ public class EventHandler {
         long now = Utils.getCurrentDay();
         if (lastTickEvent == now) return;
         lastTickEvent = now;
-        IntegratedServer integratedServer = Minecraft.getMinecraft().getIntegratedServer();
-        if (integratedServer == null) return;
-        for (EntityPlayerMP entityPlayer : integratedServer.getPlayerList().getPlayerList()) {
+        MinecraftServer server = EnderPay.minecraftServer;
+        if (server == null) return;
+        for (EntityPlayerMP entityPlayer : server.getPlayerList().getPlayerList()) {
             Account account = Account.get(entityPlayer);
             if (account.update())
                 PacketDispatcher.sendTo(new MessageBalance(account.getBalance()), entityPlayer);

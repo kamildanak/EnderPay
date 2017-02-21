@@ -1,5 +1,6 @@
 package com.kamildanak.minecraft.enderpay.gui.hud;
 
+import com.kamildanak.minecraft.enderpay.EnderPay;
 import com.kamildanak.minecraft.enderpay.Utils;
 import com.kamildanak.minecraft.enderpay.gui.lib.GuiExtended;
 import net.minecraft.block.material.Material;
@@ -13,7 +14,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public class BalanceHUD extends GuiExtended {
     private static Long balance = null;
     private static long date = 0;
-    private static String currency;
     private Minecraft mc;
 
     public BalanceHUD(Minecraft mc) {
@@ -29,13 +29,12 @@ public class BalanceHUD extends GuiExtended {
         BalanceHUD.date = date;
     }
 
-    public static void setBalanceAndCurrency(long balance, String currency) {
+    public static void setBalance(long balance) {
         BalanceHUD.balance = balance;
-        BalanceHUD.currency = currency;
     }
 
     public static String getCurrency() {
-        return currency;
+        return (balance == 1) ? EnderPay.settings.getCurrencyNameSingular() : EnderPay.settings.getCurrencyNameMultiple();
     }
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
@@ -58,7 +57,7 @@ public class BalanceHUD extends GuiExtended {
         if (fontRenderer == null) return;
 
         String text = (balance == null) ? "---" :
-                fontRenderer.listFormattedStringToWidth(Utils.format(balance) + currency, 64).get(0);
+                fontRenderer.listFormattedStringToWidth(Utils.format(balance) + getCurrency(), 64).get(0);
 
         bind("enderpay:textures/icons.png");
 

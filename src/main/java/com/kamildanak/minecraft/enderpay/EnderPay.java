@@ -11,6 +11,7 @@ import com.kamildanak.minecraft.enderpay.inventory.DummyContainer;
 import com.kamildanak.minecraft.enderpay.item.ItemBlankBanknote;
 import com.kamildanak.minecraft.enderpay.item.ItemFilledBanknote;
 import com.kamildanak.minecraft.enderpay.proxy.Proxy;
+import com.kamildanak.minecraft.enderpay.proxy.Settings;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -44,26 +45,14 @@ public class EnderPay {
     public static EnderPay instance;
 
     public static GuiHandler guiBanknote;
-    //public static CreativeTabs tabEconomy;
 
-    public static String currencyNameSingular;
-    public static String currencyNameMultiple;
-    public static long maxLoginDelta;
-    public static boolean basicIncome;
-    public static int basicIncomeAmount;
-    public static boolean stampedMoney;
-    public static int stampedMoneyPercent;
-    public static int startBalance;
-    public static boolean consumeBanknotesInCreativeMode;
-    public static boolean registerBanknoteRecipe;
-    public static int daysAfterBanknotesExpires;
-    public static int resetLoginDelta;
     public static MinecraftServer minecraftServer;
     public static Item itemBlankBanknote;
     public static Item itemFilledBanknote;
     @SidedProxy(clientSide = "com.kamildanak.minecraft.enderpay.proxy.ProxyClient", serverSide = "com.kamildanak.minecraft.enderpay.proxy.Proxy")
     public static Proxy proxy;
-    static int dayLength;
+    @SidedProxy(clientSide = "com.kamildanak.minecraft.enderpay.proxy.SettingsClient", serverSide = "com.kamildanak.minecraft.enderpay.proxy.Settings")
+    public static Settings settings;
     private static Configuration config;
 
     @Mod.EventHandler
@@ -77,45 +66,7 @@ public class EnderPay {
     @Mod.EventHandler
     @SuppressWarnings("unused")
     public void init(FMLInitializationEvent event) {
-        currencyNameSingular = config.getString("currency name (singular)", "general", "credit",
-                "Currency name (displayed in HUD, max 20 char)");
-
-        currencyNameMultiple = config.getString("currency name (multiple)", "general", "credits",
-                "Currency name (displayed in HUD, max 20 char)");
-
-        maxLoginDelta = (1000 * 60 * 60) * config.getInt("maxLoginDelta", "basicIncome", 6, 1, 20,
-                "Maximum number of day since last login the player will be payed for. ");
-
-        basicIncome = config.getBoolean("enabled", "basicIncome", true,
-                "Each day give set amount of credits to each player to stimulate economy");
-
-        basicIncomeAmount = config.getInt("amount", "basicIncome", 50, 0, 10000,
-                "Amount of credits to give each player each day");
-
-        stampedMoney = config.getBoolean("enabled", "stampedMoney", true,
-                "Take % of players money each day to stimulate economy");
-
-        stampedMoneyPercent = config.getInt("percent", "stampedMoney", 1, 0, 100,
-                "What percentage of players money should be taken each day");
-
-        startBalance = config.getInt("startBalance", "general", 100, 0, 10000,
-                "Amount of credits given to new players joining the server");
-
-        consumeBanknotesInCreativeMode = config.getBoolean("consumeBanknotesInCreativeMode", "general", true,
-                "Should banknotes be consumed when used by player in creative mode");
-
-        daysAfterBanknotesExpires = config.getInt("daysAfterBanknotesExpires", "basicIncome", 10, 1, 100,
-                "Number of days after banknote no longer has value");
-
-        resetLoginDelta = config.getInt("resetLoginDelta", "basicIncome", 100, 1, 100,
-                "Number of days of inactivity after account balance will be set to startBalance");
-
-        dayLength = config.getInt("dayLength", "basicIncome", 24 * 60, 1, 24 * 60 * 365,
-                "Day length in minutes");
-
-        registerBanknoteRecipe = config.getBoolean("registerBanknoteRecipe", "general", true,
-                "Set to true to allow crafting banknotes");
-
+        settings.loadConfig(config);
         itemBlankBanknote = new ItemBlankBanknote("blank_banknote");
         GameRegistry.register(itemBlankBanknote);
 

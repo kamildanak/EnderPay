@@ -52,20 +52,24 @@ public class Utils {
     }
 
     public static long getCurrentDay() {
-        return (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT) ? BalanceHUD.getDate() : timeToDays(getCurrentTime());
+        return isClient() ? BalanceHUD.getDate() : timeToDays(getCurrentServerTime());
     }
 
-    private static long getCurrentTime() {
+    public static boolean isClient() {
+        return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
+    }
+
+    private static long getCurrentServerTime() {
         return System.currentTimeMillis();
     }
 
     private static long timeToDays(long time) {
-        long day = 1000 * 60 * EnderPay.dayLength;
+        long day = 1000 * 60 * EnderPay.settings.getDayLength();
         return time / day;
     }
 
     private static long daysToTime(long days) {
-        long day = 1000 * 60 * EnderPay.dayLength;
+        long day = 1000 * 60 * EnderPay.settings.getDayLength();
         return days * day;
     }
 

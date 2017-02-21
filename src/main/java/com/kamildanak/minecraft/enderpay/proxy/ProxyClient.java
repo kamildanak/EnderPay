@@ -40,4 +40,9 @@ public class ProxyClient extends Proxy {
     public IThreadListener getThreadFromContext(MessageContext ctx) {
         return (ctx.side.isClient() ? mc : super.getThreadFromContext(ctx));
     }
+
+    @Override
+    public boolean isSinglePlayer() {
+        return Minecraft.getMinecraft().isSingleplayer();
+    }
 }

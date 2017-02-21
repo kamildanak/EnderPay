@@ -53,7 +53,7 @@ public class EnderPayApi {
         if (ItemFilledBanknote.isExpired(ItemFilledBanknote.getDateIssued(itemStack))) {
             amount = 0;
         } else {
-            amount -= Math.ceil((double) (dayAfter * (amount * EnderPay.stampedMoneyPercent)) / 100);
+            amount -= Math.ceil((double) (dayAfter * (amount * EnderPay.settings.getStampedMoneyPercent())) / 100);
         }
         return amount;
     }
@@ -76,16 +76,16 @@ public class EnderPayApi {
 
     @Deprecated
     public static String getCurrencyNameSingular() {
-        return EnderPay.currencyNameSingular;
+        return EnderPay.settings.getCurrencyNameSingular();
     }
 
     @Deprecated
     public static String getCurrencyNameMultiple() {
-        return EnderPay.currencyNameMultiple;
+        return EnderPay.settings.getCurrencyNameMultiple();
     }
 
     public static String getCurrencyName(long amount) {
-        if (amount == 1) return EnderPay.currencyNameSingular;
-        return EnderPay.currencyNameMultiple;
+        if (amount == 1) return EnderPay.settings.getCurrencyNameSingular();
+        return EnderPay.settings.getCurrencyNameMultiple();
     }
 }

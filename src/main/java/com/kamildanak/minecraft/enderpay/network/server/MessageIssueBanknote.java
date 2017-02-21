@@ -55,7 +55,7 @@ public class MessageIssueBanknote extends AbstractMessage.AbstractServerMessage<
             }
             account.addBalance(-amount);
             ItemStack newBanknote = ItemFilledBanknote.getItemStack(amount);
-            if (!player.isCreative() || EnderPay.consumeBanknotesInCreativeMode)
+            if (!player.isCreative() || EnderPay.settings.isConsumeBanknotesInCreativeMode())
                 player.inventory.decrStackSize(currentItemIndex, 1);
             player.inventory.addItemStackToInventory(newBanknote);
         }

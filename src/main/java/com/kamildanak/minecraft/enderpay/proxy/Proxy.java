@@ -4,6 +4,7 @@ package com.kamildanak.minecraft.enderpay.proxy;
 import com.kamildanak.minecraft.enderpay.EnderPay;
 import com.kamildanak.minecraft.enderpay.network.PacketDispatcher;
 import com.kamildanak.minecraft.enderpay.network.client.MessageBalance;
+import com.kamildanak.minecraft.enderpay.network.client.MessageSettings;
 import com.kamildanak.minecraft.enderpay.network.server.MessageIssueBanknote;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -22,6 +23,7 @@ public class Proxy {
     public void registerPackets() {
         PacketDispatcher.registerMessage(MessageBalance.class);
         PacketDispatcher.registerMessage(MessageIssueBanknote.class);
+        PacketDispatcher.registerMessage(MessageSettings.class);
     }
 
     /**
@@ -41,12 +43,16 @@ public class Proxy {
 
 
     public void registerCraftingRecipes() {
-        if (EnderPay.registerBanknoteRecipe) {
+        if (EnderPay.settings.isRegisterBanknoteRecipe()) {
             CraftingManager.getInstance().addRecipe(new ItemStack(EnderPay.itemBlankBanknote, 1),
                     "PGP", "GIG", "PGP",
                     'P', new ItemStack(Items.PAPER, 1),
                     'G', new ItemStack(Items.DYE, 1, 2),
                     'I', new ItemStack(Items.DYE, 1, 0));
         }
+    }
+
+    public boolean isSinglePlayer() {
+        return false;
     }
 }

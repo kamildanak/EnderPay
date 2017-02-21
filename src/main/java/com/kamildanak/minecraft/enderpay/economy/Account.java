@@ -29,7 +29,7 @@ public class Account {
 
     private Account(UUID uuid) {
         this.uuid = uuid;
-        this.balance = EnderPay.startBalance;
+        this.balance = EnderPay.settings.getStartBalance();
         long now = Utils.getCurrentDay();
         this.lastLogin = now;
         this.lastCountActivity = now;
@@ -80,20 +80,21 @@ public class Account {
 
         if (activityDeltaDays == 0) return false;
 
-        if (EnderPay.stampedMoney) {
-            if (activityDeltaDays <= EnderPay.resetLoginDelta) {
+        if (EnderPay.settings.isStampedMoney()) {
+            if (activityDeltaDays <= EnderPay.settings.getResetLoginDelta()) {
                 for (int i = 0; i < activityDeltaDays; i++)
-                    this.balance -= Math.ceil((double) (this.balance * EnderPay.stampedMoneyPercent) / 100);
+                    this.balance -= Math.ceil((double) (this.balance * EnderPay.settings.getStampedMoneyPercent()) / 100);
             }
         }
-        if (EnderPay.basicIncome && getPlayerMP() != null) {
+        if (EnderPay.settings.isBasicIncome() && getPlayerMP() != null) {
             long loginDeltaDays = (now - this.lastLogin);
-            if (loginDeltaDays > EnderPay.maxLoginDelta) loginDeltaDays = EnderPay.maxLoginDelta;
+            if (loginDeltaDays > EnderPay.settings.getMaxLoginDelta())
+                loginDeltaDays = EnderPay.settings.getMaxLoginDelta();
             this.lastLogin = now;
-            this.balance += loginDeltaDays * EnderPay.basicIncomeAmount;
+            this.balance += loginDeltaDays * EnderPay.settings.getBasicIncomeAmount();
         }
-        if (activityDeltaDays > EnderPay.resetLoginDelta) {
-            this.balance = EnderPay.startBalance;
+        if (activityDeltaDays > EnderPay.settings.getResetLoginDelta()) {
+            this.balance = EnderPay.settings.getStartBalance();
         }
         return balanceBefore != balance;
     }
