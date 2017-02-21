@@ -121,7 +121,7 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
         ByteBufUtils.writeUTF8String(buffer, this.currencyNameMultiple);
         buffer.writeLong(this.maxLoginDelta);
         buffer.writeBoolean(this.basicIncome);
-        buffer.writeLong(this.basicIncomeAmount);
+        buffer.writeInt(this.basicIncomeAmount);
         buffer.writeBoolean(this.stampedMoney);
         buffer.writeInt(this.stampedMoneyPercent);
         buffer.writeInt(this.startBalance);
