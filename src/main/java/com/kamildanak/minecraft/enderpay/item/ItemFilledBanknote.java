@@ -9,10 +9,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -48,20 +47,26 @@ public class ItemFilledBanknote extends Item {
 
     @Nonnull
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer player, @Nonnull EnumHand handIn) {
         if (!worldIn.isRemote) {
-            ItemStack stack = player.getHeldItem(hand);
+            ItemStack stack = player.getHeldItem(handIn);
             int currentItemIndex = player.inventory.currentItem;
-            if (!stack.isItemEqual(player.inventory.getStackInSlot(currentItemIndex))) return EnumActionResult.FAIL;
+            if (!stack.isItemEqual(player.inventory.getStackInSlot(currentItemIndex)))
+                //noinspection unchecked
+                return new ActionResult(EnumActionResult.FAIL, player.getHeldItem(handIn));
             player.inventory.decrStackSize(currentItemIndex, 1);
-            if (stack.getTagCompound() == null) return EnumActionResult.FAIL;
-            if (!stack.getTagCompound().hasKey("Amount")) return EnumActionResult.FAIL;
+            if (stack.getTagCompound() == null)
+                //noinspection unchecked
+                return new ActionResult(EnumActionResult.FAIL, player.getHeldItem(handIn));
+            if (!stack.getTagCompound().hasKey("Amount"))
+                //noinspection unchecked
+                return new ActionResult(EnumActionResult.FAIL, player.getHeldItem(handIn));
             long amount = stack.getTagCompound().getLong("Amount");
             Account.get(player).addBalance(amount);
-            player.setHeldItem(hand, ItemStack.EMPTY);
+            player.setHeldItem(handIn, ItemStack.EMPTY);
         }
-        //EnderPay.guiBanknote.open(playerIn, worldIn, pos);
-        return EnumActionResult.SUCCESS;
+        //noinspection unchecked
+        return new ActionResult(EnumActionResult.SUCCESS, player.getHeldItem(handIn));
     }
 
     private void setItemName(String name) {
