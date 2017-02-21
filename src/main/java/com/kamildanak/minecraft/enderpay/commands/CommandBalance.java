@@ -17,13 +17,13 @@ import javax.annotation.Nullable;
 public class CommandBalance extends CommandBase {
     @Override
     @Nonnull
-    public String getCommandName() {
+    public String getName() {
         return "balance";
     }
 
     @Override
     @Nonnull
-    public String getCommandUsage(@Nullable ICommandSender sender) {
+    public String getUsage(@Nullable ICommandSender sender) {
         return "commands.balance.usage";
     }
 

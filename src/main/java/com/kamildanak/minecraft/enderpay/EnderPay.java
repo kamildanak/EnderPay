@@ -34,11 +34,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import java.io.File;
 
 @Mod(modid = EnderPay.modID, name = EnderPay.modName, version = EnderPay.version,
-        acceptedMinecraftVersions = "[1.10,1.10.2]")
+        acceptedMinecraftVersions = "[1.11,1.11.2]")
 public class EnderPay {
     public static final String modID = "enderpay";
     static final String modName = "enderpay";
-    static final String version = "0.1";
+    static final String version = "0.2";
 
     @Mod.Instance(modID)
     @SuppressWarnings("unused")

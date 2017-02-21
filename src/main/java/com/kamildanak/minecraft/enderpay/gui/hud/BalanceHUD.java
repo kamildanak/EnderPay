@@ -44,7 +44,7 @@ public class BalanceHUD extends GuiExtended {
         if (event.getType() != RenderGameOverlayEvent.ElementType.EXPERIENCE &&
                 event.getType() != RenderGameOverlayEvent.ElementType.HEALTHMOUNT)
             return;
-        if (mc == null || mc.thePlayer == null || mc.theWorld == null) return;
+        if (mc == null || mc.player == null || mc.world == null) return;
 
         drawBalance();
     }
@@ -66,9 +66,9 @@ public class BalanceHUD extends GuiExtended {
         int cx = width / 2;
         int textLength = fontRenderer.getStringWidth(text);
 
-        int drawHeight = height - 50 + (mc.thePlayer.capabilities.isCreativeMode ? 17 : 0) -
-                (!mc.thePlayer.capabilities.isCreativeMode && mc.thePlayer.isInsideOfMaterial(Material.WATER)
-                        && !mc.thePlayer.canBreatheUnderwater() ? 10 : 0);
+        int drawHeight = height - 50 + (mc.player.capabilities.isCreativeMode ? 17 : 0) -
+                (!mc.player.capabilities.isCreativeMode && mc.player.isInsideOfMaterial(Material.WATER)
+                        && !mc.player.canBreatheUnderwater() ? 10 : 0);
         drawTexturedModalRect(cx + 82 - textLength - 4 - 7, drawHeight - 1, 0, 0, 16, 11);
         drawString(fontRenderer, text, cx + 82 - textLength + 9 - 2, drawHeight + 1, 0xa0a0a0);
 

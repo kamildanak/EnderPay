@@ -7,6 +7,7 @@ import com.kamildanak.minecraft.enderpay.item.ItemBlankBanknote;
 import com.kamildanak.minecraft.enderpay.item.ItemFilledBanknote;
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nonnull;
 import java.util.UUID;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
@@ -34,18 +35,19 @@ public class EnderPayApi {
         addToBalance(uuid, -amount);
     }
 
+    @Nonnull
     public static ItemStack getBanknote(long creditsAmount) {
         return ItemFilledBanknote.getItemStack(creditsAmount);
     }
 
-    public static long getBanknoteOriginalValue(ItemStack itemStack) throws NotABanknoteException {
+    public static long getBanknoteOriginalValue(@Nonnull ItemStack itemStack) throws NotABanknoteException {
         if (!isBlankBanknote(itemStack) && !isFilledBanknote(itemStack)) throw new NotABanknoteException();
         if (!isValidFilledBanknote(itemStack)) return 0;
         //noinspection ConstantConditions - itemStack.getTagCompund() == null checked in isValidFilledBanknote()
         return itemStack.getTagCompound().getLong("Amount");
     }
 
-    public static long getBanknoteCurrentValue(ItemStack itemStack) throws NotABanknoteException {
+    public static long getBanknoteCurrentValue(@Nonnull ItemStack itemStack) throws NotABanknoteException {
         long amount = getBanknoteOriginalValue(itemStack);
         if (amount <= 0) return 0;
         long dayAfter = Utils.daysAfterDate(ItemFilledBanknote.getDateIssued(itemStack));
@@ -58,20 +60,20 @@ public class EnderPayApi {
         return amount;
     }
 
-    public static boolean isValidFilledBanknote(ItemStack itemStack) {
-        return itemStack != null &&
+    public static boolean isValidFilledBanknote(@Nonnull ItemStack itemStack) {
+        return !itemStack.isEmpty() &&
                 itemStack.getItem() instanceof ItemFilledBanknote &&
                 itemStack.getTagCompound() != null &&
                 itemStack.getTagCompound().hasKey("Amount") &&
                 itemStack.getTagCompound().hasKey("DateIssued");
     }
 
-    public static boolean isFilledBanknote(ItemStack itemStack) {
-        return itemStack != null && itemStack.getItem() instanceof ItemFilledBanknote;
+    public static boolean isFilledBanknote(@Nonnull ItemStack itemStack) {
+        return !itemStack.isEmpty() && itemStack.getItem() instanceof ItemFilledBanknote;
     }
 
-    public static boolean isBlankBanknote(ItemStack itemStack) {
-        return itemStack != null && itemStack.getItem() instanceof ItemBlankBanknote;
+    public static boolean isBlankBanknote(@Nonnull ItemStack itemStack) {
+        return !itemStack.isEmpty() && itemStack.getItem() instanceof ItemBlankBanknote;
     }
 
     @Deprecated

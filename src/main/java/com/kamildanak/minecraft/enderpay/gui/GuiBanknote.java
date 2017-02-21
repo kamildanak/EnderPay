@@ -25,13 +25,13 @@ public class GuiBanknote extends GuiScreenPlus {
             @Override
             public void onClick() {
                 PacketDispatcher.sendToServer(new MessageIssueBanknote(editBigInteger.getValue().longValue()));
-                mc.thePlayer.closeScreen();
+                mc.player.closeScreen();
             }
         });
         addChild(new GuiExButton(76, 36, 60, 20, "gui.enderpay:gui_banknote.cancel"){
             @Override
             public void onClick() {
-                mc.thePlayer.closeScreen();
+                mc.player.closeScreen();
             }
         });
     }

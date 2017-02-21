@@ -33,7 +33,7 @@ public class ProxyClient extends Proxy {
 
     @Override
     public EntityPlayer getPlayerEntity(MessageContext ctx) {
-        return (ctx.side.isClient() ? mc.thePlayer : super.getPlayerEntity(ctx));
+        return (ctx.side.isClient() ? mc.player : super.getPlayerEntity(ctx));
     }
 
     @Override

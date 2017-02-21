@@ -20,7 +20,7 @@ import java.util.List;
 public class CommandWallet extends CommandBase {
     @Override
     @Nonnull
-    public String getCommandName() {
+    public String getName() {
         return "wallet";
     }
 
@@ -31,7 +31,7 @@ public class CommandWallet extends CommandBase {
 
     @Override
     @Nonnull
-    public String getCommandUsage(@Nullable ICommandSender sender) {
+    public String getUsage(@Nullable ICommandSender sender) {
         return "commands.wallet.usage";
     }
 
@@ -42,27 +42,27 @@ public class CommandWallet extends CommandBase {
             Account account = Account.get(entityplayer);
             account.update();
             if ("balance".equals(args[0])) {
-                sender.addChatMessage(new TextComponentTranslation("commands.wallet.balance.success",
-                        entityplayer.getName(), account.getBalance()));
+                sender.sendMessage((new TextComponentTranslation("commands.wallet.balance.success",
+                        entityplayer.getName(), account.getBalance())));
                 return;
             }
             long amount = parseLong(args[2]);
             if ("set".equals(args[0])) {
                 account.setBalance(amount);
-                sender.addChatMessage(new TextComponentTranslation("commands.wallet.set.success",
-                        entityplayer.getName(), account.getBalance()));
+                sender.sendMessage((new TextComponentTranslation("commands.wallet.set.success",
+                        entityplayer.getName(), account.getBalance())));
                 return;
             }
             if ("give".equals(args[0])) {
                 account.addBalance(amount);
-                sender.addChatMessage(new TextComponentTranslation("commands.wallet.give.success",
-                        amount, entityplayer.getName()));
+                sender.sendMessage((new TextComponentTranslation("commands.wallet.give.success",
+                        amount, entityplayer.getName())));
                 return;
             }
             if ("take".equals(args[0])) {
                 account.addBalance(-amount);
-                sender.addChatMessage(new TextComponentTranslation("commands.wallet.take.success",
-                        amount, entityplayer.getName()));
+                sender.sendMessage((new TextComponentTranslation("commands.wallet.take.success",
+                        amount, entityplayer.getName())));
                 return;
             }
             PacketDispatcher.sendTo(new MessageBalance(account.getBalance()), entityplayer);
@@ -73,13 +73,13 @@ public class CommandWallet extends CommandBase {
 
     @Override
     @Nonnull
-    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
         if (args.length == 1) {
             //noinspection RedundantArrayCreation
             return getListOfStringsMatchingLastWord(args, new String[]{"give", "take", "set", "balance"});
         }
         if (args.length == 2) {
-            return getListOfStringsMatchingLastWord(args, server.getAllUsernames());
+            return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
         }
         return Collections.emptyList();
     }

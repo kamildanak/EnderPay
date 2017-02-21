@@ -31,6 +31,7 @@ public class ItemFilledBanknote extends Item {
         return Utils.daysAfterDate(dateIssued) >= EnderPay.settings.getDaysAfterBanknotesExpires();
     }
 
+    @Nonnull
     public static ItemStack getItemStack(long creditsAmount) {
         ItemStack newBanknote = new ItemStack(EnderPay.itemFilledBanknote);
         NBTTagCompound tag = new NBTTagCompound();
@@ -40,22 +41,24 @@ public class ItemFilledBanknote extends Item {
         return newBanknote;
     }
 
-    public static long getDateIssued(ItemStack stack) {
+    public static long getDateIssued(@Nonnull ItemStack stack) {
         if (stack.getTagCompound() == null) return 0;
         return stack.getTagCompound().getLong("DateIssued");
     }
 
     @Nonnull
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!worldIn.isRemote) {
-            int currentItemIndex = playerIn.inventory.currentItem;
-            if (!stack.isItemEqual(playerIn.inventory.getStackInSlot(currentItemIndex))) return EnumActionResult.FAIL;
-            playerIn.inventory.decrStackSize(currentItemIndex, 1);
+            ItemStack stack = player.getHeldItem(hand);
+            int currentItemIndex = player.inventory.currentItem;
+            if (!stack.isItemEqual(player.inventory.getStackInSlot(currentItemIndex))) return EnumActionResult.FAIL;
+            player.inventory.decrStackSize(currentItemIndex, 1);
             if (stack.getTagCompound() == null) return EnumActionResult.FAIL;
             if (!stack.getTagCompound().hasKey("Amount")) return EnumActionResult.FAIL;
             long amount = stack.getTagCompound().getLong("Amount");
-            Account.get(playerIn).addBalance(amount);
+            Account.get(player).addBalance(amount);
+            player.setHeldItem(hand, ItemStack.EMPTY);
         }
         //EnderPay.guiBanknote.open(playerIn, worldIn, pos);
         return EnumActionResult.SUCCESS;
@@ -68,7 +71,7 @@ public class ItemFilledBanknote extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+    public void addInformation(@Nonnull ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
         if (stack.getTagCompound() == null) return;
         if (!stack.getTagCompound().hasKey("Amount")) {
             tooltip.add(Utils.format(0) + " " + BalanceHUD.getCurrency());

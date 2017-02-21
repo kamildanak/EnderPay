@@ -16,13 +16,13 @@ import java.util.List;
 public class CommandPay extends CommandBase {
     @Override
     @Nonnull
-    public String getCommandName() {
+    public String getName() {
         return "pay";
     }
 
     @Override
     @Nonnull
-    public String getCommandUsage(@Nullable ICommandSender sender) {
+    public String getUsage(@Nullable ICommandSender sender) {
         return "commands.pay.usage";
     }
 
@@ -51,9 +51,9 @@ public class CommandPay extends CommandBase {
 
     @Override
     @Nonnull
-    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
         if (args.length == 1) {
-            return getListOfStringsMatchingLastWord(args, server.getAllUsernames());
+            return getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
         }
         return Collections.emptyList();
     }

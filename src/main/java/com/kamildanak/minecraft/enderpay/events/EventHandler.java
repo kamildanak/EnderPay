@@ -22,7 +22,7 @@ public class EventHandler {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
-        if (event.getEntity() instanceof EntityPlayer && !event.getEntity().worldObj.isRemote) {
+        if (event.getEntity() instanceof EntityPlayer && !event.getEntity().world.isRemote) {
             Account account = Account.get((EntityPlayer) event.getEntity());
             account.update();
             long balance = account.getBalance();
@@ -50,7 +50,7 @@ public class EventHandler {
         lastTickEvent = now;
         MinecraftServer server = EnderPay.minecraftServer;
         if (server == null) return;
-        for (EntityPlayerMP entityPlayer : server.getPlayerList().getPlayerList()) {
+        for (EntityPlayerMP entityPlayer : server.getPlayerList().getPlayers()) {
             Account account = Account.get(entityPlayer);
             if (account.update())
                 PacketDispatcher.sendTo(new MessageBalance(account.getBalance()), entityPlayer);

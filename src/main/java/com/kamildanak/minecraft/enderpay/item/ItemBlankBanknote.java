@@ -21,8 +21,8 @@ public class ItemBlankBanknote extends Item {
 
     @Nonnull
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        EnderPay.guiBanknote.open(playerIn, worldIn, pos);
+    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ){
+        EnderPay.guiBanknote.open(player, worldIn, pos);
         return EnumActionResult.SUCCESS;
     }
 
