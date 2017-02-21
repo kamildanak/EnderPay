@@ -17,7 +17,9 @@ public class Settings {
     private int daysAfterBanknotesExpires;
     private int resetLoginDelta;
     private int dayLength;
-
+    private int xOffset;
+    private int yOffset;
+    private boolean positionRelative;
 
     @SuppressWarnings("WeakerAccess")
     public Settings() {
@@ -56,6 +58,15 @@ public class Settings {
 
         registerBanknoteRecipe = config.getBoolean("registerBanknoteRecipe", "general", true,
                 "Set to true to allow crafting banknotes");
+
+        positionRelative = config.getBoolean("positionRelative", "gui", true,
+                "Set to false to set absolute hud position");
+
+        xOffset = config.getInt("xOffset", "gui", 0, -10000, 10000,
+                "HUD x offset in scalled pixels");
+
+        yOffset = config.getInt("yOffset", "gui", 0, -10000, 10000,
+                "HUD y offset in scalled pixels");
     }
 
     public String getCurrencyNameSingular() {
@@ -108,6 +119,18 @@ public class Settings {
 
     public int getDayLength() {
         return dayLength;
+    }
+
+    public int getxOffset() {
+        return xOffset;
+    }
+
+    public int getyOffset() {
+        return yOffset;
+    }
+
+    public boolean isPositionRelative() {
+        return positionRelative;
     }
 
     public void setSettings(MessageSettings settings) {
