@@ -1,0 +1,22 @@
+commands.balance.usage=/balance
+commands.balance.success=Баланс: %s
+
+commands.wallet.usage=/wallet <give|take|set|balance> <игрок> <кол-во>
+commands.wallet.balance.success=Баланс %s: %s
+commands.wallet.set.success=Баланс %s установлен на %s
+commands.wallet.give.success=%s добавлено к балансу %s
+commands.wallet.take.success=%s отнято с баланса %s
+
+commands.pay.usage=/pay <игрок> <кол-во>
+commands.pay.number_must_be_positive=Нельзя платить отрицательным количеством кредитов. Это было бы грубо.
+commands.pay.insufficient_credit=Недостаточно кредитов для оплаты. :(
+
+item.enderpay:blank_banknote.name=Пустая банкнота
+item.enderpay:filled_banknote.name=Заполненная банкнота
+
+exception.enderpay.number_must_be_positive=Никто не захочет использовать банкноту с отрицательным значением.
+exception.enderpay.insufficient_credit=Недостаточно кредитов для выпуска банкноты. :(
+
+gui.enderpay:gui_banknote.issue=Выпустить
+gui.enderpay:gui_banknote.cancel=Отмена
+gui.enderpay:gui_banknote.number_of_credits=Количество кредитов
