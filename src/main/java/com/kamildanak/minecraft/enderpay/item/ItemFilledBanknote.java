@@ -71,7 +71,7 @@ public class ItemFilledBanknote extends Item {
 
     private void setItemName(String name) {
         this.setRegistryName(name);
-        this.setUnlocalizedName(this.getRegistryName().toString());
+        this.setUnlocalizedName(name);
     }
 
     @Override

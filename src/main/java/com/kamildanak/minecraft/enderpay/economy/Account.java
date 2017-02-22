@@ -73,7 +73,6 @@ public class Account {
     }
 
     public boolean update() {
-        long balanceBefore = this.balance;
         long now = Utils.getCurrentDay();
         long activityDeltaDays = now - this.lastCountActivity;
         this.lastCountActivity = now;
@@ -96,7 +95,7 @@ public class Account {
         if (activityDeltaDays > EnderPay.settings.getResetLoginDelta()) {
             this.balance = EnderPay.settings.getStartBalance();
         }
-        return balanceBefore != balance;
+        return activityDeltaDays > 0;
     }
 
     public void writeIfChanged() throws IOException {

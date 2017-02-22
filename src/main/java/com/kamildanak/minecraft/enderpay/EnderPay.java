@@ -50,8 +50,10 @@ public class EnderPay {
     public static Item itemBlankBanknote;
     public static Item itemFilledBanknote;
     @SidedProxy(clientSide = "com.kamildanak.minecraft.enderpay.proxy.ProxyClient", serverSide = "com.kamildanak.minecraft.enderpay.proxy.Proxy")
+    @SuppressWarnings("unused")
     public static Proxy proxy;
     @SidedProxy(clientSide = "com.kamildanak.minecraft.enderpay.proxy.SettingsClient", serverSide = "com.kamildanak.minecraft.enderpay.proxy.Settings")
+    @SuppressWarnings("unused")
     public static Settings settings;
     private static Configuration config;
 
