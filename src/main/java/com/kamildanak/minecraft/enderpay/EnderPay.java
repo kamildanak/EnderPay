@@ -38,7 +38,7 @@ import java.io.File;
 public class EnderPay {
     public static final String modID = "enderpay";
     static final String modName = "enderpay";
-    static final String version = "0.2";
+    static final String version = "0.3";
 
     @Mod.Instance(modID)
     @SuppressWarnings("unused")
