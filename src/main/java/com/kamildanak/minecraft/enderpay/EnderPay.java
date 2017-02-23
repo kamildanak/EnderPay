@@ -38,7 +38,7 @@ import java.io.File;
 public class EnderPay {
     public static final String modID = "enderpay";
     static final String modName = "enderpay";
-    static final String version = "0.1";
+    static final String version = "0.3";
 
     @Mod.Instance(modID)
     @SuppressWarnings("unused")
@@ -50,8 +50,10 @@ public class EnderPay {
     public static Item itemBlankBanknote;
     public static Item itemFilledBanknote;
     @SidedProxy(clientSide = "com.kamildanak.minecraft.enderpay.proxy.ProxyClient", serverSide = "com.kamildanak.minecraft.enderpay.proxy.Proxy")
+    @SuppressWarnings("unused")
     public static Proxy proxy;
     @SidedProxy(clientSide = "com.kamildanak.minecraft.enderpay.proxy.SettingsClient", serverSide = "com.kamildanak.minecraft.enderpay.proxy.Settings")
+    @SuppressWarnings("unused")
     public static Settings settings;
     private static Configuration config;
 

@@ -24,6 +24,9 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
     private int daysAfterBanknotesExpires;
     private int resetLoginDelta;
     private int dayLength;
+    private int xOffset;
+    private int yOffset;
+    private boolean positionRelative;
 
     @SuppressWarnings("unused")
     public MessageSettings() {
@@ -43,6 +46,9 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
         this.daysAfterBanknotesExpires = settings.getDaysAfterBanknotesExpires();
         this.resetLoginDelta = settings.getResetLoginDelta();
         this.dayLength = settings.getDayLength();
+        this.xOffset = settings.getxOffset();
+        this.yOffset = settings.getyOffset();
+        this.positionRelative = settings.isPositionRelative();
     }
 
 
@@ -98,6 +104,18 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
         return dayLength;
     }
 
+    public int getxOffset() {
+        return xOffset;
+    }
+
+    public int getyOffset() {
+        return yOffset;
+    }
+
+    public boolean isPositionRelative() {
+        return positionRelative;
+    }
+
     @Override
     protected void read(PacketBuffer buffer) throws IOException {
         this.currencyNameSingular = ByteBufUtils.readUTF8String(buffer);
@@ -113,6 +131,9 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
         this.daysAfterBanknotesExpires = buffer.readInt();
         this.resetLoginDelta = buffer.readInt();
         this.dayLength = buffer.readInt();
+        this.xOffset = buffer.readInt();
+        this.yOffset = buffer.readInt();
+        this.positionRelative = buffer.readBoolean();
     }
 
     @Override
@@ -130,6 +151,9 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
         buffer.writeInt(this.daysAfterBanknotesExpires);
         buffer.writeInt(this.resetLoginDelta);
         buffer.writeInt(this.dayLength);
+        buffer.writeInt(this.xOffset);
+        buffer.writeInt(this.yOffset);
+        buffer.writeBoolean(this.positionRelative);
     }
 
     @Override

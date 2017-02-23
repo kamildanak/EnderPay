@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -47,18 +48,22 @@ public class ItemFilledBanknote extends Item {
 
     @Nonnull
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStackIn, World worldIn, EntityPlayer playerIn, EnumHand hand){
         if (!worldIn.isRemote) {
             int currentItemIndex = playerIn.inventory.currentItem;
-            if (!stack.isItemEqual(playerIn.inventory.getStackInSlot(currentItemIndex))) return EnumActionResult.FAIL;
+            ItemStack stack = playerIn.getHeldItem(hand);
+            if (!stack.isItemEqual(playerIn.inventory.getStackInSlot(currentItemIndex)))
+                return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
             playerIn.inventory.decrStackSize(currentItemIndex, 1);
-            if (stack.getTagCompound() == null) return EnumActionResult.FAIL;
-            if (!stack.getTagCompound().hasKey("Amount")) return EnumActionResult.FAIL;
+            if (stack.getTagCompound() == null)
+                return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
+            if (!stack.getTagCompound().hasKey("Amount"))
+                return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStackIn);
             long amount = stack.getTagCompound().getLong("Amount");
             Account.get(playerIn).addBalance(amount);
         }
         //EnderPay.guiBanknote.open(playerIn, worldIn, pos);
-        return EnumActionResult.SUCCESS;
+        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStackIn);
     }
 
     private void setItemName(String name) {

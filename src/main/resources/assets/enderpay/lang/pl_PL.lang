@@ -1,0 +1,22 @@
+﻿commands.balance.usage=/balance
+commands.balance.success=Stan konta: %s
+
+commands.wallet.usage=/wallet <give|take|set|balance> <gracz> <kwota>
+commands.wallet.balance.success=Stan konta %s: %s
+commands.wallet.set.success=Stan konta %s ustawiony na %s
+commands.wallet.give.success=%s dodatne do stanu konta %s
+commands.wallet.take.success=%s zabrane ze stanu konta %s
+
+commands.pay.usage=/pay <gracz> <kwota>
+commands.pay.number_must_be_positive=Nie możesz zapłacić komuś ujemnej kwoty. Byłoby to niegrzeczne.
+commands.pay.insufficient_credit=Nie masz wystarczająco środków na koncie aby wykonać płatność. :(
+
+item.enderpay:blank_banknote.name=Pusty banknot
+item.enderpay:filled_banknote.name=Wypełniony banknot
+
+exception.enderpay.number_must_be_positive=Nikt nie chce korzystać z banknotów o ujemnej wartości.
+exception.enderpay.insufficient_credit=Masz za mało srodków aby wydać ten banknot :(.
+
+gui.enderpay:gui_banknote.issue=Wydaj
+gui.enderpay:gui_banknote.cancel=Anuluj
+gui.enderpay:gui_banknote.number_of_credits=Ilość środków

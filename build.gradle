@@ -24,7 +24,7 @@ plugins {
 }
 */
 
-version = "1.10.2-0.0.1"
+version = "1.10.2-0.0.3"
 group = "com.kamildanak.minecraft.enderpay" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "enderpay"
 

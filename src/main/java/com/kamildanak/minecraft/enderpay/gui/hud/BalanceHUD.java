@@ -64,13 +64,22 @@ public class BalanceHUD extends GuiExtended {
         int width = resolution.getScaledWidth();
         int height = resolution.getScaledHeight();
         int cx = width / 2;
-        int textLength = fontRenderer.getStringWidth(text);
+        int x = 0;
+        int y = 0;
+        if(EnderPay.settings.isPositionRelative())
+        {
+            int textLength = fontRenderer.getStringWidth(text);
+            int drawHeight = height - 50 + (mc.thePlayer.capabilities.isCreativeMode ? 17 : 0) -
+                    (!mc.thePlayer.capabilities.isCreativeMode && mc.thePlayer.isInsideOfMaterial(Material.WATER)
+                            && !mc.thePlayer.canBreatheUnderwater() ? 10 : 0);
+            x = cx + 82 - textLength;
+            y = drawHeight;
+        }
+        x+=EnderPay.settings.getxOffset();
+        y+=EnderPay.settings.getyOffset();
 
-        int drawHeight = height - 50 + (mc.thePlayer.capabilities.isCreativeMode ? 17 : 0) -
-                (!mc.thePlayer.capabilities.isCreativeMode && mc.thePlayer.isInsideOfMaterial(Material.WATER)
-                        && !mc.thePlayer.canBreatheUnderwater() ? 10 : 0);
-        drawTexturedModalRect(cx + 82 - textLength - 4 - 7, drawHeight - 1, 0, 0, 16, 11);
-        drawString(fontRenderer, text, cx + 82 - textLength + 9 - 2, drawHeight + 1, 0xa0a0a0);
+        drawTexturedModalRect(x- 4 - 7, y - 1, 0, 0, 16, 11);
+        drawString(fontRenderer, text, x + 9 - 2, y + 1, 0xa0a0a0);
 
         mc.mcProfiler.endSection();
     }

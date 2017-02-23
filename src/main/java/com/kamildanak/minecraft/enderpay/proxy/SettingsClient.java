@@ -75,6 +75,21 @@ public class SettingsClient extends Settings {
         return super.getDayLength();
     }
 
+    public int getxOffset() {
+        if (Utils.isClient() && message != null) return message.getxOffset();
+        return super.getxOffset();
+    }
+
+    public int getyOffset() {
+        if (Utils.isClient() && message != null) return message.getyOffset();
+        return super.getyOffset();
+    }
+
+    public boolean isPositionRelative() {
+        if (Utils.isClient() && message != null) return message.isPositionRelative();
+        return super.isPositionRelative();
+    }
+
     public void setSettings(MessageSettings message) {
         this.message = message;
     }
