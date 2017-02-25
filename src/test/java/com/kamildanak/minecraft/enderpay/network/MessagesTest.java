@@ -7,9 +7,9 @@ import com.kamildanak.minecraft.enderpay.proxy.DummySettings;
 import com.kamildanak.minecraft.enderpay.proxy.ISettings;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
-import org.mockito.internal.matchers.apachecommons.ReflectionEquals;
+
+import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
 
 class MessagesTest {
     @Test
@@ -34,8 +34,8 @@ class MessagesTest {
         message.toBytes(buffer);
         AbstractMessage returnMessage = message.getClass().newInstance();
         returnMessage.fromBytes(buffer);
-        
-        Assert.assertTrue(new ReflectionEquals(returnMessage, (String[])null).matches(message));
+
+        assertReflectionEquals(returnMessage, message);
     }
 
 }
