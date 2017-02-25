@@ -18,9 +18,14 @@ public class MessageBalance extends AbstractMessage.AbstractClientMessage<Messag
     public MessageBalance() {
     }
 
-    public MessageBalance(long balance) {
+    public MessageBalance(long balance, long date) {
         this.balance = balance;
-        this.date = Utils.getCurrentDay();
+        this.date = date;
+    }
+
+    public MessageBalance(long balance)
+    {
+        this(balance, Utils.getCurrentDay());
     }
 
     @Override

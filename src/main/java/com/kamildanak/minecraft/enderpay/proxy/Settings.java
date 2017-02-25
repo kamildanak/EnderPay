@@ -3,7 +3,7 @@ package com.kamildanak.minecraft.enderpay.proxy;
 import com.kamildanak.minecraft.enderpay.network.client.MessageSettings;
 import net.minecraftforge.common.config.Configuration;
 
-public class Settings {
+public class Settings implements ISettings{
     private String currencyNameSingular;
     private String currencyNameMultiple;
     private long maxLoginDelta;

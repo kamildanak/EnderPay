@@ -2,7 +2,7 @@ package com.kamildanak.minecraft.enderpay.network.client;
 
 import com.kamildanak.minecraft.enderpay.EnderPay;
 import com.kamildanak.minecraft.enderpay.network.AbstractMessage;
-import com.kamildanak.minecraft.enderpay.proxy.Settings;
+import com.kamildanak.minecraft.enderpay.proxy.ISettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -32,7 +32,7 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
     public MessageSettings() {
     }
 
-    public MessageSettings(Settings settings) {
+    public MessageSettings(ISettings settings) {
         this.currencyNameSingular = settings.getCurrencyNameSingular();
         this.currencyNameMultiple = settings.getCurrencyNameMultiple();
         this.maxLoginDelta = settings.getMaxLoginDelta();

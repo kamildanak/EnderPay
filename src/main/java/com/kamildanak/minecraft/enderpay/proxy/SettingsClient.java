@@ -3,7 +3,8 @@ package com.kamildanak.minecraft.enderpay.proxy;
 import com.kamildanak.minecraft.enderpay.Utils;
 import com.kamildanak.minecraft.enderpay.network.client.MessageSettings;
 
-public class SettingsClient extends Settings {
+@SuppressWarnings("unused")
+public class SettingsClient extends Settings implements ISettings {
     private MessageSettings message;
 
     public SettingsClient() {
