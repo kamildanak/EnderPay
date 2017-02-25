@@ -1,0 +1,22 @@
+commands.balance.usage=/balance
+commands.balance.success=Argent disponible : %s
+
+commands.wallet.usage=/wallet <give|take|set|balance> <joueur> <montant>
+commands.wallet.balance.success=Compte de %s : %s
+commands.wallet.set.success=Le montant du compte de %s a été fixé à %s
+commands.wallet.give.success=%s ajoutés au compte de %s
+commands.wallet.take.success=%s retirés au compte de %s
+
+commands.pay.usage=/pay <jouuer> <montant>
+commands.pay.number_must_be_positive=Vous ne pouvez pas payer quelqu'un avec un montant négatif. C'est malpoli.
+commands.pay.insufficient_credit=Vous n'avez pas suffisamment d'argent pour payer ce montant :(.
+
+item.enderpay:blank_banknote.name=Chèque vierge
+item.enderpay:filled_banknote.name=Chèque rempli
+
+exception.enderpay.number_must_be_positive=Personne ne voudrait utiliser un chèque avec un montant négatif.
+exception.enderpay.insufficient_credit=Vous n'avez pas suffisamment d'argent pour faire ce chèque, et personne n'aime les chèques en bois :(.
+
+gui.enderpay:gui_banknote.issue=Signer
+gui.enderpay:gui_banknote.cancel=Annuler
+gui.enderpay:gui_banknote.number_of_credits=Montant
