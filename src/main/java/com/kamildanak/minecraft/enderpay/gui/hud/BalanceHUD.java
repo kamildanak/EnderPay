@@ -44,7 +44,7 @@ public class BalanceHUD extends GuiExtended {
         if (event.getType() != RenderGameOverlayEvent.ElementType.EXPERIENCE &&
                 event.getType() != RenderGameOverlayEvent.ElementType.HEALTHMOUNT)
             return;
-        if (mc == null || mc.player == null || mc.world == null) return;
+        if (mc == null || mc.player == null || mc.world == null || mc.player.isSpectator()) return;
 
         drawBalance();
     }
