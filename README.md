@@ -11,6 +11,7 @@ The amount of tax taken each day is configurable (as well as other values)
 
 ## Crafting recipes
 This mod allows you to craft blank banknote with the following recipe.
+
 ![Banknote crafting recipe](/screenshots/blank_banknote_recipe.png)
 
 Right click with blank banknote in your hand to open GUI where you can enter the amount of credits to fill the banknote with.
