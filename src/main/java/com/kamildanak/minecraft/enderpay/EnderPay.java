@@ -29,17 +29,16 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.io.File;
 
-@Mod(modid = EnderPay.modID, name = EnderPay.modName, version = EnderPay.version,
-        acceptedMinecraftVersions = "[1.12]")
+@Mod(modid = EnderPay.modID, name = EnderPay.modName, version = EnderPay.VERSION,
+        acceptedMinecraftVersions = EnderPay.ACCEPTED_VERSIONS)
 public class EnderPay {
     public static final String modID = "enderpay";
-    static final String modName = "enderpay";
-    static final String version = "0.0.4";
-
+    static final String VERSION = "{@enderPayVersion}";
+    static final String ACCEPTED_VERSIONS = "{@mcVersion}";
+    static final String modName = "EnderPay Economy Api";
     @Mod.Instance(modID)
     @SuppressWarnings("unused")
     public static EnderPay instance;
@@ -66,10 +65,7 @@ public class EnderPay {
 
         settings.loadConfig(config);
         itemBlankBanknote = new ItemBlankBanknote("blank_banknote");
-        ForgeRegistries.ITEMS.register(itemBlankBanknote);
-
         itemFilledBanknote = new ItemFilledBanknote("filled_banknote");
-        ForgeRegistries.ITEMS.register(itemFilledBanknote);
     }
 
     @Mod.EventHandler

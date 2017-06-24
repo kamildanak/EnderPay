@@ -3,9 +3,9 @@
   "modid": "enderpay",
   "name": "EnderPay",
   "description": "Adds Economy to your Forge server.",
-  "version": "1.12-0.0.4",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
   "logoFile": "assets/enderpay/icon.png",
-  "mcversion": "1.12",
   "url": "https://github.com/kamildanak/EnderPay",
   "authorList": ["kamildanak"],
   "screenshots": []

@@ -14,6 +14,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -26,6 +27,7 @@ public class ItemFilledBanknote extends Item {
         this.setItemName(name);
         this.setCreativeTab(CreativeTabs.MISC);
         this.maxStackSize = 1;
+        ForgeRegistries.ITEMS.register(this);
     }
 
     public static boolean isExpired(long dateIssued) {
@@ -73,7 +75,7 @@ public class ItemFilledBanknote extends Item {
 
     private void setItemName(String name) {
         this.setRegistryName(name);
-        this.setUnlocalizedName(this.getRegistryName().toString());
+        this.setUnlocalizedName(EnderPay.modID + ":" + name);
     }
 
     @Override
