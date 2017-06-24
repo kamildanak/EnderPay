@@ -27,6 +27,7 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
     private int xOffset;
     private int yOffset;
     private boolean positionRelative;
+    private int moneyDropValue;
 
     @SuppressWarnings("unused")
     public MessageSettings() {
@@ -49,6 +50,7 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
         this.xOffset = settings.getxOffset();
         this.yOffset = settings.getyOffset();
         this.positionRelative = settings.isPositionRelative();
+        this.moneyDropValue = settings.getMoneyDropValue();
     }
 
 
@@ -116,6 +118,10 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
         return positionRelative;
     }
 
+    public int getMoneyDropValue() {
+        return moneyDropValue;
+    }
+
     @Override
     protected void read(PacketBuffer buffer) throws IOException {
         this.currencyNameSingular = ByteBufUtils.readUTF8String(buffer);
@@ -134,6 +140,7 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
         this.xOffset = buffer.readInt();
         this.yOffset = buffer.readInt();
         this.positionRelative = buffer.readBoolean();
+        this.moneyDropValue = buffer.readInt();
     }
 
     @Override
@@ -154,6 +161,7 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
         buffer.writeInt(this.xOffset);
         buffer.writeInt(this.yOffset);
         buffer.writeBoolean(this.positionRelative);
+        buffer.writeInt(this.moneyDropValue);
     }
 
     @Override

@@ -32,4 +32,6 @@ public interface ISettings {
     int getyOffset();
 
     boolean isPositionRelative();
+
+    int getMoneyDropValue();
 }

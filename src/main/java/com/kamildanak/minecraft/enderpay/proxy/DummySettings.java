@@ -17,6 +17,7 @@ public class DummySettings implements ISettings{
     private int xOffset;
     private int yOffset;
     private boolean positionRelative;
+    private int moneyDropValue;
 
     public DummySettings(String currencyNameSingular,
                          String currencyNameMultiple,
@@ -33,7 +34,8 @@ public class DummySettings implements ISettings{
                          int dayLength,
                          int xOffset,
                          int yOffset,
-                         boolean positionRelative) {
+                         boolean positionRelative,
+                         int moneyDropValue) {
         this.currencyNameSingular = currencyNameSingular;
         this.currencyNameMultiple = currencyNameMultiple;
         this.maxLoginDelta = maxLoginDelta;
@@ -50,6 +52,7 @@ public class DummySettings implements ISettings{
         this.xOffset = xOffset;
         this.yOffset = yOffset;
         this.positionRelative = positionRelative;
+        this.moneyDropValue = moneyDropValue;
     }
 
     @Override
@@ -130,5 +133,10 @@ public class DummySettings implements ISettings{
     @Override
     public boolean isPositionRelative() {
         return positionRelative;
+    }
+
+    @Override
+    public int getMoneyDropValue() {
+        return moneyDropValue;
     }
 }

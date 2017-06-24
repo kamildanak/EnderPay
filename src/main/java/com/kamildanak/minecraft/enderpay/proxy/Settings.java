@@ -20,6 +20,7 @@ public class Settings implements ISettings{
     private int xOffset;
     private int yOffset;
     private boolean positionRelative;
+    private int moneyDropValue;
 
     @SuppressWarnings("WeakerAccess")
     public Settings() {
@@ -67,6 +68,10 @@ public class Settings implements ISettings{
 
         yOffset = config.getInt("yOffset", "gui", 0, -10000, 10000,
                 "HUD y offset in scalled pixels");
+
+        moneyDropValue = config.getInt("moneyDropValue", "general", 0, -2147483647,
+                100, "What percentage (0-100) or what amount (moneyDropValue<0)" +
+                        " of players money should be dropped on death");
     }
 
     public String getCurrencyNameSingular() {
@@ -131,6 +136,10 @@ public class Settings implements ISettings{
 
     public boolean isPositionRelative() {
         return positionRelative;
+    }
+
+    public int getMoneyDropValue() {
+        return moneyDropValue;
     }
 
     public void setSettings(MessageSettings settings) {

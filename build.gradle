@@ -1,7 +1,7 @@
 def mcVersion         = "1.12"
 def majorModVersion   = "0"
 def apiModVersion     = "0"
-def minorModVersion   = "4"
+def minorModVersion   = "5"
 def patchVersion = "0"
 version = mcVersion+"-"+majorModVersion+"."+apiModVersion+"."+minorModVersion+"."+patchVersion
 

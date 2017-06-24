@@ -2,14 +2,18 @@ package com.kamildanak.minecraft.enderpay.events;
 
 import com.kamildanak.minecraft.enderpay.EnderPay;
 import com.kamildanak.minecraft.enderpay.Utils;
+import com.kamildanak.minecraft.enderpay.api.EnderPayApi;
 import com.kamildanak.minecraft.enderpay.economy.Account;
 import com.kamildanak.minecraft.enderpay.network.PacketDispatcher;
 import com.kamildanak.minecraft.enderpay.network.client.MessageBalance;
 import com.kamildanak.minecraft.enderpay.network.client.MessageSettings;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -55,5 +59,31 @@ public class EventHandler {
             if (account.update())
                 PacketDispatcher.sendTo(new MessageBalance(account.getBalance()), entityPlayer);
         }
+    }
+
+    @SubscribeEvent
+    @SuppressWarnings("unused")
+    public void onLivingDeathEvent(LivingDeathEvent event) {
+        int moneyDropValue = EnderPay.settings.getMoneyDropValue();
+        if (moneyDropValue == 0) return;
+        Entity entity = event.getEntity();
+        if (!(entity instanceof EntityPlayer) || entity.world.isRemote) return;
+
+        Account account = Account.get((EntityPlayer) entity);
+        if (account.getBalance() <= 0) return;
+        int amountTaken = (moneyDropValue > 0) ?
+                (int) account.getBalance() * EnderPay.settings.getMoneyDropValue() / 100 :
+                (int) Math.max(Math.min(account.getBalance(), -EnderPay.settings.getMoneyDropValue()), 0);
+        account.addBalance(-amountTaken);
+
+        EntityItem entityitem = new EntityItem(entity.getEntityWorld(),
+                entity.posX, entity.posY + 1.2, entity.posZ,
+                EnderPayApi.getBanknote(amountTaken));
+        entity.getEntityWorld().spawnEntity(entityitem);
+
+        long balance = account.getBalance();
+        PacketDispatcher.sendTo(new MessageBalance(balance), (EntityPlayerMP) entity);
+        PacketDispatcher.sendTo(new MessageSettings(EnderPay.settings), (EntityPlayerMP) entity);
+
     }
 }
