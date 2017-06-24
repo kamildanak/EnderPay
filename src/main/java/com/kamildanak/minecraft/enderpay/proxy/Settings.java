@@ -71,7 +71,7 @@ public class Settings implements ISettings{
 
         pvpMoneyDrop = config.getInt("pvpMoneyDrop", "general", 0, -2147483647,
                 100, "What percentage (0-100) or what amount (pvpMoneyDrop<0)" +
-                        " of players money should be transfered to killer");
+                        " of players money should be transferred to slayer");
     }
 
     public String getCurrencyNameSingular() {
