@@ -17,7 +17,7 @@ public class DummySettings implements ISettings{
     private int xOffset;
     private int yOffset;
     private boolean positionRelative;
-    private int moneyDropValue;
+    private int pvpMoneyDrop;
 
     public DummySettings(String currencyNameSingular,
                          String currencyNameMultiple,
@@ -35,7 +35,7 @@ public class DummySettings implements ISettings{
                          int xOffset,
                          int yOffset,
                          boolean positionRelative,
-                         int moneyDropValue) {
+                         int pvpMoneyDrop) {
         this.currencyNameSingular = currencyNameSingular;
         this.currencyNameMultiple = currencyNameMultiple;
         this.maxLoginDelta = maxLoginDelta;
@@ -52,7 +52,7 @@ public class DummySettings implements ISettings{
         this.xOffset = xOffset;
         this.yOffset = yOffset;
         this.positionRelative = positionRelative;
-        this.moneyDropValue = moneyDropValue;
+        this.pvpMoneyDrop = pvpMoneyDrop;
     }
 
     @Override
@@ -136,7 +136,7 @@ public class DummySettings implements ISettings{
     }
 
     @Override
-    public int getMoneyDropValue() {
-        return moneyDropValue;
+    public int getPvpMoneyDrop() {
+        return pvpMoneyDrop;
     }
 }

@@ -62,7 +62,7 @@ public class EventHandler {
     @SubscribeEvent
     @SuppressWarnings("unused")
     public void onLivingDeathEvent(LivingDeathEvent event) {
-        int moneyDropValue = EnderPay.settings.getMoneyDropValue();
+        int moneyDropValue = EnderPay.settings.getPvpMoneyDrop();
         if (moneyDropValue == 0) return;
         Entity entity = event.getEntity();
         if (!(entity instanceof EntityPlayer) || entity.world.isRemote) return;
@@ -72,8 +72,8 @@ public class EventHandler {
         Account account = Account.get((EntityPlayer) entity);
         if (account.getBalance() <= 0) return;
         long amountTaken = (moneyDropValue > 0) ?
-                (account.getBalance() * EnderPay.settings.getMoneyDropValue()) / 100 :
-                Math.max(Math.min(account.getBalance(), -EnderPay.settings.getMoneyDropValue()), 0);
+                (account.getBalance() * EnderPay.settings.getPvpMoneyDrop()) / 100 :
+                Math.max(Math.min(account.getBalance(), -EnderPay.settings.getPvpMoneyDrop()), 0);
         account.addBalance(-amountTaken);
 
         long balance = account.getBalance();

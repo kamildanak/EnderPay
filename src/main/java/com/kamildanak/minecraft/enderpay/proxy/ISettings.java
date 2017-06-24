@@ -33,5 +33,5 @@ public interface ISettings {
 
     boolean isPositionRelative();
 
-    int getMoneyDropValue();
+    int getPvpMoneyDrop();
 }

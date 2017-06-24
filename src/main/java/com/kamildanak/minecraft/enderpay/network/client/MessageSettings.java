@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.io.IOException;
 
-public class MessageSettings extends AbstractMessage.AbstractClientMessage<MessageSettings> {
+public class MessageSettings extends AbstractMessage.AbstractClientMessage<MessageSettings> implements ISettings {
     private String currencyNameSingular;
     private String currencyNameMultiple;
     private long maxLoginDelta;
@@ -27,7 +27,7 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
     private int xOffset;
     private int yOffset;
     private boolean positionRelative;
-    private int moneyDropValue;
+    private int pvpMoneyDrop;
 
     @SuppressWarnings("unused")
     public MessageSettings() {
@@ -50,7 +50,7 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
         this.xOffset = settings.getxOffset();
         this.yOffset = settings.getyOffset();
         this.positionRelative = settings.isPositionRelative();
-        this.moneyDropValue = settings.getMoneyDropValue();
+        this.pvpMoneyDrop = settings.getPvpMoneyDrop();
     }
 
 
@@ -118,8 +118,8 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
         return positionRelative;
     }
 
-    public int getMoneyDropValue() {
-        return moneyDropValue;
+    public int getPvpMoneyDrop() {
+        return pvpMoneyDrop;
     }
 
     @Override
@@ -140,7 +140,7 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
         this.xOffset = buffer.readInt();
         this.yOffset = buffer.readInt();
         this.positionRelative = buffer.readBoolean();
-        this.moneyDropValue = buffer.readInt();
+        this.pvpMoneyDrop = buffer.readInt();
     }
 
     @Override
@@ -161,7 +161,7 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
         buffer.writeInt(this.xOffset);
         buffer.writeInt(this.yOffset);
         buffer.writeBoolean(this.positionRelative);
-        buffer.writeInt(this.moneyDropValue);
+        buffer.writeInt(this.pvpMoneyDrop);
     }
 
     @Override

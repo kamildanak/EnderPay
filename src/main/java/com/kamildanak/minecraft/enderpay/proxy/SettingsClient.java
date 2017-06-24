@@ -91,9 +91,9 @@ public class SettingsClient extends Settings implements ISettings {
         return super.isPositionRelative();
     }
 
-    public int getMoneyDropValue() {
-        if (Utils.isClient() && message != null) return message.getMoneyDropValue();
-        return super.getMoneyDropValue();
+    public int getPvpMoneyDrop() {
+        if (Utils.isClient() && message != null) return message.getPvpMoneyDrop();
+        return super.getPvpMoneyDrop();
     }
 
     public void setSettings(MessageSettings message) {
