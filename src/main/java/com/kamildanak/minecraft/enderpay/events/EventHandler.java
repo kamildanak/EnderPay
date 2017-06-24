@@ -2,13 +2,11 @@ package com.kamildanak.minecraft.enderpay.events;
 
 import com.kamildanak.minecraft.enderpay.EnderPay;
 import com.kamildanak.minecraft.enderpay.Utils;
-import com.kamildanak.minecraft.enderpay.api.EnderPayApi;
 import com.kamildanak.minecraft.enderpay.economy.Account;
 import com.kamildanak.minecraft.enderpay.network.PacketDispatcher;
 import com.kamildanak.minecraft.enderpay.network.client.MessageBalance;
 import com.kamildanak.minecraft.enderpay.network.client.MessageSettings;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -68,22 +66,22 @@ public class EventHandler {
         if (moneyDropValue == 0) return;
         Entity entity = event.getEntity();
         if (!(entity instanceof EntityPlayer) || entity.world.isRemote) return;
+        Entity killer = event.getSource().getTrueSource();
+        if (!(killer instanceof EntityPlayerMP)) return;
 
         Account account = Account.get((EntityPlayer) entity);
         if (account.getBalance() <= 0) return;
-        int amountTaken = (moneyDropValue > 0) ?
-                (int) account.getBalance() * EnderPay.settings.getMoneyDropValue() / 100 :
-                (int) Math.max(Math.min(account.getBalance(), -EnderPay.settings.getMoneyDropValue()), 0);
+        long amountTaken = (moneyDropValue > 0) ?
+                (account.getBalance() * EnderPay.settings.getMoneyDropValue()) / 100 :
+                Math.max(Math.min(account.getBalance(), -EnderPay.settings.getMoneyDropValue()), 0);
         account.addBalance(-amountTaken);
-
-        EntityItem entityitem = new EntityItem(entity.getEntityWorld(),
-                entity.posX, entity.posY + 1.2, entity.posZ,
-                EnderPayApi.getBanknote(amountTaken));
-        entity.getEntityWorld().spawnEntity(entityitem);
 
         long balance = account.getBalance();
         PacketDispatcher.sendTo(new MessageBalance(balance), (EntityPlayerMP) entity);
-        PacketDispatcher.sendTo(new MessageSettings(EnderPay.settings), (EntityPlayerMP) entity);
 
+        Account killerAccount = Account.get((EntityPlayer) killer);
+        killerAccount.addBalance(amountTaken);
+        long balance2 = killerAccount.getBalance();
+        PacketDispatcher.sendTo(new MessageBalance(balance2), (EntityPlayerMP) killer);
     }
 }
