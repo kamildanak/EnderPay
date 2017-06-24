@@ -29,16 +29,16 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 import java.io.File;
 
 @Mod(modid = EnderPay.modID, name = EnderPay.modName, version = EnderPay.version,
-        acceptedMinecraftVersions = "[1.11,1.11.2]")
+        acceptedMinecraftVersions = "[1.12]")
 public class EnderPay {
     public static final String modID = "enderpay";
     static final String modName = "enderpay";
-    static final String version = "0.3";
+    static final String version = "0.0.4";
 
     @Mod.Instance(modID)
     @SuppressWarnings("unused")
@@ -63,21 +63,20 @@ public class EnderPay {
         config = new Configuration(event.getSuggestedConfigurationFile());
         config.load();
         proxy.preInit();
+
+        settings.loadConfig(config);
+        itemBlankBanknote = new ItemBlankBanknote("blank_banknote");
+        ForgeRegistries.ITEMS.register(itemBlankBanknote);
+
+        itemFilledBanknote = new ItemFilledBanknote("filled_banknote");
+        ForgeRegistries.ITEMS.register(itemFilledBanknote);
     }
 
     @Mod.EventHandler
     @SuppressWarnings("unused")
     public void init(FMLInitializationEvent event) {
-        settings.loadConfig(config);
-        itemBlankBanknote = new ItemBlankBanknote("blank_banknote");
-        GameRegistry.register(itemBlankBanknote);
-
-        itemFilledBanknote = new ItemFilledBanknote("filled_banknote");
-        GameRegistry.register(itemFilledBanknote);
-
         proxy.init();
         proxy.registerPackets();
-        proxy.registerCraftingRecipes();
         MinecraftForge.EVENT_BUS.register(new EventHandler());
 
         guiBanknote = new GuiHandler("wrench") {

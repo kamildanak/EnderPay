@@ -23,16 +23,20 @@ public class GuiScreenPlus extends GuiContainer {
 	public GuiElement root;
 
 	String backgroundTexture;
+    InputMouseEvent mouseEvent = new InputMouseEvent();
+    int oldX = -1;
+    int oldY = -1;
+    boolean[] downButtons = new boolean[12];
+    InputKeyboardEvent keyboardEvent = new InputKeyboardEvent();
 
-	public GuiScreenPlus(Container container, int w, int h, String backgroundTexture) {
-		super(container);
+    public GuiScreenPlus(Container container, int w, int h, String backgroundTexture) {
+        super(container);
 		root = new GuiElement(0, 0, w, h);
 		root.gui = this;
 		this.screenW = w;
 		this.screenH = h;
 		this.backgroundTexture = backgroundTexture;
 	}
-
 	public GuiScreenPlus(int w, int h, String backgroundTexture) {
 		this(new DummyContainer(), w, h, backgroundTexture);
 	}
@@ -45,11 +49,10 @@ public class GuiScreenPlus extends GuiContainer {
 		screenX = guiLeft;
 		screenY = guiTop;
 		root.onAdded();
-		
+
         Keyboard.enableRepeatEvents(true);
 	}
 
-	
 	@Override
 	public void handleInput() throws IOException {
 		while (Mouse.next()) {
@@ -60,12 +63,6 @@ public class GuiScreenPlus extends GuiContainer {
 			this.handleKeyboardInput();
 		}
 	}
-
-	InputMouseEvent mouseEvent = new InputMouseEvent();
-	int oldX = -1;
-	int oldY = -1;
-
-	boolean[] downButtons = new boolean[12];
 
 	@Override
 	public void handleMouseInput() throws IOException {
@@ -115,8 +112,6 @@ public class GuiScreenPlus extends GuiContainer {
 		}
 	}
 
-	InputKeyboardEvent keyboardEvent = new InputKeyboardEvent();
-
 	@Override
 	public void handleKeyboardInput() throws IOException {
 		keyboardEvent.handled = false;
@@ -162,28 +157,28 @@ public class GuiScreenPlus extends GuiContainer {
 	}
 
 	public void drawString(String text, int sx, int sy, int color) {
-		FontRenderer fontRenderer = this.fontRendererObj;
-		fontRenderer.drawString(text, sx, sy, color);
-	}
+        FontRenderer fontRenderer = this.fontRenderer;
+        fontRenderer.drawString(text, sx, sy, color);
+    }
 
 	public void drawCenteredString(String text, int sx, int sy, int color) {
-		FontRenderer fontRenderer = this.fontRendererObj;
-		fontRenderer.drawString(text, sx - fontRenderer.getStringWidth(text) / 2, sy - fontRenderer.FONT_HEIGHT / 2, color);
-	}
+        FontRenderer fontRenderer = this.fontRenderer;
+        fontRenderer.drawString(text, sx - fontRenderer.getStringWidth(text) / 2, sy - fontRenderer.FONT_HEIGHT / 2, color);
+    }
 
 	public void drawStringWithShadow(String text, int sx, int sy, int color) {
-		FontRenderer fontRenderer = this.fontRendererObj;
-		fontRenderer.drawStringWithShadow(text, sx, sy, color);
-	}
+        FontRenderer fontRenderer = this.fontRenderer;
+        fontRenderer.drawStringWithShadow(text, sx, sy, color);
+    }
 
 	public void drawCenteredStringWithShadow(String text, int sx, int sy, int color) {
-		FontRenderer fontRenderer = this.fontRendererObj;
-		fontRenderer.drawStringWithShadow(text, sx - fontRenderer.getStringWidth(text) / 2, sy - fontRenderer.FONT_HEIGHT / 2, color);
-	}
+        FontRenderer fontRenderer = this.fontRenderer;
+        fontRenderer.drawStringWithShadow(text, sx - fontRenderer.getStringWidth(text) / 2, sy - fontRenderer.FONT_HEIGHT / 2, color);
+    }
 
 	public FontRenderer fontRenderer() {
-		return mc.fontRendererObj;
-	}
+        return mc.fontRenderer;
+    }
 
 	protected void drawRect(int gx, int gy, int gw, int gh, int c1, int c2) {
 		drawGradientRect(gx, gy, gx + gw, gy + gh, c1, c2);

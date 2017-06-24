@@ -57,7 +57,7 @@ public class Settings implements ISettings{
                 "Day length in minutes");
 
         registerBanknoteRecipe = config.getBoolean("registerBanknoteRecipe", "general", true,
-                "Set to true to allow crafting banknotes");
+                "Set to true to allow crafting banknotes [temporary disabled]");
 
         positionRelative = config.getBoolean("positionRelative", "gui", true,
                 "Set to false to set absolute hud position");

@@ -1,17 +1,7 @@
 package com.kamildanak.minecraft.enderpay.network;
 
-import com.kamildanak.minecraft.enderpay.network.client.MessageBalance;
-import com.kamildanak.minecraft.enderpay.network.client.MessageSettings;
-import com.kamildanak.minecraft.enderpay.network.server.MessageIssueBanknote;
-import com.kamildanak.minecraft.enderpay.proxy.DummySettings;
-import com.kamildanak.minecraft.enderpay.proxy.ISettings;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import org.junit.jupiter.api.Test;
-
-import static org.unitils.reflectionassert.ReflectionAssert.assertReflectionEquals;
-
 class MessagesTest {
+/*
     @Test
     void testMessagesEncoding() throws InstantiationException, IllegalAccessException {
         testMessageEncodeDecode(new MessageBalance(100, 19066393223815L));
@@ -37,5 +27,5 @@ class MessagesTest {
 
         assertReflectionEquals(returnMessage, message);
     }
-
+*/
 }

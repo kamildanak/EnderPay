@@ -4,6 +4,7 @@ import com.kamildanak.minecraft.enderpay.EnderPay;
 import com.kamildanak.minecraft.enderpay.Utils;
 import com.kamildanak.minecraft.enderpay.economy.Account;
 import com.kamildanak.minecraft.enderpay.gui.hud.BalanceHUD;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -17,6 +18,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemFilledBanknote extends Item {
@@ -76,7 +78,7 @@ public class ItemFilledBanknote extends Item {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(@Nonnull ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         if (stack.getTagCompound() == null) return;
         if (!stack.getTagCompound().hasKey("Amount")) {
             tooltip.add(Utils.format(0) + " " + BalanceHUD.getCurrency());

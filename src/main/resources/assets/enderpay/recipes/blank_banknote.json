@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PGP",
+    "GIG",
+    "PGP"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:paper"
+    },
+    "G": {
+      "item": "minecraft:dye",
+      "data": 2
+    },
+    "I": {
+      "item": "minecraft:dye",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "enderpay:blank_banknote"
+  }
+}
