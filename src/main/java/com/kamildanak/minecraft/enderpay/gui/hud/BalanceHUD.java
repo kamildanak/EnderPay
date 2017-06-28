@@ -2,7 +2,7 @@ package com.kamildanak.minecraft.enderpay.gui.hud;
 
 import com.kamildanak.minecraft.enderpay.EnderPay;
 import com.kamildanak.minecraft.enderpay.Utils;
-import com.kamildanak.minecraft.enderpay.gui.lib.GuiExtended;
+import com.kamildanak.minecraft.foamflower.gui.GuiExtended;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

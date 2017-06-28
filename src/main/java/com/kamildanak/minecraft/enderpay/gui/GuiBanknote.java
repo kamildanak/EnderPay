@@ -1,11 +1,11 @@
 package com.kamildanak.minecraft.enderpay.gui;
 
-import com.kamildanak.minecraft.enderpay.gui.lib.GuiScreenPlus;
-import com.kamildanak.minecraft.enderpay.gui.lib.elements.GuiEditBigInteger;
-import com.kamildanak.minecraft.enderpay.gui.lib.elements.GuiExButton;
-import com.kamildanak.minecraft.enderpay.gui.lib.elements.GuiLabel;
 import com.kamildanak.minecraft.enderpay.network.PacketDispatcher;
 import com.kamildanak.minecraft.enderpay.network.server.MessageIssueBanknote;
+import com.kamildanak.minecraft.foamflower.gui.GuiScreenPlus;
+import com.kamildanak.minecraft.foamflower.gui.elements.GuiEditBigInteger;
+import com.kamildanak.minecraft.foamflower.gui.elements.GuiExButton;
+import com.kamildanak.minecraft.foamflower.gui.elements.GuiLabel;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
