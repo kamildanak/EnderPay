@@ -1,6 +1,10 @@
 package com.kamildanak.minecraft.enderpay.proxy;
 
+import com.kamildanak.minecraft.enderpay.gui.hud.Anchor;
+import com.kamildanak.minecraft.enderpay.gui.hud.Position;
+
 public class DummySettings implements ISettings{
+    private final Anchor anchor;
     private String currencyNameSingular;
     private String currencyNameMultiple;
     private long maxLoginDelta;
@@ -16,7 +20,7 @@ public class DummySettings implements ISettings{
     private int dayLength;
     private int xOffset;
     private int yOffset;
-    private boolean positionRelative;
+    private Position position;
     private int pvpMoneyDrop;
 
     public DummySettings(String currencyNameSingular,
@@ -34,7 +38,8 @@ public class DummySettings implements ISettings{
                          int dayLength,
                          int xOffset,
                          int yOffset,
-                         boolean positionRelative,
+                         Position position,
+                         Anchor anchor,
                          int pvpMoneyDrop) {
         this.currencyNameSingular = currencyNameSingular;
         this.currencyNameMultiple = currencyNameMultiple;
@@ -51,7 +56,8 @@ public class DummySettings implements ISettings{
         this.dayLength = dayLength;
         this.xOffset = xOffset;
         this.yOffset = yOffset;
-        this.positionRelative = positionRelative;
+        this.position = position;
+        this.anchor = anchor;
         this.pvpMoneyDrop = pvpMoneyDrop;
     }
 
@@ -131,8 +137,13 @@ public class DummySettings implements ISettings{
     }
 
     @Override
-    public boolean isPositionRelative() {
-        return positionRelative;
+    public Position getPosition() {
+        return position;
+    }
+
+    @Override
+    public Anchor getAnchor() {
+        return anchor;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.kamildanak.minecraft.enderpay.proxy;
 
+import com.kamildanak.minecraft.enderpay.gui.hud.Anchor;
+import com.kamildanak.minecraft.enderpay.gui.hud.Position;
 import com.kamildanak.minecraft.enderpay.network.client.MessageSettings;
 import net.minecraftforge.common.config.Configuration;
 
@@ -19,7 +21,8 @@ public class Settings implements ISettings{
     private int dayLength;
     private int xOffset;
     private int yOffset;
-    private boolean positionRelative;
+    private Position position;
+    private Anchor anchor;
     private int pvpMoneyDrop;
 
     @SuppressWarnings("WeakerAccess")
@@ -60,8 +63,18 @@ public class Settings implements ISettings{
         registerBanknoteRecipe = config.getBoolean("registerBanknoteRecipe", "general", true,
                 "Set to true to allow crafting banknotes [temporary disabled]");
 
-        positionRelative = config.getBoolean("positionRelative", "gui", true,
-                "Set to false to set absolute hud position");
+        String positionHUD = config.getString("position", "gui", "hud_above_right",
+                "Position of HUD", new String[]
+                        {"top_left", "middle_left", "bottom_left",
+                                "top_middle", "middle_middle", "bottom_middle",
+                                "top_right", "middle_right", "bottom_right",
+                                "hud_above_left", "hud_above_middle", "hud_above_right"});
+
+        position = Position.byName(positionHUD);
+
+        String anchorHUD = config.getString("anchorHUD", "gui", "right",
+                "HUD anchor position", new String[]{"left", "centre", "right"});
+        anchor = Anchor.byName(anchorHUD);
 
         xOffset = config.getInt("xOffset", "gui", 0, -10000, 10000,
                 "HUD x offset in scalled pixels");
@@ -134,8 +147,12 @@ public class Settings implements ISettings{
         return yOffset;
     }
 
-    public boolean isPositionRelative() {
-        return positionRelative;
+    public Position getPosition() {
+        return position;
+    }
+
+    public Anchor getAnchor() {
+        return anchor;
     }
 
     public int getPvpMoneyDrop() {

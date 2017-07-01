@@ -1,6 +1,8 @@
 package com.kamildanak.minecraft.enderpay.proxy;
 
 import com.kamildanak.minecraft.enderpay.Utils;
+import com.kamildanak.minecraft.enderpay.gui.hud.Anchor;
+import com.kamildanak.minecraft.enderpay.gui.hud.Position;
 import com.kamildanak.minecraft.enderpay.network.client.MessageSettings;
 
 @SuppressWarnings("unused")
@@ -86,9 +88,14 @@ public class SettingsClient extends Settings implements ISettings {
         return super.getyOffset();
     }
 
-    public boolean isPositionRelative() {
-        if (Utils.isClient() && message != null) return message.isPositionRelative();
-        return super.isPositionRelative();
+    public Position getPosition() {
+        if (Utils.isClient() && message != null) return message.getPosition();
+        return super.getPosition();
+    }
+
+    public Anchor getAnchor() {
+        if (Utils.isClient() && message != null) return message.getAnchor();
+        return super.getAnchor();
     }
 
     public int getPvpMoneyDrop() {

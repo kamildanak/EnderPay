@@ -1,5 +1,8 @@
 package com.kamildanak.minecraft.enderpay.proxy;
 
+import com.kamildanak.minecraft.enderpay.gui.hud.Anchor;
+import com.kamildanak.minecraft.enderpay.gui.hud.Position;
+
 public interface ISettings {
     String getCurrencyNameSingular();
 
@@ -31,7 +34,9 @@ public interface ISettings {
 
     int getyOffset();
 
-    boolean isPositionRelative();
+    Position getPosition();
+
+    Anchor getAnchor();
 
     int getPvpMoneyDrop();
 }

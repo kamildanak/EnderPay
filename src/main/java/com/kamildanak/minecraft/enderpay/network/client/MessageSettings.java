@@ -1,6 +1,8 @@
 package com.kamildanak.minecraft.enderpay.network.client;
 
 import com.kamildanak.minecraft.enderpay.EnderPay;
+import com.kamildanak.minecraft.enderpay.gui.hud.Anchor;
+import com.kamildanak.minecraft.enderpay.gui.hud.Position;
 import com.kamildanak.minecraft.enderpay.network.AbstractMessage;
 import com.kamildanak.minecraft.enderpay.proxy.ISettings;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,8 +28,9 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
     private int dayLength;
     private int xOffset;
     private int yOffset;
-    private boolean positionRelative;
+    private Position position;
     private int pvpMoneyDrop;
+    private Anchor anchor;
 
     @SuppressWarnings("unused")
     public MessageSettings() {
@@ -49,7 +52,8 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
         this.dayLength = settings.getDayLength();
         this.xOffset = settings.getxOffset();
         this.yOffset = settings.getyOffset();
-        this.positionRelative = settings.isPositionRelative();
+        this.position = settings.getPosition();
+        this.anchor = settings.getAnchor();
         this.pvpMoneyDrop = settings.getPvpMoneyDrop();
     }
 
@@ -114,8 +118,13 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
         return yOffset;
     }
 
-    public boolean isPositionRelative() {
-        return positionRelative;
+    public Position getPosition() {
+        return position;
+    }
+
+    @Override
+    public Anchor getAnchor() {
+        return anchor;
     }
 
     public int getPvpMoneyDrop() {
@@ -139,7 +148,8 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
         this.dayLength = buffer.readInt();
         this.xOffset = buffer.readInt();
         this.yOffset = buffer.readInt();
-        this.positionRelative = buffer.readBoolean();
+        this.position = Position.values()[buffer.readInt()];
+        this.anchor = Anchor.values()[buffer.readInt()];
         this.pvpMoneyDrop = buffer.readInt();
     }
 
@@ -160,7 +170,8 @@ public class MessageSettings extends AbstractMessage.AbstractClientMessage<Messa
         buffer.writeInt(this.dayLength);
         buffer.writeInt(this.xOffset);
         buffer.writeInt(this.yOffset);
-        buffer.writeBoolean(this.positionRelative);
+        buffer.writeInt(this.position.ordinal());
+        buffer.writeInt(this.anchor.ordinal());
         buffer.writeInt(this.pvpMoneyDrop);
     }
 

@@ -3,13 +3,14 @@ package com.kamildanak.minecraft.enderpay.gui.hud;
 import com.kamildanak.minecraft.enderpay.EnderPay;
 import com.kamildanak.minecraft.enderpay.Utils;
 import com.kamildanak.minecraft.foamflower.gui.GuiExtended;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import javax.vecmath.Point2i;
 
 public class BalanceHUD extends GuiExtended {
     private static Long balance = null;
@@ -61,25 +62,18 @@ public class BalanceHUD extends GuiExtended {
 
         bind("enderpay:textures/icons.png");
 
-        int width = resolution.getScaledWidth();
-        int height = resolution.getScaledHeight();
-        int cx = width / 2;
-        int x = 0;
-        int y = 0;
-        if(EnderPay.settings.isPositionRelative())
-        {
-            int textLength = fontRenderer.getStringWidth(text);
-            int drawHeight = height - 50 + (mc.player.capabilities.isCreativeMode ? 17 : 0) -
-                    (!mc.player.capabilities.isCreativeMode && mc.player.isInsideOfMaterial(Material.WATER)
-                            && !mc.player.canBreatheUnderwater() ? 10 : 0);
-            x = cx + 82 - textLength;
-            y = drawHeight;
-        }
-        x+=EnderPay.settings.getxOffset();
-        y+=EnderPay.settings.getyOffset();
+        Point2i position = EnderPay.settings.getPosition().getPoint(resolution, mc);
+        int x = position.getX() + EnderPay.settings.getxOffset();
+        int y = position.getY() + EnderPay.settings.getyOffset();
 
-        drawTexturedModalRect(x- 4 - 7, y - 1, 0, 0, 16, 11);
-        drawString(fontRenderer, text, x + 9 - 2, y + 1, 0xa0a0a0);
+
+        if (EnderPay.settings.getAnchor() != Anchor.LEFT) {
+            int textLength = fontRenderer.getStringWidth(text);
+            x -= (textLength + 18) / (EnderPay.settings.getAnchor() == Anchor.CENTRE ? 2 : 1);
+        }
+
+        drawTexturedModalRect(x, y, 0, 0, 16, 11);
+        drawString(fontRenderer, text, x + 18, y + 2, 0xa0a0a0);
 
         mc.mcProfiler.endSection();
     }
