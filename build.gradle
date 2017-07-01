@@ -36,6 +36,7 @@ minecraft {
 }
 
 dependencies {
+    compile project(':Foamflower')
 }
 
 processResources
