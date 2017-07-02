@@ -34,7 +34,8 @@ import java.io.File;
 
 @Mod(modid = EnderPay.modID, name = EnderPay.modName, version = EnderPay.VERSION,
         acceptedMinecraftVersions = EnderPay.ACCEPTED_VERSIONS,
-        guiFactory = "com.kamildanak.minecraft.enderpay.gui.EnderPayGuiFactory")
+        guiFactory = "com.kamildanak.minecraft.enderpay.gui.EnderPayGuiFactory",
+        dependencies = "required-after:foamflower")
 public class EnderPay {
     public static final String modID = "enderpay";
     static final String VERSION = "{@enderPayVersion}";
