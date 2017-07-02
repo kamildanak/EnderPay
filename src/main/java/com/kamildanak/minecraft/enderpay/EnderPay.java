@@ -33,7 +33,8 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import java.io.File;
 
 @Mod(modid = EnderPay.modID, name = EnderPay.modName, version = EnderPay.VERSION,
-        acceptedMinecraftVersions = EnderPay.ACCEPTED_VERSIONS)
+        acceptedMinecraftVersions = EnderPay.ACCEPTED_VERSIONS,
+        guiFactory = "com.kamildanak.minecraft.enderpay.gui.EnderPayGuiFactory")
 public class EnderPay {
     public static final String modID = "enderpay";
     static final String VERSION = "{@enderPayVersion}";

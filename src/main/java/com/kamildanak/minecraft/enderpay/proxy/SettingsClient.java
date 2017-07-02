@@ -79,21 +79,25 @@ public class SettingsClient extends Settings implements ISettings {
     }
 
     public int getxOffset() {
+        if (!isUseGuiConfigFromServer()) return super.getxOffset();
         if (Utils.isClient() && message != null) return message.getxOffset();
         return super.getxOffset();
     }
 
     public int getyOffset() {
+        if (!isUseGuiConfigFromServer()) return super.getyOffset();
         if (Utils.isClient() && message != null) return message.getyOffset();
         return super.getyOffset();
     }
 
     public Position getPosition() {
+        if (!isUseGuiConfigFromServer()) return super.getPosition();
         if (Utils.isClient() && message != null) return message.getPosition();
         return super.getPosition();
     }
 
     public Anchor getAnchor() {
+        if (!isUseGuiConfigFromServer()) return super.getAnchor();
         if (Utils.isClient() && message != null) return message.getAnchor();
         return super.getAnchor();
     }
@@ -105,5 +109,9 @@ public class SettingsClient extends Settings implements ISettings {
 
     public void setSettings(MessageSettings message) {
         this.message = message;
+    }
+
+    public MessageSettings getMessage() {
+        return message;
     }
 }

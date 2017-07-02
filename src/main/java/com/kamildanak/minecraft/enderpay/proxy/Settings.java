@@ -6,6 +6,7 @@ import com.kamildanak.minecraft.enderpay.network.client.MessageSettings;
 import net.minecraftforge.common.config.Configuration;
 
 public class Settings implements ISettings{
+    public Configuration config;
     private String currencyNameSingular;
     private String currencyNameMultiple;
     private long maxLoginDelta;
@@ -24,6 +25,7 @@ public class Settings implements ISettings{
     private Position position;
     private Anchor anchor;
     private int pvpMoneyDrop;
+    private boolean useGuiConfigFromServer;
 
     @SuppressWarnings("WeakerAccess")
     public Settings() {
@@ -31,6 +33,7 @@ public class Settings implements ISettings{
     }
 
     public void loadConfig(Configuration config) {
+        this.config = config;
         currencyNameSingular = config.getString("currency name (singular)", "general", "credit",
                 "Currency name (displayed in HUD, max 20 char)");
         currencyNameMultiple = config.getString("currency name (multiple)", "general", "credits",
@@ -77,10 +80,13 @@ public class Settings implements ISettings{
         anchor = Anchor.byName(anchorHUD);
 
         xOffset = config.getInt("xOffset", "gui", 0, -10000, 10000,
-                "HUD x offset in scalled pixels");
+                "HUD x offset in scaled pixels");
 
         yOffset = config.getInt("yOffset", "gui", 0, -10000, 10000,
-                "HUD y offset in scalled pixels");
+                "HUD y offset in scaled pixels");
+
+        useGuiConfigFromServer = config.getBoolean("useGuiConfigFromServer", "gui", true,
+                "Use HUD position provided by server");
 
         pvpMoneyDrop = config.getInt("pvpMoneyDrop", "general", 0, -2147483647,
                 100, "What percentage (0-100) or what amount (pvpMoneyDrop<0)" +
@@ -160,5 +166,13 @@ public class Settings implements ISettings{
     }
 
     public void setSettings(MessageSettings settings) {
+    }
+
+    boolean isUseGuiConfigFromServer() {
+        return useGuiConfigFromServer;
+    }
+
+    public void reloadConfig() {
+        loadConfig(config);
     }
 }

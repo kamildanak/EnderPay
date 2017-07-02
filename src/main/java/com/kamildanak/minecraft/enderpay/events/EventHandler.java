@@ -13,6 +13,7 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
@@ -83,5 +84,12 @@ public class EventHandler {
         killerAccount.addBalance(amountTaken);
         long balance2 = killerAccount.getBalance();
         PacketDispatcher.sendTo(new MessageBalance(balance2), (EntityPlayerMP) killer);
+    }
+
+    @SubscribeEvent
+    public void onConfigChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event) {
+        if (!event.getModID().equals(EnderPay.modID)) return;
+        EnderPay.settings.config.save();
+        EnderPay.settings.reloadConfig();
     }
 }

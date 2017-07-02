@@ -77,6 +77,7 @@ public enum Position {
     }
 
     private int countYOFF(EntityPlayerSP p, boolean left, boolean right) {
+        if (p == null) return 0;
         PlayerCapabilities pc = p.capabilities;
         boolean up = (right && p.isInsideOfMaterial(Material.WATER) && !p.canBreatheUnderwater()) ||
                 (left && p.getTotalArmorValue() > 0);
