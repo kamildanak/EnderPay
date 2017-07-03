@@ -2,7 +2,7 @@ def mcVersion         = "1.12" // Always matches the Minecraft version the mod i
 def majorModVersion   = "0" // Removing items/blocks, changing mechanics, updating to a new Minecraft version.
 def majorApiModVersion     = "0" // Changing the order of enums, return types of methods, removing methods
 def minorModVersion   = "5" // Adding items, blocks, tile entities, Adding new mechanics., Deprecating public methods.
-def patchVersion = "0" // Bugfixes.
+def patchVersion = "1" // Bugfixes.
 def suffix = "" // "-final" - last release for that Minecraft, "-betaX" - Pre-releases, "-rcX"-Release Candidates
 version = mcVersion+"-"+majorModVersion+"."+majorApiModVersion+"."+minorModVersion+"."+patchVersion+suffix
 
@@ -16,6 +16,7 @@ buildscript {
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
+apply plugin: 'maven'
 
 group = "com.kamildanak.minecraft.enderpay" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "enderpay"
@@ -72,4 +73,12 @@ artifacts {
     archives deobfJar
     archives sourceJar
     archives jar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: "file://localhost/"+projectDir+"/../local-repo/")
+        }
+    }
 }

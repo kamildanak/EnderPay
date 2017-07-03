@@ -61,4 +61,8 @@ public class CommandPay extends CommandBase {
     public boolean isUsernameIndex(String[] args, int index) {
         return index == 0;
     }
+
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
+        return true;
+    }
 }

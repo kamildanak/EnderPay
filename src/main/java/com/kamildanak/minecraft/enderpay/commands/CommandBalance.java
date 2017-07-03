@@ -44,4 +44,8 @@ public class CommandBalance extends CommandBase {
         //noinspection RedundantArrayCreation
         throw new WrongUsageException("commands.balance.usage", new Object[0]);
     }
+
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
+        return true;
+    }
 }
