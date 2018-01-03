@@ -38,7 +38,7 @@ public class Settings implements ISettings{
                 "Currency name (displayed in HUD, max 20 char)");
         currencyNameMultiple = config.getString("currency name (multiple)", "general", "credits",
                 "Currency name (displayed in HUD, max 20 char)");
-        maxLoginDelta = config.getInt("maxLoginDelta", "basicIncome", 6, -1, 200,
+        maxLoginDelta = config.getInt("maxLoginDelta", "basicIncome", 6, -1, 2000,
                 "Maximum number of day since last login the player will be payed for. (set to -1 to disable)");
         if (maxLoginDelta == 0) maxLoginDelta = -1;
 
@@ -57,7 +57,7 @@ public class Settings implements ISettings{
         consumeBanknotesInCreativeMode = config.getBoolean("consumeBanknotesInCreativeMode", "general", true,
                 "Should banknotes be consumed when used by player in creative mode");
 
-        daysAfterBanknotesExpires = config.getInt("daysAfterBanknotesExpires", "basicIncome", 10, 1, 200,
+        daysAfterBanknotesExpires = config.getInt("daysAfterBanknotesExpires", "basicIncome", 10, 1, 2000,
                 "Number of days after banknote no longer has value");
 
         resetLoginDelta = config.getInt("resetLoginDelta", "basicIncome", 100, -1, Integer.MAX_VALUE,
