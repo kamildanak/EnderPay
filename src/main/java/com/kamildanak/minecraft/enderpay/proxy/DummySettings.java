@@ -4,24 +4,24 @@ import com.kamildanak.minecraft.enderpay.gui.hud.Anchor;
 import com.kamildanak.minecraft.enderpay.gui.hud.Position;
 
 public class DummySettings implements ISettings{
-    private final Anchor anchor;
-    private String currencyNameSingular;
-    private String currencyNameMultiple;
-    private long maxLoginDelta;
-    private boolean basicIncome;
-    private int basicIncomeAmount;
-    private boolean stampedMoney;
-    private int stampedMoneyPercent;
-    private int startBalance;
-    private boolean consumeBanknotesInCreativeMode;
-    private boolean registerBanknoteRecipe;
-    private int daysAfterBanknotesExpires;
-    private int resetLoginDelta;
-    private int dayLength;
-    private int xOffset;
-    private int yOffset;
-    private Position position;
-    private int pvpMoneyDrop;
+    public Anchor anchor;
+    public String currencyNameSingular;
+    public String currencyNameMultiple;
+    public long maxLoginDelta;
+    public boolean basicIncome;
+    public int basicIncomeAmount;
+    public boolean stampedMoney;
+    public int stampedMoneyPercent;
+    public int startBalance;
+    public boolean consumeBanknotesInCreativeMode;
+    public boolean registerBanknoteRecipe;
+    public int daysAfterBanknotesExpires;
+    public int resetLoginDelta;
+    public int dayLength;
+    public int xOffset;
+    public int yOffset;
+    public Position position;
+    public int pvpMoneyDrop;
 
     public DummySettings(String currencyNameSingular,
                          String currencyNameMultiple,
@@ -59,6 +59,10 @@ public class DummySettings implements ISettings{
         this.position = position;
         this.anchor = anchor;
         this.pvpMoneyDrop = pvpMoneyDrop;
+    }
+
+    public DummySettings() {
+
     }
 
     @Override

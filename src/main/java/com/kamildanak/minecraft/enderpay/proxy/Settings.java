@@ -38,8 +38,10 @@ public class Settings implements ISettings{
                 "Currency name (displayed in HUD, max 20 char)");
         currencyNameMultiple = config.getString("currency name (multiple)", "general", "credits",
                 "Currency name (displayed in HUD, max 20 char)");
-        maxLoginDelta = (1000 * 60 * 60) * config.getInt("maxLoginDelta", "basicIncome", 6, 1, 20,
-                "Maximum number of day since last login the player will be payed for. ");
+        maxLoginDelta = config.getInt("maxLoginDelta", "basicIncome", 6, -1, 200,
+                "Maximum number of day since last login the player will be payed for. (set to -1 to disable)");
+        if (maxLoginDelta == 0) maxLoginDelta = -1;
+
         basicIncome = config.getBoolean("enabled", "basicIncome", true,
                 "Each day give set amount of credits to each player to stimulate economy");
         basicIncomeAmount = config.getInt("amount", "basicIncome", 50, 0, 10000,
@@ -48,17 +50,19 @@ public class Settings implements ISettings{
                 "Take % of players money each day to stimulate economy");
         stampedMoneyPercent = config.getInt("percent", "stampedMoney", 1, 0, 100,
                 "What percentage of players money should be taken each day");
+        if (stampedMoneyPercent == 0) stampedMoney = false;
         startBalance = config.getInt("startBalance", "general", 100, 0, 10000,
                 "Amount of credits given to new players joining the server");
 
         consumeBanknotesInCreativeMode = config.getBoolean("consumeBanknotesInCreativeMode", "general", true,
                 "Should banknotes be consumed when used by player in creative mode");
 
-        daysAfterBanknotesExpires = config.getInt("daysAfterBanknotesExpires", "basicIncome", 10, 1, 100,
+        daysAfterBanknotesExpires = config.getInt("daysAfterBanknotesExpires", "basicIncome", 10, 1, 200,
                 "Number of days after banknote no longer has value");
 
-        resetLoginDelta = config.getInt("resetLoginDelta", "basicIncome", 100, 1, 100,
-                "Number of days of inactivity after account balance will be set to startBalance");
+        resetLoginDelta = config.getInt("resetLoginDelta", "basicIncome", 100, -1, Integer.MAX_VALUE,
+                "Number of days of inactivity after account balance will be set to startBalance (set to -1 to disable)");
+        if (resetLoginDelta == 0) resetLoginDelta = -1;
 
         dayLength = config.getInt("dayLength", "basicIncome", 24 * 60, 1, 24 * 60 * 365,
                 "Day length in minutes");

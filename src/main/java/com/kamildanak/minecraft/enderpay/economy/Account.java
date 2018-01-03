@@ -2,12 +2,8 @@ package com.kamildanak.minecraft.enderpay.economy;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.kamildanak.minecraft.enderpay.EnderPay;
-import com.kamildanak.minecraft.enderpay.Utils;
-import com.kamildanak.minecraft.enderpay.network.PacketDispatcher;
-import com.kamildanak.minecraft.enderpay.network.client.MessageBalance;
+import com.kamildanak.minecraft.enderpay.proxy.ISettings;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 
 import javax.annotation.Nullable;
 import java.io.File;
@@ -19,6 +15,9 @@ import java.util.UUID;
 
 public class Account {
     private static HashMap<String, Account> objects = new HashMap<>();
+    private static ISettings settings;
+    private static IDayHelper dayHelper;
+    private static IPlayerHelper playerHelper;
     private static File location;
     private boolean changed;
 
@@ -29,8 +28,8 @@ public class Account {
 
     private Account(UUID uuid) {
         this.uuid = uuid;
-        this.balance = EnderPay.settings.getStartBalance();
-        long now = Utils.getCurrentDay();
+        this.balance = settings.getStartBalance();
+        long now = dayHelper.getCurrentDay();
         this.lastLogin = now;
         this.lastCountActivity = now;
         this.changed = true;
@@ -73,27 +72,31 @@ public class Account {
     }
 
     public boolean update() {
-        long now = Utils.getCurrentDay();
+        long now = dayHelper.getCurrentDay();
         long activityDeltaDays = now - this.lastCountActivity;
         this.lastCountActivity = now;
 
         if (activityDeltaDays == 0) return false;
 
-        if (EnderPay.settings.isStampedMoney()) {
-            if (activityDeltaDays <= EnderPay.settings.getResetLoginDelta()) {
-                for (int i = 0; i < activityDeltaDays; i++)
-                    this.balance -= Math.ceil((double) (this.balance * EnderPay.settings.getStampedMoneyPercent()) / 100);
+        if (settings.isStampedMoney()) {
+            if (activityDeltaDays <= settings.getResetLoginDelta()) {
+                if (activityDeltaDays>2000) {
+                    this.balance = (long) Math.ceil(this.balance * Math.pow((1 - ((double) settings.getStampedMoneyPercent()) / 100), activityDeltaDays));
+                } else {
+                    for (int i = 0; i < activityDeltaDays; i++)
+                        this.balance -= Math.ceil((double) (this.balance * settings.getStampedMoneyPercent()) / 100);
+                }
             }
         }
-        if (EnderPay.settings.isBasicIncome() && getPlayerMP() != null) {
+        if (settings.isBasicIncome() && playerHelper.isPlayerLoggedIn(uuid)) {
             long loginDeltaDays = (now - this.lastLogin);
-            if (loginDeltaDays > EnderPay.settings.getMaxLoginDelta())
-                loginDeltaDays = EnderPay.settings.getMaxLoginDelta();
+            if (settings.getMaxLoginDelta() > 0 && loginDeltaDays > settings.getMaxLoginDelta())
+                loginDeltaDays = settings.getMaxLoginDelta();
             this.lastLogin = now;
-            this.balance += loginDeltaDays * EnderPay.settings.getBasicIncomeAmount();
+            this.balance += loginDeltaDays * settings.getBasicIncomeAmount();
         }
-        if (activityDeltaDays > EnderPay.settings.getResetLoginDelta()) {
-            this.balance = EnderPay.settings.getStartBalance();
+        if (settings.getResetLoginDelta() > 0 && activityDeltaDays > settings.getResetLoginDelta()) {
+            this.balance = settings.getStartBalance();
         }
         return activityDeltaDays > 0;
     }
@@ -150,17 +153,16 @@ public class Account {
     public void setBalance(long v) {
         balance = v;
         changed = true;
-        PacketDispatcher.sendTo(new MessageBalance(balance), getPlayerMP());
+        playerHelper.send(uuid, balance);
     }
 
     public void addBalance(long v) {
         setBalance(balance + v);
     }
 
-    @Nullable
-    private EntityPlayerMP getPlayerMP() {
-        EntityPlayerMP entityPlayerMP = EnderPay.minecraftServer.getPlayerList().getPlayerByUUID(uuid);
-        //noinspection ConstantConditions
-        return (entityPlayerMP != null) ? entityPlayerMP : null;
+    public static void setInterfaces(ISettings settings, IDayHelper dayHelper, IPlayerHelper playerHelper) {
+        Account.settings = settings;
+        Account.dayHelper = dayHelper;
+        Account.playerHelper = playerHelper;
     }
 }

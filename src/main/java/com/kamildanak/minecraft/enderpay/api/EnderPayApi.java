@@ -48,16 +48,8 @@ public class EnderPayApi {
     }
 
     public static long getBanknoteCurrentValue(@Nonnull ItemStack itemStack) throws NotABanknoteException {
-        long amount = getBanknoteOriginalValue(itemStack);
-        if (amount <= 0) return 0;
-        long dayAfter = Utils.daysAfterDate(ItemFilledBanknote.getDateIssued(itemStack));
-        if (dayAfter < 0) return amount;
-        if (ItemFilledBanknote.isExpired(ItemFilledBanknote.getDateIssued(itemStack))) {
-            amount = 0;
-        } else {
-            amount -= Math.ceil((double) (dayAfter * (amount * EnderPay.settings.getStampedMoneyPercent())) / 100);
-        }
-        return amount;
+        long originalValue = getBanknoteOriginalValue(itemStack);
+        return ItemFilledBanknote.getCurrentValue(originalValue, ItemFilledBanknote.getDateIssued(itemStack));
     }
 
     public static boolean isValidFilledBanknote(@Nonnull ItemStack itemStack) {

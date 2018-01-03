@@ -30,10 +30,6 @@ public class ItemFilledBanknote extends Item {
         ForgeRegistries.ITEMS.register(this);
     }
 
-    public static boolean isExpired(long dateIssued) {
-        return Utils.daysAfterDate(dateIssued) >= EnderPay.settings.getDaysAfterBanknotesExpires();
-    }
-
     @Nonnull
     public static ItemStack getItemStack(long creditsAmount) {
         ItemStack newBanknote = new ItemStack(EnderPay.itemFilledBanknote);
@@ -66,6 +62,10 @@ public class ItemFilledBanknote extends Item {
                 //noinspection unchecked
                 return new ActionResult(EnumActionResult.FAIL, player.getHeldItem(handIn));
             long amount = stack.getTagCompound().getLong("Amount");
+            if (EnderPay.settings.isStampedMoney()) {
+                long dateIssued = stack.getTagCompound().getLong("DateIssued");
+                amount = getCurrentValue(amount, dateIssued);
+            }
             Account.get(player).addBalance(amount);
             player.setHeldItem(handIn, ItemStack.EMPTY);
         }
@@ -86,33 +86,46 @@ public class ItemFilledBanknote extends Item {
             tooltip.add(Utils.format(0) + " " + BalanceHUD.getCurrency());
             return;
         }
-        long amount = stack.getTagCompound().getLong("Amount");
+        long original_value = stack.getTagCompound().getLong("Amount");
         if (EnderPay.settings.isStampedMoney()) {
             if (!stack.getTagCompound().hasKey("DateIssued")) return;
             long dateIssued = stack.getTagCompound().getLong("DateIssued");
-            tooltip.add("Original value: " + Utils.format(amount) + " " + BalanceHUD.getCurrency());
+            tooltip.add("Original value: " + Utils.format(original_value) + " " + BalanceHUD.getCurrency());
 
+            long amount = original_value;
             amount = getCurrentValue(amount, dateIssued);
             if (amount == 0) {
                 tooltip.add("Expired");
             } else {
                 tooltip.add("Current value: " + Utils.format(amount) + " " + BalanceHUD.getCurrency());
-                tooltip.add("Expires in " +
-                        Long.toString(EnderPay.settings.getDaysAfterBanknotesExpires() - Utils.daysAfterDate(dateIssued)) + " days");
+                tooltip.add("Expires in " + Long.toString(expiresAfter(original_value, dateIssued)) + " days");
             }
         } else {
-            tooltip.add(Utils.format(amount) + " " + BalanceHUD.getCurrency());
+            tooltip.add(Utils.format(original_value) + " " + BalanceHUD.getCurrency());
         }
     }
 
-    private long getCurrentValue(long amount, long dateIssued) {
+    private long expiresAfter(long amount, long dateIssued)
+    {
         long dayAfter = Utils.daysAfterDate(dateIssued);
-        if (dayAfter < 0) return amount;
-        if (isExpired(dateIssued)) {
-            amount = 0;
-        } else {
-            amount -= Math.ceil((double) (dayAfter * (amount * EnderPay.settings.getStampedMoneyPercent())) / 100);
+        for (int i = 0; i < EnderPay.settings.getDaysAfterBanknotesExpires(); i++)
+        {
+            amount -= Math.ceil((double) (amount * EnderPay.settings.getStampedMoneyPercent()) / 100);
+            if (amount==0) return i - dayAfter + 1;
         }
+        return EnderPay.settings.getDaysAfterBanknotesExpires() - dayAfter;
+    }
+
+    public static long getCurrentValue(long amount, long dateIssued) {
+        if (!EnderPay.settings.isStampedMoney()) return amount;
+        long dayAfter = Utils.daysAfterDate(dateIssued);
+        if (dayAfter < 0 || amount <= 0) return amount;
+        if (Utils.daysAfterDate(dateIssued) >= EnderPay.settings.getDaysAfterBanknotesExpires()) {
+            return 0;
+        }
+        for (int i = 0; i < dayAfter; i++)
+            amount -= Math.ceil((double) (amount * EnderPay.settings.getStampedMoneyPercent()) / 100);
+            if (amount <= 0) return 0;
         return amount;
     }
 }

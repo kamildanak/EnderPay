@@ -4,6 +4,8 @@ import com.kamildanak.minecraft.enderpay.commands.CommandBalance;
 import com.kamildanak.minecraft.enderpay.commands.CommandPay;
 import com.kamildanak.minecraft.enderpay.commands.CommandWallet;
 import com.kamildanak.minecraft.enderpay.economy.Account;
+import com.kamildanak.minecraft.enderpay.economy.DayHelper;
+import com.kamildanak.minecraft.enderpay.economy.PlayerHelper;
 import com.kamildanak.minecraft.enderpay.events.EventHandler;
 import com.kamildanak.minecraft.enderpay.gui.GuiBanknote;
 import com.kamildanak.minecraft.enderpay.item.ItemBlankBanknote;
@@ -66,6 +68,7 @@ public class EnderPay {
         proxy.preInit();
 
         settings.loadConfig(config);
+        Account.setInterfaces(settings, new DayHelper(), new PlayerHelper());
         itemBlankBanknote = new ItemBlankBanknote("blank_banknote");
         itemFilledBanknote = new ItemFilledBanknote("filled_banknote");
     }
