@@ -1,5 +1,6 @@
 package com.kamildanak.minecraft.enderpay.gui;
 
+import com.kamildanak.minecraft.enderpay.EnderPay;
 import com.kamildanak.minecraft.enderpay.Utils;
 import com.kamildanak.minecraft.enderpay.network.PacketDispatcher;
 import com.kamildanak.minecraft.enderpay.network.server.MessageIssueBanknote;
@@ -19,8 +20,8 @@ public class GuiBanknote extends GuiScreenPlus {
     private boolean expires;
     public GuiBanknote(World world, BlockPos blockPos, EntityPlayer player)
     {
-        super(146,  Utils.isOP(player) ? 90:65, Utils.isOP(player) ? "enderpay:textures/banknote-gui-big.png" :
-                "enderpay:textures/banknote-gui.png");
+        super(146, isExpireButtonVisible(player) ? 90:65, isExpireButtonVisible(player) ?
+                "enderpay:textures/banknote-gui-big.png" : "enderpay:textures/banknote-gui.png");
         addChild(new GuiLabel(9, 9, "gui.enderpay:gui_banknote.number_of_credits"));
         addChild(editBigInteger = new GuiEditBigInteger(9, 21, 127, 10,
                 BigInteger.ZERO, BigInteger.valueOf(Long.MAX_VALUE)));
@@ -39,7 +40,7 @@ public class GuiBanknote extends GuiScreenPlus {
             }
         });
         expires = true;
-        if (Utils.isOP(player)) {
+        if (isExpireButtonVisible(player)) {
             expires = false;
             GuiExButton exButton;
             addChild(exButton = new GuiExButton(9, 62, 127, 20, "") {
@@ -53,5 +54,10 @@ public class GuiBanknote extends GuiScreenPlus {
             });
             exButton.onClick();
         }
+    }
+
+    private static boolean isExpireButtonVisible(EntityPlayer player)
+    {
+        return EnderPay.settings.isStampedMoney() && Utils.isOP(player);
     }
 }

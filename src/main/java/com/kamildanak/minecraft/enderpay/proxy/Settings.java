@@ -58,7 +58,7 @@ public class Settings implements ISettings{
                 "Should banknotes be consumed when used by player in creative mode");
 
         daysAfterBanknotesExpires = config.getInt("daysAfterBanknotesExpires", "basicIncome", 10, 1, 2000,
-                "Number of days after banknote no longer has value");
+                "Number of days after banknote no longer has value (disable stampedMoney to make all banknotes non-expiring)");
 
         resetLoginDelta = config.getInt("resetLoginDelta", "basicIncome", 100, -1, Integer.MAX_VALUE,
                 "Number of days of inactivity after account balance will be set to startBalance (set to -1 to disable)");
