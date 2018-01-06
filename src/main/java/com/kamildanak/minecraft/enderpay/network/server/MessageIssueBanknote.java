@@ -1,6 +1,7 @@
 package com.kamildanak.minecraft.enderpay.network.server;
 
 import com.kamildanak.minecraft.enderpay.EnderPay;
+import com.kamildanak.minecraft.enderpay.Utils;
 import com.kamildanak.minecraft.enderpay.economy.Account;
 import com.kamildanak.minecraft.enderpay.item.ItemFilledBanknote;
 import com.kamildanak.minecraft.enderpay.network.AbstractMessage;
@@ -16,27 +17,32 @@ import java.io.IOException;
 
 public class MessageIssueBanknote extends AbstractMessage.AbstractServerMessage<MessageIssueBanknote> {
     private long amount;
+    private boolean expires;
 
     @SuppressWarnings("unused")
     public MessageIssueBanknote() {
     }
 
-    public MessageIssueBanknote(long amount) {
+    public MessageIssueBanknote(long amount, boolean expires) {
         this.amount = amount;
+        this.expires = expires;
     }
 
     @Override
     protected void read(PacketBuffer buffer) throws IOException {
         amount = buffer.readLong();
+        expires = buffer.readBoolean();
     }
 
     @Override
     protected void write(PacketBuffer buffer) throws IOException {
         buffer.writeLong(amount);
+        buffer.writeBoolean(expires);
     }
 
     @Override
     public void process(EntityPlayer player, Side side) {
+        if (!Utils.isOP(player)) expires = true;
 
         int currentItemIndex = player.inventory.currentItem;
         ItemStack currentItem = player.inventory.getStackInSlot(currentItemIndex);
@@ -56,7 +62,7 @@ public class MessageIssueBanknote extends AbstractMessage.AbstractServerMessage<
                 return;
             }
             account.addBalance(-amount);
-            ItemStack newBanknote = ItemFilledBanknote.getItemStack(amount);
+            ItemStack newBanknote = ItemFilledBanknote.getItemStack(amount, expires);
             if (!player.isCreative() || EnderPay.settings.isConsumeBanknotesInCreativeMode())
                 player.inventory.decrStackSize(currentItemIndex, 1);
             player.inventory.addItemStackToInventory(newBanknote);

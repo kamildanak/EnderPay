@@ -20,3 +20,7 @@ exception.enderpay.insufficient_credit=You don't have money you want to issue a 
 gui.enderpay:gui_banknote.issue=Issue
 gui.enderpay:gui_banknote.cancel=Cancel
 gui.enderpay:gui_banknote.number_of_credits=Number of credits
+
+gui.enderpay:gui_banknote.expires=Expires
+gui.enderpay.yes=Yes
+gui.enderpay.no=No

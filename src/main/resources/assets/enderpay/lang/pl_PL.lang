@@ -20,3 +20,7 @@ exception.enderpay.insufficient_credit=Masz za mało srodków aby wydać ten ban
 gui.enderpay:gui_banknote.issue=Wydaj
 gui.enderpay:gui_banknote.cancel=Anuluj
 gui.enderpay:gui_banknote.number_of_credits=Ilość środków
+
+gui.enderpay:gui_banknote.expires=Traci ważność
+gui.enderpay.yes=Tak
+gui.enderpay.no=Nie

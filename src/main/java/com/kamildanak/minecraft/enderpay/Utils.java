@@ -2,6 +2,7 @@ package com.kamildanak.minecraft.enderpay;
 
 import com.kamildanak.minecraft.enderpay.gui.hud.BalanceHUD;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
@@ -76,5 +77,10 @@ public class Utils {
     public static long daysAfterDate(long date) {
         long now = Utils.getCurrentDay();
         return now - date;
+    }
+
+    public static boolean isOP(EntityPlayer player)
+    {
+        return player.canUseCommand(2, "");
     }
 }

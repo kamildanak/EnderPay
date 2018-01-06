@@ -37,7 +37,7 @@ public class EnderPayApi {
 
     @Nonnull
     public static ItemStack getBanknote(long creditsAmount) {
-        return ItemFilledBanknote.getItemStack(creditsAmount);
+        return ItemFilledBanknote.getItemStack(creditsAmount, true);
     }
 
     public static long getBanknoteOriginalValue(@Nonnull ItemStack itemStack) throws NotABanknoteException {
@@ -49,7 +49,8 @@ public class EnderPayApi {
 
     public static long getBanknoteCurrentValue(@Nonnull ItemStack itemStack) throws NotABanknoteException {
         long originalValue = getBanknoteOriginalValue(itemStack);
-        return ItemFilledBanknote.getCurrentValue(originalValue, ItemFilledBanknote.getDateIssued(itemStack));
+        return ItemFilledBanknote.getCurrentValue(originalValue, ItemFilledBanknote.getDateIssued(itemStack),
+                ItemFilledBanknote.doesExpire(itemStack));
     }
 
     public static boolean isValidFilledBanknote(@Nonnull ItemStack itemStack) {
