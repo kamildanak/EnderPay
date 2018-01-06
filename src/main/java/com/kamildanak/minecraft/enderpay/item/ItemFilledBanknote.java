@@ -68,7 +68,7 @@ public class ItemFilledBanknote extends Item {
                 amount = getCurrentValue(amount, dateIssued, true);
             }
             Account.get(player).addBalance(amount);
-            player.setHeldItem(handIn, ItemStack.EMPTY);
+            player.setHeldItem(handIn, new ItemStack(EnderPay.itemBlankBanknote, 1));
         }
         //noinspection unchecked
         return new ActionResult(EnumActionResult.SUCCESS, player.getHeldItem(handIn));
