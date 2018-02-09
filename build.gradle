@@ -25,8 +25,8 @@ targetCompatibility = "1.8"
 sourceCompatibility = "1.8"
 
 minecraft {
-    version = "1.12.2-14.23.0.2491"
-    mappings = "snapshot_20170624"
+    version = "1.12.2-14.23.1.2555"
+    mappings = "snapshot_20171003"
 
     if (file("../run").exists()) {
         runDir = "../run"
@@ -44,8 +44,10 @@ repositories {
 }
 
 dependencies {
-    //compile project(':Foamflower')
-    compile name: "foamflower", group: "com.kamildanak.minecraft.foamflower", version: "1.12.2-1.0.0.0-beta1", classifier: "deobf"
+    //Build
+    //compile name: "foamflower", group: "com.kamildanak.minecraft.foamflower", version: "1.12.2-1.0.0.0-beta1", classifier: "deobf"
+    //Development
+    compile project(':Foamflower')
 }
 
 processResources
