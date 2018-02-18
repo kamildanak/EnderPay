@@ -10,6 +10,8 @@ commands.wallet.take.success=%s отнято с баланса %s
 commands.pay.usage=/pay <игрок> <кол-во>
 commands.pay.number_must_be_positive=Нельзя платить отрицательным количеством кредитов. Это было бы грубо.
 commands.pay.insufficient_credit=Недостаточно кредитов для оплаты. :(
+commands.pay.sent=Вы отправили %s %s в %s
+commands.pay.received=Вы получили %s %s из %s
 
 item.enderpay:blank_banknote.name=Пустая банкнота
 item.enderpay:filled_banknote.name=Заполненная банкнота

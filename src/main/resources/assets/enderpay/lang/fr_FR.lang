@@ -10,6 +10,8 @@ commands.wallet.take.success=%s retirés au compte de %s
 commands.pay.usage=/pay <jouuer> <montant>
 commands.pay.number_must_be_positive=Vous ne pouvez pas payer quelqu'un avec un montant négatif. C'est malpoli.
 commands.pay.insufficient_credit=Vous n'avez pas suffisamment d'argent pour payer ce montant :(.
+commands.pay.sent=Tu as envoyé %s %s à %s
+commands.pay.received=Tu as reçu %s %s de %s
 
 item.enderpay:blank_banknote.name=Chèque vierge
 item.enderpay:filled_banknote.name=Chèque rempli

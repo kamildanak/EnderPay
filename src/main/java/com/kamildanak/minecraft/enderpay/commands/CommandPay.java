@@ -1,5 +1,6 @@
 package com.kamildanak.minecraft.enderpay.commands;
 
+import com.kamildanak.minecraft.enderpay.api.EnderPayApi;
 import com.kamildanak.minecraft.enderpay.economy.Account;
 import com.kamildanak.minecraft.enderpay.network.PacketDispatcher;
 import com.kamildanak.minecraft.enderpay.network.client.MessageBalance;
@@ -43,6 +44,11 @@ public class CommandPay extends CommandBase {
             account.addBalance(amount);
             PacketDispatcher.sendTo(new MessageBalance(senderAccount.getBalance()), (EntityPlayerMP) sender);
             PacketDispatcher.sendTo(new MessageBalance(account.getBalance()), entityplayer);
+
+            notifyCommandListener(sender, this, "commands.pay.sent",
+                    amount, EnderPayApi.getCurrencyName(amount), entityplayer.getDisplayName());
+            notifyCommandListener(entityplayer, this, "commands.pay.received",
+                    amount, EnderPayApi.getCurrencyName(amount), sender.getDisplayName());
             return;
         }
         //noinspection RedundantArrayCreation

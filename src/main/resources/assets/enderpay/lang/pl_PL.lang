@@ -10,6 +10,8 @@ commands.wallet.take.success=%s zabrane ze stanu konta %s
 commands.pay.usage=/pay <gracz> <kwota>
 commands.pay.number_must_be_positive=Nie możesz zapłacić komuś ujemnej kwoty. Byłoby to niegrzeczne.
 commands.pay.insufficient_credit=Nie masz wystarczająco środków na koncie aby wykonać płatność. :(
+commands.pay.sent=Wysłałeś %s %s do %s
+commands.pay.received=Otrzymałeś %s %s od %s
 
 item.enderpay:blank_banknote.name=Pusty banknot
 item.enderpay:filled_banknote.name=Wypełniony banknot
