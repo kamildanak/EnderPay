@@ -39,15 +39,15 @@ minecraft {
 
 repositories {
     maven {
-        url "../local-repo"
+        url "http://kamildanak.com/maven/"
     }
 }
 
 dependencies {
     //Build
-    //compile name: "foamflower", group: "com.kamildanak.minecraft.foamflower", version: "1.12.2-1.0.0.0-beta1", classifier: "deobf"
+    compile name: "foamflower", group: "com.kamildanak.minecraft.foamflower", version: "1.12.2-1.0.0.0-beta1", classifier: "deobf"
     //Development
-    compile project(':Foamflower')
+    //compile project(':Foamflower')
 }
 
 processResources
