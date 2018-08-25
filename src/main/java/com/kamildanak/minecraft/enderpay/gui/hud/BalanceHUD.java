@@ -34,7 +34,7 @@ public class BalanceHUD extends GuiExtended {
         BalanceHUD.balance = balance;
     }
 
-    public static String getCurrency() {
+    public static String getCurrency(long balance) {
         return (balance == 1) ? EnderPay.settings.getCurrencyNameSingular() : EnderPay.settings.getCurrencyNameMultiple();
     }
 
@@ -58,7 +58,8 @@ public class BalanceHUD extends GuiExtended {
         if (fontRenderer == null) return;
 
         String text = (balance == null) ? "---" :
-                fontRenderer.listFormattedStringToWidth(Utils.format(balance) + getCurrency(), 64).get(0);
+                fontRenderer.listFormattedStringToWidth(Utils.format(balance) + getCurrency(balance),
+                        64).get(0);
 
         bind("enderpay:textures/icons.png");
 

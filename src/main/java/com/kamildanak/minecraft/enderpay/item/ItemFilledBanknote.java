@@ -84,25 +84,25 @@ public class ItemFilledBanknote extends Item {
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         if (stack.getTagCompound() == null) return;
         if (!stack.getTagCompound().hasKey("Amount")) {
-            tooltip.add(0 + " " + BalanceHUD.getCurrency());
+            tooltip.add(0 + " " + BalanceHUD.getCurrency(0));
             return;
         }
         long original_value = stack.getTagCompound().getLong("Amount");
         if (doesExpire(stack)) {
             if (!stack.getTagCompound().hasKey("DateIssued")) return;
             long dateIssued = stack.getTagCompound().getLong("DateIssued");
-            tooltip.add("Original value: " + original_value + " " + BalanceHUD.getCurrency());
+            tooltip.add("Original value: " + original_value + " " + BalanceHUD.getCurrency(original_value));
 
             long amount = original_value;
             amount = getCurrentValue(amount, dateIssued, true);
             if (amount == 0) {
                 tooltip.add("Expired");
             } else {
-                tooltip.add("Current value: " + amount + " " + BalanceHUD.getCurrency());
+                tooltip.add("Current value: " + amount + " " + BalanceHUD.getCurrency(amount));
                 tooltip.add("Expires in " + Long.toString(expiresAfter(original_value, dateIssued)) + " days");
             }
         } else {
-            tooltip.add(original_value + " " + BalanceHUD.getCurrency());
+            tooltip.add(original_value + " " + BalanceHUD.getCurrency(original_value));
         }
     }
 
