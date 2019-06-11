@@ -12,6 +12,7 @@ import com.kamildanak.minecraft.enderpay.item.ItemBlankBanknote;
 import com.kamildanak.minecraft.enderpay.item.ItemFilledBanknote;
 import com.kamildanak.minecraft.enderpay.proxy.Proxy;
 import com.kamildanak.minecraft.enderpay.proxy.Settings;
+import com.kamildanak.minecraft.enderpay.sponge.SpongeBridge;
 import com.kamildanak.minecraft.foamflower.gui.GuiHandler;
 import com.kamildanak.minecraft.foamflower.inventory.DummyContainer;
 import net.minecraft.command.ICommandManager;
@@ -25,6 +26,7 @@ import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.SaveHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -71,6 +73,9 @@ public class EnderPay {
         Account.setInterfaces(settings, new DayHelper(), new PlayerHelper());
         itemBlankBanknote = new ItemBlankBanknote("blank_banknote");
         itemFilledBanknote = new ItemFilledBanknote("filled_banknote");
+        if (Loader.isModLoaded("spongeforge")) {
+            SpongeBridge.init();
+        }
     }
 
     @Mod.EventHandler

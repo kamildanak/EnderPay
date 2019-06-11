@@ -44,6 +44,10 @@ repositories {
     maven {
         url "http://kamildanak.com/maven/"
     }
+    mavenCentral()
+    maven {
+        url 'https://repo.spongepowered.org/maven/'
+    }
 }
 
 if ( minecraftModdingEnv == "production" ) {
@@ -54,6 +58,10 @@ if ( minecraftModdingEnv == "production" ) {
     dependencies {
         compile project(':Foamflower')
     }
+}
+
+dependencies {
+    compile group: 'org.spongepowered', name: 'spongeapi', version: '7.1.0'
 }
 
 processResources
